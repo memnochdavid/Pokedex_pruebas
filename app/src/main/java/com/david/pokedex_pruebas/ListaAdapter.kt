@@ -47,7 +47,7 @@ class PokemonAdapter(private val pokemonList: List<Pokemon>) :
                 MotionEvent.ACTION_DOWN -> {
                     v.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).start()
                 }
-                MotionEvent.ACTION_UP -> {
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
                 }
             };false
