@@ -14,9 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class VistaActivity : AppCompatActivity() {
-    val pokemonName = intent.getStringExtra("pokemon_name")
-    val pokemonImage = intent.getIntExtra("pokemon_image", 0) // 0 is a default value
-    val pokemonDesc = intent.getStringExtra("pokemon_desc")
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -35,6 +32,8 @@ class VistaActivity : AppCompatActivity() {
         val busqueda = findViewById<SearchView>(R.id.busqueda)
         var num=0
         val total=listaPoke.size
+
+
 
         //gestos
         gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
@@ -135,15 +134,23 @@ class VistaActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {//establece por defecto al cargar
+        super.onResume()
+        val pokemonName = intent.getStringExtra("pokemon_name")
+        var num = intent.getIntExtra("num", 0)
+        for(i in listaPoke){
+            if(i.name==pokemonName){
+                num=listaPoke.indexOf(i)
+            }
+        }
+        muestraPokenum(num,0)
+    }
+
     //genera los valores para el elemento de la listaPoke y aplica efectos - Usa num -index en la lista y sentido -izq o der -0 para búsquedas
     fun muestraPokenum(num: Int, sentido:Int) {
         val sprite = findViewById<ImageView>(R.id.foto)
         val texto = findViewById<TextView>(R.id.nombre)
         val descripcion = findViewById<TextView>(R.id.desc)
-
-        texto.text = pokemonName
-        descripcion.text = pokemonDesc
-        sprite.setImageResource(pokemonImage)
 
         when (sentido) {
             1 -> { // Slide left
