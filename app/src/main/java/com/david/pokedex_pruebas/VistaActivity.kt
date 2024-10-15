@@ -18,6 +18,7 @@ class VistaActivity : AppCompatActivity() {
     val pokemonImage = intent.getIntExtra("pokemon_image", 0) // 0 is a default value
     val pokemonDesc = intent.getStringExtra("pokemon_desc")
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,6 +140,11 @@ class VistaActivity : AppCompatActivity() {
         val sprite = findViewById<ImageView>(R.id.foto)
         val texto = findViewById<TextView>(R.id.nombre)
         val descripcion = findViewById<TextView>(R.id.desc)
+
+        texto.text = pokemonName
+        descripcion.text = pokemonDesc
+        sprite.setImageResource(pokemonImage)
+
         when (sentido) {
             1 -> { // Slide left
                 val animation = sprite.animate().translationX(-sprite.width.toFloat()).setDuration(200)
