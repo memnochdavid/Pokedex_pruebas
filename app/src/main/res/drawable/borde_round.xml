@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-drawable xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/mitad_top"
+        android:bottom="0dp"
+        android:top="50dp" /> <!-- Ajusta el valor 'right' para controlar la división -->
+    <item
+        android:drawable="@drawable/mitad_bottom"
+        android:bottom="50dp"
+        android:top="0dp" /> <!-- Ajusta el valor 'left' para controlar la división-->
+</layer-drawable>
