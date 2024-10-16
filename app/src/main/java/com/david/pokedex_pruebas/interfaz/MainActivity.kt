@@ -1,15 +1,16 @@
-package com.david.pokedex_pruebas
+package com.david.pokedex_pruebas.interfaz
 
 import android.os.Bundle
-import android.view.MotionEvent
-import androidx.activity.enableEdgeToEdge
+//import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+//import androidx.core.view.ViewCompat
+//import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
-import android.view.View
+import com.david.pokedex_pruebas.modelo.PokemonAdapter
+import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.modelo.listaPoke
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")

@@ -1,4 +1,4 @@
-package com.david.pokedex_pruebas
+package com.david.pokedex_pruebas.modelo
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,9 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import android.view.MotionEvent
-import kotlin.io.path.name
+import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.interfaz.VistaActivity
 
-class PokemonAdapter(private val pokemonList: List<Pokemon>) :
+//import androidx.compose.animation.with
+//import kotlin.io.path.name
+
+
+class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
     RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
     class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

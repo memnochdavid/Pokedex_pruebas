@@ -1,6 +1,5 @@
-package com.david.pokedex_pruebas
+package com.david.pokedex_pruebas.interfaz
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -9,9 +8,16 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+//import androidx.compose.ui.semantics.error
+//import androidx.compose.animation.with
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+//import androidx.wear.compose.material.placeholder
+//glide
+import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.modelo.busca
+import com.david.pokedex_pruebas.modelo.listaPoke
 
 class VistaActivity : AppCompatActivity() {
 
@@ -31,8 +37,7 @@ class VistaActivity : AppCompatActivity() {
         var texto = findViewById<TextView>(R.id.nombre)
         val busqueda = findViewById<SearchView>(R.id.busqueda)
         var num=0
-        val total=listaPoke.size
-
+        val total= listaPoke.size
 
 
         //gestos
@@ -70,7 +75,7 @@ class VistaActivity : AppCompatActivity() {
         //Cambia el texto del nombre del pokemon mientras escribes
         busqueda.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if(busca(query)!=-1)num=busca(query) else num=total-1
+                if(busca(query) !=-1)num= busca(query) else num=total-1
                 query.dropLast(1)
                 texto.text = ""
                 texto.text = query.replaceFirstChar{ if (it.isLowerCase()) it.titlecase() else it.toString() }
@@ -140,7 +145,7 @@ class VistaActivity : AppCompatActivity() {
         var num = intent.getIntExtra("num", 0)
         for(i in listaPoke){
             if(i.name==pokemonName){
-                num=listaPoke.indexOf(i)
+                num= listaPoke.indexOf(i)
             }
         }
         muestraPokenum(num,0)
@@ -222,6 +227,7 @@ class VistaActivity : AppCompatActivity() {
     }
 
     //
+
 
     private lateinit var gestureDetector: GestureDetectorCompat
     override fun onTouchEvent(event: MotionEvent): Boolean {

@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
         android:background="@drawable/fondo_objeto"
         android:padding="16dp">
 
@@ -28,11 +30,13 @@
                 android:id="@+id/pokemonName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/pokemonDesc"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp" />
