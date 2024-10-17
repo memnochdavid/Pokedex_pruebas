@@ -41,7 +41,6 @@
             android:textAlignment="center"
             android:background="@drawable/borde"
             android:visibility="visible"
-            android:searchIcon="@drawable/car_ui_icon_search"
             android:closeIcon="@null"/>
     </LinearLayout>
 
