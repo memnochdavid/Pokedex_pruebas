@@ -43,6 +43,9 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.car.ui.lib)
+    implementation(libs.androidx.ui.test)
+    implementation(libs.androidx.ui.graphics.android)
+    implementation(libs.androidx.foundation.android)
     testImplementation(libs.junit)
     //glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
@@ -51,6 +54,8 @@ dependencies {
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.4.0")
+    //compose
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0")
     //
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
