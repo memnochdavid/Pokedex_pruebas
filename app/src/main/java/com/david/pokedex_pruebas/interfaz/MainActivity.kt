@@ -8,8 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
+import android.widget.SearchView
 import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.modelo.busca
 import com.david.pokedex_pruebas.modelo.listaPoke
 
 class MainActivity : AppCompatActivity() {
@@ -22,8 +24,21 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = PokemonAdapter(listaPoke)
 
-
+        val busqueda = findViewById<SearchView>(R.id.busqueda)
+        busqueda.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                var listaAux = listaPoke
+                //filtramos la listaAux con la busqueda
+                var listaAux2 = listaAux.filter { pokemon ->
+                    pokemon.name.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = PokemonAdapter(listaAux2)
+                recyclerView.adapter?.notifyDataSetChanged()
+                return true
+            }
+            override fun onQueryTextChange(busqueda: String?): Boolean {
+                return true
+            }
+        })
     }
-
-
 }

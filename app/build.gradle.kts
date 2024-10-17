@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.car.ui.lib)
     testImplementation(libs.junit)
     //glide
     implementation("com.github.bumptech.glide:glide:4.15.1")

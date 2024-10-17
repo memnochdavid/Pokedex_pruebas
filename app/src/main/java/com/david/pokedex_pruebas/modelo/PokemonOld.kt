@@ -163,7 +163,7 @@ var listaPoke : List<PokemonOld> = listOf(
     , PokemonOld((R.drawable.mew), "Mew", "Cuando es mirado a través de un microscopio, puede observarse el delicado pelo de este Pokémon.")
     , PokemonOld((R.drawable.missingno), "MISSINGNO", "Oops, parece que la has liado. Escribe bien el nombre.")
 )
-
+/*
 data class PokeGif(
     var foto: Int=0,
     var name: String="",
@@ -323,7 +323,7 @@ var listaGifs : List<PokeGif> = listOf(
     , PokeGif((R.drawable.mew), "Mew", "Cuando es mirado a través de un microscopio, puede observarse el delicado pelo de este Pokémon.")
 )
 
-
+*/
 fun busca(poke: String): Int {
     for ((index, pokemon) in listaPoke.withIndex()) {
         if (pokemon.name.lowercase(Locale.ROOT).contains(poke.lowercase(Locale.ROOT))) {
