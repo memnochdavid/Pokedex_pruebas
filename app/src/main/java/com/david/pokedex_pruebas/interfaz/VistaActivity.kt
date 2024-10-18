@@ -59,6 +59,8 @@ class VistaActivity : AppCompatActivity() {
         layoutManager.scrollToPosition(initialPosition)
     }
 
+
+
 }
 
 /*

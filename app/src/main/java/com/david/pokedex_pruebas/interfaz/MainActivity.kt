@@ -36,9 +36,21 @@ class MainActivity : AppCompatActivity() {
                 recyclerView.adapter?.notifyDataSetChanged()
                 return true
             }
-            override fun onQueryTextChange(busqueda: String?): Boolean {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val query = newText ?: "" // Handle null case
+                val filteredList = listaPoke.filter { pokemon ->
+                    pokemon.name.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = PokemonAdapter(filteredList)
+                recyclerView.adapter?.notifyDataSetChanged()
                 return true
             }
         })
     }
+        override fun onResume() {//establece por defecto al cargar
+            super.onResume()
+            val recyclerView: RecyclerView = findViewById(R.id.pokelistRecyclerView)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = PokemonAdapter(listaPoke)
+        }
 }
