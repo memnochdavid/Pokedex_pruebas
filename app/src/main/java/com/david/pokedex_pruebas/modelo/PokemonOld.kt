@@ -163,392 +163,227 @@ var listaPoke : List<PokemonOld> = listOf(
     PokemonOld(R.drawable.mew, "Mew", "Se dice que contiene la composición genética de todos los Pokémon. Es muy raramente visto.", listOf(R.drawable.psiquico))
 )
 
-/*
-fun busca(poke: String): Int {
-    for ((index, Pokemon) in listaPoke.withIndex()) {
-        if (Pokemon.name.lowercase(Locale.ROOT).contains(poke.lowercase(Locale.ROOT))) {
-            return index
+fun debilidadesTipo(tipo:Int):List<Int>{
+    var debilidadesTipo:MutableList<Int> = mutableListOf()
+    when(tipo){
+        R.drawable.planta -> {
+            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
+            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
+            if(!debilidadesTipo.contains(R.drawable.veneno))debilidadesTipo.add(R.drawable.veneno)
+            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
+            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
         }
-    };return -1
-}*/
-
-
-
-fun fortalezas_debilidades(tipos: List<Int>): Map<List<Int>, Float> {
-    val resultados = mutableMapOf<List<Int>, Float>()
-
-    for (tipo1 in tipos) {
-        for (tipo2 in tipos) {
-            val factor = when {
-                // Planta
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.fuego -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.agua -> 2.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.veneno -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.tierra -> 2.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.roca -> 2.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.volador -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.bicho -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.dragon -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.planta && tipo2 == R.drawable.hada -> 1.0f
-                // Fuego
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.agua -> 0.5f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.roca -> 0.5f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.volador -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.bicho -> 2.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.dragon -> 0.5f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.acero -> 2.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.hielo -> 2.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.fuego && tipo2 == R.drawable.hada -> 1.0f
-                // Agua
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.fuego -> 2.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.tierra -> 2.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.roca -> 2.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.volador -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.dragon -> 0.5f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.acero -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.agua && tipo2 == R.drawable.hada -> 1.0f
-                //elec
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.agua -> 2.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.electrico -> 0.5f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.tierra -> 0.0f // Inmune
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.volador -> 2.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.dragon -> 0.5f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.acero -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.electrico && tipo2 == R.drawable.hada -> 1.0f
-                //fantasma
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.volador -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.psiquico -> 2.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.fantasma -> 2.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.acero -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.normal -> 0.0f // Inmune
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.siniestro -> 0.5f
-                tipo1 == R.drawable.fantasma && tipo2 == R.drawable.hada -> 1.0f
-                //acero
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.agua -> 0.5f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.electrico -> 0.5f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.fuego -> 0.5f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.hada -> 2.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.hielo -> 2.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.roca -> 2.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.acero && tipo2 == R.drawable.volador -> 1.0f
-                //psiquico
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.hada -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.lucha -> 2.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.psiquico -> 0.5f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.siniestro -> 0f // Inmune
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.veneno -> 2.0f
-                tipo1 == R.drawable.psiquico && tipo2 == R.drawable.volador -> 1.0f
-                //hada
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.dragon -> 2.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.fuego -> 0.5f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.hada -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.lucha -> 2.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.siniestro -> 0.5f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.veneno -> 0.5f // Inmune al veneno en algunos juegos
-                tipo1 == R.drawable.hada && tipo2 == R.drawable.volador -> 1.0f
-                //volador
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.bicho -> 2.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.electrico -> 0.5f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.hada -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.lucha -> 2.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.roca -> 0.5f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.tierra -> 1.0f // Inmune a tierra
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.volador && tipo2 == R.drawable.volador -> 1.0f
-                //bicho
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.fantasma -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.fuego -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.hada -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.lucha -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.psiquico -> 2.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.siniestro -> 2.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.veneno -> 0.5f
-                tipo1 == R.drawable.bicho && tipo2 == R.drawable.volador -> 0.5f
-                //dragon
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.dragon -> 2.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.hada -> 0f // Inmune a hada
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.dragon && tipo2 == R.drawable.volador -> 1.0f
-                //hielo
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.dragon -> 2.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.fuego -> 0.5f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.hada -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.hielo -> 0.5f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.tierra -> 2.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.hielo && tipo2 == R.drawable.volador -> 2.0f
-                //lucha
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.acero -> 2.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.bicho -> 0.5f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.fantasma -> 0f // Inmune a fantasma
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.hada -> 0.5f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.hielo -> 2.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.normal -> 2.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.psiquico -> 0.5f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.roca -> 2.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.siniestro -> 2.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.veneno -> 0.5f
-                tipo1 == R.drawable.lucha && tipo2 == R.drawable.volador -> 0.5f
-                //siniestro
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.acero -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.fantasma -> 2.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.hada -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.lucha -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.psiquico -> 2.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.siniestro -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.volador -> 1.0f
-                //veneno
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.acero -> 0f // Inmune a acero
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.fantasma -> 0.5f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.hada -> 2.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.planta -> 2.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.roca -> 0.5f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.tierra -> 0.5f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.veneno -> 0.5f
-                tipo1 == R.drawable.veneno && tipo2 == R.drawable.volador -> 1.0f
-                //normal
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.roca -> 0.5f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.fantasma -> 0.0f // Inmune
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.volador -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.normal && tipo2 == R.drawable.hada -> 1.0f
-                //roca
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.fuego -> 2.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.hielo -> 2.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.lucha -> 0.5f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.tierra -> 0.5f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.volador -> 2.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.bicho -> 2.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.acero -> 0.5f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.hada -> 1.0f
-                tipo1 == R.drawable.roca && tipo2 == R.drawable.fantasma -> 1.0f
-                //tierra
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.fuego -> 2.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.planta -> 0.5f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.electrico -> 2.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.lucha -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.veneno -> 2.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.volador -> 0.0f // Inmune
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.psiquico -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.bicho -> 0.5f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.roca -> 2.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.siniestro -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.acero -> 2.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.fantasma -> 1.0f
-                tipo1 == R.drawable.tierra && tipo2 == R.drawable.hada -> 1.0f
-                //siniestro
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.fantasma -> 2.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.psiquico -> 2.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.siniestro -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.hada -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.lucha -> 0.5f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.acero -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.agua -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.bicho -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.dragon -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.electrico -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.fuego -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.hielo -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.normal -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.planta -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.roca -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.tierra -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.veneno -> 1.0f
-                tipo1 == R.drawable.siniestro && tipo2 == R.drawable.volador -> 1.0f
-                else -> 0.0f // Tipos inmunes
-            }
-            resultados.put(tipos,factor)
+        R.drawable.agua -> {
+            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
+            if(!debilidadesTipo.contains(R.drawable.electrico))debilidadesTipo.add(R.drawable.electrico)
+        }
+        R.drawable.fuego -> {
+            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
+            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
+            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+        }
+        R.drawable.lucha -> {
+            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
+            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
+            if(!debilidadesTipo.contains(R.drawable.psiquico))debilidadesTipo.add(R.drawable.psiquico)
+        }
+        R.drawable.veneno -> {
+            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.psiquico)
+        }
+        R.drawable.acero -> {
+            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
+            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
+            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+        }
+        R.drawable.bicho -> {
+            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
+            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
+            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
+        }
+        R.drawable.hada -> {
+            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
+            if(!debilidadesTipo.contains(R.drawable.veneno))debilidadesTipo.add(R.drawable.veneno)
+        }
+        R.drawable.electrico -> {
+            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+        }
+        R.drawable.dragon -> {
+            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
+            if(!debilidadesTipo.contains(R.drawable.dragon))debilidadesTipo.add(R.drawable.dragon)
+            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
+        }
+        R.drawable.fantasma -> {
+            if(!debilidadesTipo.contains(R.drawable.fantasma))debilidadesTipo.add(R.drawable.fantasma)
+            if(!debilidadesTipo.contains(R.drawable.siniestro))debilidadesTipo.add(R.drawable.siniestro)
+        }
+        R.drawable.hielo -> {
+            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
+            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
+            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
+            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
+        }
+        R.drawable.psiquico -> {
+            if(!debilidadesTipo.contains(R.drawable.siniestro))debilidadesTipo.add(R.drawable.siniestro)
+            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
+            if(!debilidadesTipo.contains(R.drawable.fantasma))debilidadesTipo.add(R.drawable.fantasma)
+        }
+        R.drawable.roca -> {
+            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
+            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
+            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
+            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
+            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+        }
+        R.drawable.tierra -> {
+            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
+            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
+            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
+        }
+        R.drawable.siniestro -> {
+            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
+            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
+            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
+        }
+        R.drawable.normal -> {
+            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
+        }
+        R.drawable.volador -> {
+            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
+            if(!debilidadesTipo.contains(R.drawable.electrico))debilidadesTipo.add(R.drawable.electrico)
+            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
         }
     }
-    return resultados
+    return debilidadesTipo
+}
+fun fortalezasTipo(tipo:Int):List<Int>{
+    var fortalezasTipo:MutableList<Int> = mutableListOf()
+    when(tipo){
+        R.drawable.planta -> {
+            if(!fortalezasTipo.contains(R.drawable.agua))fortalezasTipo.add(R.drawable.agua)
+            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
+            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
+        }
+        R.drawable.agua -> {
+            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
+            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
+            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
+        }
+        R.drawable.fuego -> {
+            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
+            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
+            if(!fortalezasTipo.contains(R.drawable.bicho))fortalezasTipo.add(R.drawable.bicho)
+            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
+        }
+        R.drawable.lucha -> {
+            if(!fortalezasTipo.contains(R.drawable.normal))fortalezasTipo.add(R.drawable.normal)
+            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
+            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
+            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
+            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
+        }
+        R.drawable.veneno -> {
+            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
+            if(!fortalezasTipo.contains(R.drawable.hada))fortalezasTipo.add(R.drawable.hada)
+        }
+        R.drawable.acero -> {
+            if(!fortalezasTipo.contains(R.drawable.hada))fortalezasTipo.add(R.drawable.hada)
+            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
+            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
+        }
+        R.drawable.bicho -> {
+            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
+            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
+            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
+        }
+        R.drawable.hada -> {
+            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
+            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
+            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
+        }
+        R.drawable.electrico -> {
+            if(!fortalezasTipo.contains(R.drawable.agua))fortalezasTipo.add(R.drawable.agua)
+            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
+        }
+        R.drawable.dragon -> {
+            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
+        }
+        R.drawable.fantasma -> {
+            if(!fortalezasTipo.contains(R.drawable.fantasma))fortalezasTipo.add(R.drawable.fantasma)
+            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
+        }
+        R.drawable.hielo -> {
+            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
+            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
+            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
+            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
+        }
+        R.drawable.psiquico -> {
+            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
+            if(!fortalezasTipo.contains(R.drawable.veneno))fortalezasTipo.add(R.drawable.veneno)
+        }
+        R.drawable.roca -> {
+            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
+            if(!fortalezasTipo.contains(R.drawable.bicho))fortalezasTipo.add(R.drawable.bicho)
+            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
+            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
+        }
+        R.drawable.siniestro -> {
+            if(!fortalezasTipo.contains(R.drawable.fantasma))fortalezasTipo.add(R.drawable.fantasma)
+            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
+        }
+        R.drawable.tierra -> {
+            if(!fortalezasTipo.contains(R.drawable.veneno))fortalezasTipo.add(R.drawable.veneno)
+            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
+            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
+            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
+            if(!fortalezasTipo.contains(R.drawable.electrico))fortalezasTipo.add(R.drawable.electrico)
+        }
+        R.drawable.volador->{
+            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
+            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
+
+        }
+        R.drawable.normal -> {}
+
+    }
+    return fortalezasTipo
 }
 
 
+
+
+
+fun debilidades(poke:PokemonOld):List<Int>{
+    var debilidades: MutableList<Int> = mutableListOf()
+    when(poke.tipo.size){
+        1-> {
+            var tipo1=poke.tipo[0]
+            debilidades+=debilidadesTipo(tipo1)
+        }
+        2-> {
+            var tipo1=poke.tipo[0]
+            var tipo2=poke.tipo[1]
+            debilidades+=debilidadesTipo(tipo1)
+            debilidades+=debilidadesTipo(tipo2)
+        }
+    }
+    return debilidades
+}
+
+fun fortalezas(poke:PokemonOld):List<Int>{
+    var fortalezas: MutableList<Int> = mutableListOf()
+    when(poke.tipo.size){
+        1-> {
+            var tipo1=poke.tipo[0]
+            fortalezas+=fortalezasTipo(tipo1)
+        }
+        2-> {
+            var tipo1=poke.tipo[0]
+            var tipo2=poke.tipo[1]
+            fortalezas+=fortalezasTipo(tipo1)
+            fortalezas+=fortalezasTipo(tipo2)
+        }
+    }
+    return fortalezas
+}
