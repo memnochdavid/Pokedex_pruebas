@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokeVistaAdapter
+import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.modelo.listaPoke
 
 class VistaActivity : AppCompatActivity() {
@@ -37,15 +38,6 @@ class VistaActivity : AppCompatActivity() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)
 
-        /*
-        //parallax
-        recyclerView.bringToFront()
-        val backgroundDrawable = BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.bosque)).apply {
-            tileModeX = Shader.TileMode.REPEAT
-        }
-        recyclerView.addItemDecoration(ParallaxBackgroundItemDecoration(backgroundDrawable))
-        //fin parallax
-        */
 
         //Para que muestre a partir del pokémon seleccionado
         val pokemonName = intent.getStringExtra("pokemon_name")
@@ -59,38 +51,8 @@ class VistaActivity : AppCompatActivity() {
         layoutManager.scrollToPosition(initialPosition)
     }
 
-
-
 }
 
-/*
-//probando mierdas
-//paralaxparallax
-class ParallaxBackgroundItemDecoration(private val background: Drawable) : RecyclerView.ItemDecoration() {
-
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-
-        val left = parent.paddingLeft
-        val right = parent.width - parent.paddingRight
-
-        for (i in 0 until parent.childCount) {
-            val view = parent.getChildAt(i)
-            val layoutParams = view.layoutParams as RecyclerView.LayoutParams
-            val position = layoutParams.viewAdapterPosition
-
-            // Calcula el desplazamiento parallax
-            val parallaxOffset = (view.left - parent.paddingLeft) * 0.5f
-
-            // Dibuja el fondo con el desplazamiento
-            background.setBounds(left - parallaxOffset.toInt(), view.top, right - parallaxOffset.toInt(), view.bottom)
-            background.draw(c)
-        }
-
-        super.onDraw(c, parent, state)
-    }
-}
-
-*/
 
 
 /*CÓDIGO ANTIGUO

@@ -1,23 +1,29 @@
 package com.david.pokedex_pruebas.modelo
 
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.green
 import androidx.recyclerview.widget.RecyclerView
 import com.david.pokedex_pruebas.R
-
+import com.david.pokedex_pruebas.interfaz.VistaActivity
 
 
 class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
     RecyclerView.Adapter<PokeVistaAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val foto: ImageView = view.findViewById(R.id.foto)
-        val nombre: TextView = view.findViewById(R.id.nombre)
+        val pokemonImage: ImageView = view.findViewById(R.id.foto)
+        var pokemonNumber: TextView = view.findViewById(R.id.num)
+        val pokemonName: TextView = view.findViewById(R.id.nombre)
         val desc: TextView = view.findViewById(R.id.desc)
+        val pokemonTipo1: ImageView = itemView.findViewById(R.id.tipo1)
+        val pokemonTipo2: ImageView = itemView.findViewById(R.id.tipo2)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,14 +32,133 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentPokemon = pokemonList[position]
-        viewHolder.foto.setImageResource(currentPokemon.foto)
-        viewHolder.nombre.text = currentPokemon.name
-        viewHolder.desc.text = currentPokemon.desc
+        holder.pokemonImage.setImageResource(currentPokemon.foto)
+        holder.pokemonName.text = currentPokemon.name
+        holder.desc.text = currentPokemon.desc
+        var numero = "${(position+1)}"
+
+        if(numero.length == 1) numero = "00${(position + 1)}"
+        else if(numero.length == 2) numero = "0${(position + 1)}"
+        holder.pokemonNumber.text = "#${numero}"
+
+        holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
+        if (currentPokemon.tipo.size ==2) {
+            holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
+        }else holder.pokemonTipo2.visibility = View.GONE
+
+        //fortalezas y debilidades
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, VistaActivity::class.java)
+            intent.putExtra("pokemon_name", currentPokemon.name)
+            intent.putExtra("pokemon_image", currentPokemon.foto)
+            intent.putExtra("tipo1", currentPokemon.tipo.get(0))
+            if (currentPokemon.tipo.size ==2) {
+                intent.putExtra("tipo2", currentPokemon.tipo.get(1))
+            }
+            intent.putExtra("num", position)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount():Int{
         return pokemonList.size
     }
+
+    fun cambiaFondo(poke:PokemonOld,holder: ViewHolder){
+        val header=holder.itemView.findViewById<View>(R.id.header)
+        when(poke.tipo.get(0)){
+            R.drawable.planta -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.agua -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.fuego -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.lucha -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.veneno -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.acero -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.bicho -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.dragon -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.electrico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.hada -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.hielo -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.siniestro -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.roca -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.tierra -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.psiquico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.normal -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.fantasma -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.volador -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+        }
+    }//fondo del header para cada tipo de pokemon
 }

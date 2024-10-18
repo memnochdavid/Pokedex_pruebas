@@ -22,6 +22,7 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
 
     class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val pokemonImage: ImageView = itemView.findViewById(R.id.pokemonImage)
+        val pokemonNumber: TextView = itemView.findViewById(R.id.numero)
         val pokemonName: TextView = itemView.findViewById(R.id.pokemonName)
         val pokemonTipo1: ImageView = itemView.findViewById(R.id.tipo1)
         val pokemonTipo2: ImageView = itemView.findViewById(R.id.tipo2)
@@ -30,7 +31,6 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.objeto_lista, parent, false)
-
         return PokemonViewHolder(itemView)
     }
 
@@ -39,6 +39,12 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         val currentPokemon = pokemonList[position]
         holder.pokemonImage.setImageResource(currentPokemon.foto)
         holder.pokemonName.text = currentPokemon.name
+        var numero = "${(position+1)}"
+
+        if(numero.length == 1) numero = "00${(position + 1)}"
+        else if(numero.length == 2) numero = "0${(position + 1)}"
+        holder.pokemonNumber.text = "#${numero}"
+
         holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
         if (currentPokemon.tipo.size ==2) {
             holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
@@ -52,6 +58,7 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
             if (currentPokemon.tipo.size ==2) {
                 intent.putExtra("tipo2", currentPokemon.tipo.get(1))
             }
+            intent.putExtra("num", position)
             holder.itemView.context.startActivity(intent)
         }
         holder.itemView.setOnTouchListener { v, event ->

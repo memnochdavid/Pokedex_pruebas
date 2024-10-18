@@ -11,7 +11,7 @@ import android.annotation.SuppressLint
 import android.widget.SearchView
 import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.modelo.busca
+//import com.david.pokedex_pruebas.modelo.busca
 import com.david.pokedex_pruebas.modelo.listaPoke
 
 class MainActivity : AppCompatActivity() {
@@ -54,3 +54,4 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = PokemonAdapter(listaPoke)
         }
 }
+
