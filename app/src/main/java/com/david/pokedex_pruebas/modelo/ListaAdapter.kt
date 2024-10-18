@@ -23,7 +23,8 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
     class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val pokemonImage: ImageView = itemView.findViewById(R.id.pokemonImage)
         val pokemonName: TextView = itemView.findViewById(R.id.pokemonName)
-        val pokemonDesc: TextView = itemView.findViewById(R.id.pokemonDesc)
+        val pokemonTipo1: ImageView = itemView.findViewById(R.id.tipo1)
+        val pokemonTipo2: ImageView = itemView.findViewById(R.id.tipo2)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
@@ -38,13 +39,19 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         val currentPokemon = pokemonList[position]
         holder.pokemonImage.setImageResource(currentPokemon.foto)
         holder.pokemonName.text = currentPokemon.name
-        holder.pokemonDesc.text = currentPokemon.desc
+        holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
+        if (currentPokemon.tipo.size ==2) {
+            holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
+        }else holder.pokemonTipo2.visibility = View.GONE
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, VistaActivity::class.java)
             intent.putExtra("pokemon_name", currentPokemon.name)
             intent.putExtra("pokemon_image", currentPokemon.foto)
-            intent.putExtra("pokemon_desc", currentPokemon.desc)
+            intent.putExtra("tipo1", currentPokemon.tipo.get(0))
+            if (currentPokemon.tipo.size ==2) {
+                intent.putExtra("tipo2", currentPokemon.tipo.get(1))
+            }
             holder.itemView.context.startActivity(intent)
         }
         holder.itemView.setOnTouchListener { v, event ->
