@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import android.view.MotionEvent
+import androidx.compose.ui.semantics.text
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.interfaz.VistaActivity
 
@@ -37,6 +38,14 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val currentPokemon = pokemonList[position]
+        holder.pokemonName.text = ""
+        holder.pokemonTipo1.setImageResource(0) // Or a placeholder image
+        holder.pokemonTipo2.setImageResource(0)
+
+
+
+
+        var n_tipos=currentPokemon.tipo.size
         holder.pokemonImage.setImageResource(currentPokemon.foto)
         holder.pokemonName.text = currentPokemon.name
         var numero = "${(position+1)}"
@@ -46,7 +55,7 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         holder.pokemonNumber.text = "#${numero}"
 
         holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
-        if (currentPokemon.tipo.size ==2) {
+        if (n_tipos ==2) {
             holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
         }else holder.pokemonTipo2.visibility = View.GONE
 
@@ -55,12 +64,13 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
             intent.putExtra("pokemon_name", currentPokemon.name)
             intent.putExtra("pokemon_image", currentPokemon.foto)
             intent.putExtra("tipo1", currentPokemon.tipo.get(0))
-            if (currentPokemon.tipo.size ==2) {
+            if (n_tipos==2) {
                 intent.putExtra("tipo2", currentPokemon.tipo.get(1))
             }
             intent.putExtra("num", position)
             holder.itemView.context.startActivity(intent)
         }
+
         holder.itemView.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {

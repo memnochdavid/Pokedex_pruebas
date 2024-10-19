@@ -1,6 +1,12 @@
 package com.david.pokedex_pruebas.modelo
 
+import android.util.Log
+import android.view.View
+import androidx.core.content.ContextCompat
 import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.modelo.PokeVistaAdapter.ViewHolder
+import kotlin.text.toDouble
+import kotlin.text.toDoubleOrNull
 
 data class PokemonOld(
     var foto: Int=0,
@@ -163,227 +169,458 @@ var listaPoke : List<PokemonOld> = listOf(
     PokemonOld(R.drawable.mew, "Mew", "Se dice que contiene la composición genética de todos los Pokémon. Es muy raramente visto.", listOf(R.drawable.psiquico))
 )
 
-fun debilidadesTipo(tipo:Int):List<Int>{
-    var debilidadesTipo:MutableList<Int> = mutableListOf()
-    when(tipo){
+fun cambiaFondo(poke:PokemonOld,holder: ViewHolder){
+    val header=holder.itemView.findViewById<View>(R.id.header)
+    when(poke.tipo.get(0)){
         R.drawable.planta -> {
-            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
-            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
-            if(!debilidadesTipo.contains(R.drawable.veneno))debilidadesTipo.add(R.drawable.veneno)
-            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
-            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.agua -> {
-            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
-            if(!debilidadesTipo.contains(R.drawable.electrico))debilidadesTipo.add(R.drawable.electrico)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.fuego -> {
-            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
-            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
-            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.lucha -> {
-            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
-            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
-            if(!debilidadesTipo.contains(R.drawable.psiquico))debilidadesTipo.add(R.drawable.psiquico)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.veneno -> {
-            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
-            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.psiquico)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.acero -> {
-            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
-            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
-            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.bicho -> {
-            if(!debilidadesTipo.contains(R.drawable.volador))debilidadesTipo.add(R.drawable.volador)
-            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
-            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
-        }
-        R.drawable.hada -> {
-            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
-            if(!debilidadesTipo.contains(R.drawable.veneno))debilidadesTipo.add(R.drawable.veneno)
-        }
-        R.drawable.electrico -> {
-            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.dragon -> {
-            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
-            if(!debilidadesTipo.contains(R.drawable.dragon))debilidadesTipo.add(R.drawable.dragon)
-            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
-        R.drawable.fantasma -> {
-            if(!debilidadesTipo.contains(R.drawable.fantasma))debilidadesTipo.add(R.drawable.fantasma)
-            if(!debilidadesTipo.contains(R.drawable.siniestro))debilidadesTipo.add(R.drawable.siniestro)
+        R.drawable.electrico -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
+        }
+        R.drawable.hada -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.hielo -> {
-            if(!debilidadesTipo.contains(R.drawable.fuego))debilidadesTipo.add(R.drawable.fuego)
-            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
-            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
-            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
-        }
-        R.drawable.psiquico -> {
-            if(!debilidadesTipo.contains(R.drawable.siniestro))debilidadesTipo.add(R.drawable.siniestro)
-            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
-            if(!debilidadesTipo.contains(R.drawable.fantasma))debilidadesTipo.add(R.drawable.fantasma)
-        }
-        R.drawable.roca -> {
-            if(!debilidadesTipo.contains(R.drawable.acero))debilidadesTipo.add(R.drawable.acero)
-            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
-            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
-            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
-            if(!debilidadesTipo.contains(R.drawable.tierra))debilidadesTipo.add(R.drawable.tierra)
-        }
-        R.drawable.tierra -> {
-            if(!debilidadesTipo.contains(R.drawable.agua))debilidadesTipo.add(R.drawable.agua)
-            if(!debilidadesTipo.contains(R.drawable.planta))debilidadesTipo.add(R.drawable.planta)
-            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.siniestro -> {
-            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
-            if(!debilidadesTipo.contains(R.drawable.hada))debilidadesTipo.add(R.drawable.hada)
-            if(!debilidadesTipo.contains(R.drawable.bicho))debilidadesTipo.add(R.drawable.bicho)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
+        }
+        R.drawable.roca -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
+        }
+        R.drawable.tierra -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
+        }
+        R.drawable.psiquico -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.normal -> {
-            if(!debilidadesTipo.contains(R.drawable.lucha))debilidadesTipo.add(R.drawable.lucha)
-        }
-        R.drawable.volador -> {
-            if(!debilidadesTipo.contains(R.drawable.roca))debilidadesTipo.add(R.drawable.roca)
-            if(!debilidadesTipo.contains(R.drawable.electrico))debilidadesTipo.add(R.drawable.electrico)
-            if(!debilidadesTipo.contains(R.drawable.hielo))debilidadesTipo.add(R.drawable.hielo)
-        }
-    }
-    return debilidadesTipo
-}
-fun fortalezasTipo(tipo:Int):List<Int>{
-    var fortalezasTipo:MutableList<Int> = mutableListOf()
-    when(tipo){
-        R.drawable.planta -> {
-            if(!fortalezasTipo.contains(R.drawable.agua))fortalezasTipo.add(R.drawable.agua)
-            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
-            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
-        }
-        R.drawable.agua -> {
-            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
-            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
-            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
-        }
-        R.drawable.fuego -> {
-            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
-            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
-            if(!fortalezasTipo.contains(R.drawable.bicho))fortalezasTipo.add(R.drawable.bicho)
-            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
-        }
-        R.drawable.lucha -> {
-            if(!fortalezasTipo.contains(R.drawable.normal))fortalezasTipo.add(R.drawable.normal)
-            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
-            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
-            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
-            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
-        }
-        R.drawable.veneno -> {
-            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
-            if(!fortalezasTipo.contains(R.drawable.hada))fortalezasTipo.add(R.drawable.hada)
-        }
-        R.drawable.acero -> {
-            if(!fortalezasTipo.contains(R.drawable.hada))fortalezasTipo.add(R.drawable.hada)
-            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
-            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
-        }
-        R.drawable.bicho -> {
-            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
-            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
-            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
-        }
-        R.drawable.hada -> {
-            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
-            if(!fortalezasTipo.contains(R.drawable.siniestro))fortalezasTipo.add(R.drawable.siniestro)
-            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
-        }
-        R.drawable.electrico -> {
-            if(!fortalezasTipo.contains(R.drawable.agua))fortalezasTipo.add(R.drawable.agua)
-            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
-        }
-        R.drawable.dragon -> {
-            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
         R.drawable.fantasma -> {
-            if(!fortalezasTipo.contains(R.drawable.fantasma))fortalezasTipo.add(R.drawable.fantasma)
-            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
-        R.drawable.hielo -> {
-            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
-            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
-            if(!fortalezasTipo.contains(R.drawable.dragon))fortalezasTipo.add(R.drawable.dragon)
-            if(!fortalezasTipo.contains(R.drawable.tierra))fortalezasTipo.add(R.drawable.tierra)
+        R.drawable.volador -> {
+            val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
+            header.setBackgroundColor(color)
         }
-        R.drawable.psiquico -> {
-            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
-            if(!fortalezasTipo.contains(R.drawable.veneno))fortalezasTipo.add(R.drawable.veneno)
-        }
-        R.drawable.roca -> {
-            if(!fortalezasTipo.contains(R.drawable.volador))fortalezasTipo.add(R.drawable.volador)
-            if(!fortalezasTipo.contains(R.drawable.bicho))fortalezasTipo.add(R.drawable.bicho)
-            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
-            if(!fortalezasTipo.contains(R.drawable.hielo))fortalezasTipo.add(R.drawable.hielo)
-        }
-        R.drawable.siniestro -> {
-            if(!fortalezasTipo.contains(R.drawable.fantasma))fortalezasTipo.add(R.drawable.fantasma)
-            if(!fortalezasTipo.contains(R.drawable.psiquico))fortalezasTipo.add(R.drawable.psiquico)
-        }
-        R.drawable.tierra -> {
-            if(!fortalezasTipo.contains(R.drawable.veneno))fortalezasTipo.add(R.drawable.veneno)
-            if(!fortalezasTipo.contains(R.drawable.fuego))fortalezasTipo.add(R.drawable.fuego)
-            if(!fortalezasTipo.contains(R.drawable.roca))fortalezasTipo.add(R.drawable.roca)
-            if(!fortalezasTipo.contains(R.drawable.acero))fortalezasTipo.add(R.drawable.acero)
-            if(!fortalezasTipo.contains(R.drawable.electrico))fortalezasTipo.add(R.drawable.electrico)
-        }
-        R.drawable.volador->{
-            if(!fortalezasTipo.contains(R.drawable.lucha))fortalezasTipo.add(R.drawable.lucha)
-            if(!fortalezasTipo.contains(R.drawable.planta))fortalezasTipo.add(R.drawable.planta)
-
-        }
-        R.drawable.normal -> {}
-
     }
-    return fortalezasTipo
+}//fondo del header para cada tipo de pokemon
+
+enum class PokemonTipo {
+    PLANTA, AGUA, FUEGO, LUCHA, VENENO, ACERO, BICHO, DRAGON, ELECTRICO,HADA, HIELO, PSIQUICO, ROCA, TIERRA, SINIESTRO, NORMAL, VOLADOR, FANTASMA, NULL
 }
 
+val efectividad = mapOf(
+    Pair(PokemonTipo.PLANTA, PokemonTipo.AGUA) to "2",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.TIERRA) to "2",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.BICHO) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.DRAGON) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.PLANTA) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.VENENO) to "0.5",
+    Pair(PokemonTipo.PLANTA, PokemonTipo.VOLADOR) to "0.5",
+    Pair(PokemonTipo.AGUA, PokemonTipo.FUEGO) to "2",
+    Pair(PokemonTipo.AGUA, PokemonTipo.TIERRA) to "2",
+    Pair(PokemonTipo.AGUA, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.AGUA, PokemonTipo.AGUA) to "0.5",
+    Pair(PokemonTipo.AGUA, PokemonTipo.DRAGON) to "0.5",
+    Pair(PokemonTipo.AGUA, PokemonTipo.PLANTA) to "0.5",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.PLANTA) to "2",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.BICHO) to "2",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.HIELO) to "2",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.ACERO) to "2",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.DRAGON) to "0.5",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.ROCA) to "0.5",
+    Pair(PokemonTipo.FUEGO, PokemonTipo.TIERRA) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.NORMAL) to "2",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.SINIESTRO) to "2",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.ACERO) to "2",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.HIELO) to "2",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.BICHO) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.HADA) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.PSIQUICO) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.VENENO) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.VOLADOR) to "0.5",
+    Pair(PokemonTipo.LUCHA, PokemonTipo.FANTASMA) to "0",
+    Pair(PokemonTipo.VENENO, PokemonTipo.HADA) to "2",
+    Pair(PokemonTipo.VENENO, PokemonTipo.PLANTA) to "2",
+    Pair(PokemonTipo.VENENO, PokemonTipo.FANTASMA) to "0.5",
+    Pair(PokemonTipo.VENENO, PokemonTipo.ROCA) to "0.5",
+    Pair(PokemonTipo.VENENO, PokemonTipo.TIERRA) to "0.5",
+    Pair(PokemonTipo.VENENO, PokemonTipo.VENENO) to "0.5",
+    Pair(PokemonTipo.VENENO, PokemonTipo.ACERO) to "0",
+    Pair(PokemonTipo.ACERO, PokemonTipo.HADA) to "2",
+    Pair(PokemonTipo.ACERO, PokemonTipo.HIELO) to "2",
+    Pair(PokemonTipo.ACERO, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.ACERO, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.ACERO, PokemonTipo.AGUA) to "0.5",
+    Pair(PokemonTipo.ACERO, PokemonTipo.ELECTRICO) to "0.5",
+    Pair(PokemonTipo.ACERO, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.PLANTA) to "2",
+    Pair(PokemonTipo.BICHO, PokemonTipo.PSIQUICO) to "2",
+    Pair(PokemonTipo.BICHO, PokemonTipo.SINIESTRO) to "2",
+    Pair(PokemonTipo.BICHO, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.FANTASMA) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.HADA) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.LUCHA) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.VENENO) to "0.5",
+    Pair(PokemonTipo.BICHO, PokemonTipo.VOLADOR) to "0.5",
+    Pair(PokemonTipo.DRAGON, PokemonTipo.DRAGON) to "2",
+    Pair(PokemonTipo.DRAGON, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.DRAGON, PokemonTipo.HADA) to "0",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.AGUA) to "2",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.VOLADOR) to "2",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.DRAGON) to "0.5",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.ELECTRICO) to "0.5",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.PLANTA) to "0.5",
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.TIERRA) to "0",
+    Pair(PokemonTipo.HADA, PokemonTipo.DRAGON) to "2",
+    Pair(PokemonTipo.HADA, PokemonTipo.LUCHA) to "2",
+    Pair(PokemonTipo.HADA, PokemonTipo.SINIESTRO) to "2",
+    Pair(PokemonTipo.HADA, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.HADA, PokemonTipo.VENENO) to "0.5",
+    Pair(PokemonTipo.HIELO, PokemonTipo.PLANTA) to "2",
+    Pair(PokemonTipo.HIELO, PokemonTipo.TIERRA) to "2",
+    Pair(PokemonTipo.HIELO, PokemonTipo.VOLADOR) to "2",
+    Pair(PokemonTipo.HIELO, PokemonTipo.DRAGON) to "2",
+    Pair(PokemonTipo.HIELO, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.HIELO, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.HIELO, PokemonTipo.AGUA) to "0.5",
+    Pair(PokemonTipo.HIELO, PokemonTipo.FUEGO) to "0.5",
+    Pair(PokemonTipo.HIELO, PokemonTipo.HIELO) to "0.5",
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.LUCHA) to "2",
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.VENENO) to "2",
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.PSIQUICO) to "0.5",
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.SINIESTRO) to "0",
+    Pair(PokemonTipo.ROCA, PokemonTipo.BICHO) to "2",
+    Pair(PokemonTipo.ROCA, PokemonTipo.FUEGO) to "2",
+    Pair(PokemonTipo.ROCA, PokemonTipo.HIELO) to "2",
+    Pair(PokemonTipo.ROCA, PokemonTipo.VOLADOR) to "2",
+    Pair(PokemonTipo.ROCA, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.ROCA, PokemonTipo.LUCHA) to "0.5",
+    Pair(PokemonTipo.ROCA, PokemonTipo.TIERRA) to "0.5",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ACERO) to "2",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ELECTRICO) to "2",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.FUEGO) to "2",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ROCA) to "2",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.VENENO) to "2",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.BICHO) to "0.5",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.PLANTA) to "0.5",
+    Pair(PokemonTipo.TIERRA, PokemonTipo.VOLADOR) to "0",
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.PSIQUICO) to "2",
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.FANTASMA) to "2",
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.LUCHA) to "0.5",
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.HADA) to "0.5",
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.SINIESTRO) to "0.5",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.PLANTA) to "2",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.BICHO) to "2",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.LUCHA) to "2",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ELECTRICO) to "0.5",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ROCA) to "0.5",
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.HIELO) to "0.5",////
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.FANTASMA) to "2",
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.PSIQUICO) to "2",
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.SINIESTRO) to "0.5",
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.NORMAL) to "0",
+    Pair(PokemonTipo.NORMAL, PokemonTipo.ACERO) to "0.5",
+    Pair(PokemonTipo.NORMAL, PokemonTipo.ROCA) to "0.5",
+    Pair(PokemonTipo.NORMAL, PokemonTipo.FANTASMA) to "0"
+)
 
+fun debs(poke: PokemonOld): List<Int> {
+    val debilidades = mutableListOf<Int>()
 
-
-
-fun debilidades(poke:PokemonOld):List<Int>{
-    var debilidades: MutableList<Int> = mutableListOf()
-    when(poke.tipo.size){
-        1-> {
-            var tipo1=poke.tipo[0]
-            debilidades+=debilidadesTipo(tipo1)
+    when (poke.tipo.size) {
+        1 -> {
+            for ((key, value) in efectividad) {
+                if (key.second == drawableToEnum(poke.tipo[0]) && value == "2") {
+                    debilidades.add(enumToDrawable(key.first))
+                }
+            }
         }
-        2-> {
-            var tipo1=poke.tipo[0]
-            var tipo2=poke.tipo[1]
-            debilidades+=debilidadesTipo(tipo1)
-            debilidades+=debilidadesTipo(tipo2)
+        2 -> {
+            // 1. Accumulate weaknesses from both types
+            for ((key, value) in efectividad) {
+                if (key.second == drawableToEnum(poke.tipo[0]) && value == "2") {
+                    debilidades.add(enumToDrawable(key.first))
+                }
+                if (key.second == drawableToEnum(poke.tipo[1]) && value == "2") {
+                    if (!debilidades.contains(enumToDrawable(key.first))) {
+                        debilidades.add(enumToDrawable(key.first))
+                    }
+                }
+            }
+
+            for ((key, value) in efectividad) {
+                if ((key.first == drawableToEnum(poke.tipo[0]) || key.first == drawableToEnum(poke.tipo[1])) && (value == "0.5" || value == "0")) {
+                    // If a type's weakness is resisted or nullified by the other type, remove it
+                    if (efectividad[Pair(key.second, drawableToEnum(poke.tipo[0]))] == "0.5" ||
+                        efectividad[Pair(key.second, drawableToEnum(poke.tipo[0]))] == "0" ||
+                        efectividad[Pair(key.second, drawableToEnum(poke.tipo[1]))] == "0.5" ||
+                        efectividad[Pair(key.second, drawableToEnum(poke.tipo[1]))] == "0") {
+                        debilidades.remove(enumToDrawable(key.second))
+                    }
+                }
+            }
         }
     }
     return debilidades
 }
 
-fun fortalezas(poke:PokemonOld):List<Int>{
+
+fun forts(poke:PokemonOld):List<Int>{
     var fortalezas: MutableList<Int> = mutableListOf()
     when(poke.tipo.size){
-        1-> {
-            var tipo1=poke.tipo[0]
-            fortalezas+=fortalezasTipo(tipo1)
+        1->{
+            for(i in efectividad){
+                if(i.key.first==drawableToEnum(poke.tipo[0]) && i.value.equals("2")) {
+                    fortalezas.add(enumToDrawable(i.key.second))
+                }
+            }
         }
-        2-> {
-            var tipo1=poke.tipo[0]
-            var tipo2=poke.tipo[1]
-            fortalezas+=fortalezasTipo(tipo1)
-            fortalezas+=fortalezasTipo(tipo2)
+        2->{
+            for(i in efectividad){
+                if(i.key.first==drawableToEnum(poke.tipo[0]) && i.value.equals("2")) {
+                    fortalezas.add(enumToDrawable(i.key.second))
+                }
+            }
+            for(i in efectividad){
+                if(i.key.first==drawableToEnum(poke.tipo[1]) && i.value.equals("2")) {
+                    if(!fortalezas.contains(enumToDrawable(i.key.second)))fortalezas.add(enumToDrawable(i.key.second))
+                }
+            }
         }
     }
     return fortalezas
 }
+
+
+
+fun enumToDrawable(tipo:PokemonTipo):Int{
+    return when(tipo){
+        PokemonTipo.PLANTA -> R.drawable.planta
+        PokemonTipo.AGUA -> R.drawable.agua
+        PokemonTipo.FUEGO -> R.drawable.fuego
+        PokemonTipo.LUCHA -> R.drawable.lucha
+        PokemonTipo.VENENO -> R.drawable.veneno
+        PokemonTipo.ACERO -> R.drawable.acero
+        PokemonTipo.BICHO -> R.drawable.bicho
+        PokemonTipo.DRAGON -> R.drawable.dragon
+        PokemonTipo.ELECTRICO -> R.drawable.electrico
+        PokemonTipo.HADA -> R.drawable.hada
+        PokemonTipo.HIELO -> R.drawable.hielo
+        PokemonTipo.PSIQUICO -> R.drawable.psiquico
+        PokemonTipo.ROCA -> R.drawable.roca
+        PokemonTipo.TIERRA -> R.drawable.tierra
+        PokemonTipo.SINIESTRO -> R.drawable.siniestro
+        PokemonTipo.NORMAL -> R.drawable.normal
+        PokemonTipo.VOLADOR -> R.drawable.volador
+        PokemonTipo.FANTASMA -> R.drawable.fantasma
+        else -> { com.android.car.ui.R.drawable.car_ui_icon_error}
+    }
+}
+fun drawableToEnum(drawable:Int):PokemonTipo{
+    return when(drawable){
+        R.drawable.planta -> PokemonTipo.PLANTA
+        R.drawable.agua -> PokemonTipo.AGUA
+        R.drawable.fuego -> PokemonTipo.FUEGO
+        R.drawable.lucha -> PokemonTipo.LUCHA
+        R.drawable.veneno -> PokemonTipo.VENENO
+        R.drawable.acero -> PokemonTipo.ACERO
+        R.drawable.bicho -> PokemonTipo.BICHO
+        R.drawable.dragon -> PokemonTipo.DRAGON
+        R.drawable.electrico -> PokemonTipo.ELECTRICO
+        R.drawable.hada -> PokemonTipo.HADA
+        R.drawable.hielo -> PokemonTipo.HIELO
+        R.drawable.psiquico -> PokemonTipo.PSIQUICO
+        R.drawable.roca -> PokemonTipo.ROCA
+        R.drawable.tierra -> PokemonTipo.TIERRA
+        R.drawable.siniestro -> PokemonTipo.SINIESTRO
+        R.drawable.normal -> PokemonTipo.NORMAL
+        R.drawable.volador -> PokemonTipo.VOLADOR
+        R.drawable.fantasma -> PokemonTipo.FANTASMA
+        else -> { PokemonTipo.NULL}
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/*
+val efectividad2 = mapOf(
+    Pair(PokemonTipo.PLANTA, PokemonTipo.AGUA) to 2,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.TIERRA) to 2,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.ROCA) to 2,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.BICHO) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.DRAGON) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.PLANTA) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.VENENO) to 0.5,
+    Pair(PokemonTipo.PLANTA, PokemonTipo.VOLADOR) to 0.5,
+    Pair(PokemonTipo.AGUA, PokemonTipo.FUEGO) to 2,
+    Pair(PokemonTipo.AGUA, PokemonTipo.TIERRA) to 2,
+    Pair(PokemonTipo.AGUA, PokemonTipo.ROCA) to 2,
+    Pair(PokemonTipo.AGUA, PokemonTipo.AGUA) to 0.5,
+    Pair(PokemonTipo.AGUA, PokemonTipo.DRAGON) to 0.5,
+    Pair(PokemonTipo.AGUA, PokemonTipo.PLANTA) to 0.5,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.PLANTA) to 2,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.BICHO) to 2,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.HIELO) to 2,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.ACERO) to 2,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.DRAGON) to 0.5,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.ROCA) to 0.5,
+    Pair(PokemonTipo.FUEGO, PokemonTipo.TIERRA) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.NORMAL) to 2,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.SINIESTRO) to 2,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.ACERO) to 2,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.HIELO) to 2,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.ROCA) to 2,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.BICHO) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.HADA) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.PSIQUICO) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.VENENO) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.VOLADOR) to 0.5,
+    Pair(PokemonTipo.LUCHA, PokemonTipo.FANTASMA) to 0,
+    Pair(PokemonTipo.VENENO, PokemonTipo.HADA) to 2,
+    Pair(PokemonTipo.VENENO, PokemonTipo.FANTASMA) to 0.5,
+    Pair(PokemonTipo.VENENO, PokemonTipo.ROCA) to 0.5,
+    Pair(PokemonTipo.VENENO, PokemonTipo.TIERRA) to 0.5,
+    Pair(PokemonTipo.VENENO, PokemonTipo.VENENO) to 0.5,
+    Pair(PokemonTipo.VENENO, PokemonTipo.ACERO) to 0,
+    Pair(PokemonTipo.ACERO, PokemonTipo.HADA) to 2,
+    Pair(PokemonTipo.ACERO, PokemonTipo.HIELO) to 2,
+    Pair(PokemonTipo.ACERO, PokemonTipo.ROCA) to 2,
+    Pair(PokemonTipo.ACERO, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.ACERO, PokemonTipo.AGUA) to 0.5,
+    Pair(PokemonTipo.ACERO, PokemonTipo.ELECTRICO) to 0.5,
+    Pair(PokemonTipo.ACERO, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.PLANTA) to 2,
+    Pair(PokemonTipo.BICHO, PokemonTipo.PSIQUICO) to 2,
+    Pair(PokemonTipo.BICHO, PokemonTipo.SINIESTRO) to 2,
+    Pair(PokemonTipo.BICHO, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.FANTASMA) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.HADA) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.LUCHA) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.VENENO) to 0.5,
+    Pair(PokemonTipo.BICHO, PokemonTipo.VOLADOR) to 0.5,
+    Pair(PokemonTipo.DRAGON, PokemonTipo.DRAGON) to 2,
+    Pair(PokemonTipo.DRAGON, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.DRAGON, PokemonTipo.HADA) to 0,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.AGUA) to 2,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.VOLADOR) to 2,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.DRAGON) to 0.5,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.ELECTRICO) to 0.5,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.PLANTA) to 0.5,
+    Pair(PokemonTipo.ELECTRICO, PokemonTipo.TIERRA) to 0,
+    Pair(PokemonTipo.HADA, PokemonTipo.DRAGON) to 2,
+    Pair(PokemonTipo.HADA, PokemonTipo.LUCHA) to 2,
+    Pair(PokemonTipo.HADA, PokemonTipo.SINIESTRO) to 2,
+    Pair(PokemonTipo.HADA, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.HADA, PokemonTipo.VENENO) to 0.5,
+    Pair(PokemonTipo.HIELO, PokemonTipo.PLANTA) to 2,
+    Pair(PokemonTipo.HIELO, PokemonTipo.TIERRA) to 2,
+    Pair(PokemonTipo.HIELO, PokemonTipo.VOLADOR) to 2,
+    Pair(PokemonTipo.HIELO, PokemonTipo.DRAGON) to 2,
+    Pair(PokemonTipo.HIELO, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.HIELO, PokemonTipo.AGUA) to 0.5,
+    Pair(PokemonTipo.HIELO, PokemonTipo.FUEGO) to 0.5,
+    Pair(PokemonTipo.HIELO, PokemonTipo.HIELO) to 0.5,
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.LUCHA) to 2,
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.VENENO) to 2,
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.PSIQUICO) to 0.5,
+    Pair(PokemonTipo.PSIQUICO, PokemonTipo.SINIESTRO) to 0,
+    Pair(PokemonTipo.ROCA, PokemonTipo.BICHO) to 2,
+    Pair(PokemonTipo.ROCA, PokemonTipo.FUEGO) to 2,
+    Pair(PokemonTipo.ROCA, PokemonTipo.HIELO) to 2,
+    Pair(PokemonTipo.ROCA, PokemonTipo.VOLADOR) to 2,
+    Pair(PokemonTipo.ROCA, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.ROCA, PokemonTipo.LUCHA) to 0.5,
+    Pair(PokemonTipo.ROCA, PokemonTipo.TIERRA) to 0.5,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ACERO) to 2,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ELECTRICO) to 2,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.FUEGO) to 2,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.ROCA) to 2,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.VENENO) to 2,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.BICHO) to 0.5,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.PLANTA) to 0.5,
+    Pair(PokemonTipo.TIERRA, PokemonTipo.VOLADOR) to 0,
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.PSIQUICO) to 2,
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.FANTASMA) to 2,
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.LUCHA) to 0.5,
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.HADA) to 0.5,
+    Pair(PokemonTipo.SINIESTRO, PokemonTipo.SINIESTRO) to 0.5,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.PLANTA) to 2,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.BICHO) to 2,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.LUCHA) to 2,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ELECTRICO) to 0.5,
+    Pair(PokemonTipo.VOLADOR, PokemonTipo.ROCA) to 0.5,
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.FANTASMA) to 2,
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.PSIQUICO) to 2,
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.SINIESTRO) to 0.5,
+    Pair(PokemonTipo.FANTASMA, PokemonTipo.NORMAL) to 0,
+    Pair(PokemonTipo.NORMAL, PokemonTipo.ACERO) to 0.5,
+    Pair(PokemonTipo.NORMAL, PokemonTipo.ROCA) to 0.5,
+    Pair(PokemonTipo.NORMAL, PokemonTipo.FANTASMA) to 0
+)
+*/
