@@ -20,5 +20,6 @@
     <color name="roca">#946951</color>
     <color name="tierra">#664E42</color>
     <color name="siniestro">#39304D</color>
-
+    <color name="lista_sin_foco">#370C0C</color>
+    <color name="lista_con_foco">#661111</color>
 </resources>

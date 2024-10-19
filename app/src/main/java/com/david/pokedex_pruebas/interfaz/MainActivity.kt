@@ -8,7 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.SearchView
+import androidx.core.content.ContextCompat
+//import androidx.glance.visibility
 import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.R
 //import com.david.pokedex_pruebas.modelo.busca
@@ -46,6 +52,24 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        var oscurecer = findViewById<LinearLayout>(R.id.oscurece)
+        val openBusqueda = findViewById<ImageButton>(R.id.open_menu)
+        openBusqueda.setOnClickListener {
+            val bottomLayout = findViewById<LinearLayout>(R.id.bottom)
+            bottomLayout.visibility = View.VISIBLE
+            openBusqueda.visibility = View.GONE
+            oscurecer.visibility = View.VISIBLE
+        }
+        val cierraBusqueda = findViewById<ImageButton>(R.id.close_menu)
+        cierraBusqueda.setOnClickListener {
+            val bottomLayout = findViewById<LinearLayout>(R.id.bottom)
+            bottomLayout.visibility = View.GONE
+            openBusqueda.visibility = View.VISIBLE
+            oscurecer.visibility = View.GONE
+        }
+
+
     }
         override fun onResume() {//establece por defecto al cargar
             super.onResume()

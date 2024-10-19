@@ -171,80 +171,256 @@ var listaPoke : List<PokemonOld> = listOf(
 
 fun cambiaFondo(poke:PokemonOld,holder: ViewHolder){
     val header=holder.itemView.findViewById<View>(R.id.header)
-    when(poke.tipo.get(0)){
-        R.drawable.planta -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.agua -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.fuego -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.lucha -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.veneno -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.acero -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.bicho -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.dragon -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.electrico -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.hada -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.hielo -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.siniestro -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.roca -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.tierra -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.psiquico -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.normal -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.fantasma -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
-        }
-        R.drawable.volador -> {
-            val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
-            header.setBackgroundColor(color)
+    val center=holder.itemView.findViewById<View>(R.id.center)
+    if(poke.tipo.size==1){
+        when(poke.tipo.get(0)){
+            R.drawable.planta -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.agua -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.fuego -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.lucha -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.veneno -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.acero -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.bicho -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.dragon -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.electrico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.hada -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.hielo -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.siniestro -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.roca -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.tierra -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.psiquico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.normal -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.fantasma -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
+            R.drawable.volador -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+                center.setBackgroundColor(color)
+            }
         }
     }
+    else if(poke.tipo.size==2){
+        when(poke.tipo.get(0)){
+            R.drawable.planta -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.agua -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.fuego -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.lucha -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.veneno -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.acero -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.bicho -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.dragon -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.electrico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.hada -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.hielo -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.siniestro -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.roca -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.tierra -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.psiquico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.normal -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.fantasma -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+            R.drawable.volador -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
+                header.setBackgroundColor(color)
+            }
+        }
+        when(poke.tipo.get(1)){
+            R.drawable.planta -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.agua -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.fuego -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.lucha -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.veneno -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.acero -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.bicho -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.dragon -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.electrico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.hada -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.hielo -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.siniestro -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.roca -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.tierra -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.psiquico -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.normal -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.fantasma -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+            R.drawable.volador -> {
+                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
+                center.setBackgroundColor(color)
+            }
+        }
+
+    }
+
+
+
+
 }//fondo del header para cada tipo de pokemon
 
 enum class PokemonTipo {
@@ -415,8 +591,6 @@ fun debs(poke: PokemonOld): List<Int> {
     }
     return debilidades
 }
-
-
 fun forts(poke:PokemonOld):List<Int>{
     var fortalezas: MutableList<Int> = mutableListOf()
     when(poke.tipo.size){
@@ -440,6 +614,11 @@ fun forts(poke:PokemonOld):List<Int>{
             }
         }
     }
+       /* var debug: MutableList<PokemonTipo> = mutableListOf()
+    for(i in fortalezas){
+        debug.add(drawableToEnum(i))
+    }*/
+
     return fortalezas
 }
 
@@ -492,135 +671,3 @@ fun drawableToEnum(drawable:Int):PokemonTipo{
     }
 }
 
-
-
-
-
-
-
-
-
-
-/*
-val efectividad2 = mapOf(
-    Pair(PokemonTipo.PLANTA, PokemonTipo.AGUA) to 2,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.TIERRA) to 2,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.ROCA) to 2,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.BICHO) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.DRAGON) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.PLANTA) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.VENENO) to 0.5,
-    Pair(PokemonTipo.PLANTA, PokemonTipo.VOLADOR) to 0.5,
-    Pair(PokemonTipo.AGUA, PokemonTipo.FUEGO) to 2,
-    Pair(PokemonTipo.AGUA, PokemonTipo.TIERRA) to 2,
-    Pair(PokemonTipo.AGUA, PokemonTipo.ROCA) to 2,
-    Pair(PokemonTipo.AGUA, PokemonTipo.AGUA) to 0.5,
-    Pair(PokemonTipo.AGUA, PokemonTipo.DRAGON) to 0.5,
-    Pair(PokemonTipo.AGUA, PokemonTipo.PLANTA) to 0.5,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.PLANTA) to 2,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.BICHO) to 2,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.HIELO) to 2,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.ACERO) to 2,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.DRAGON) to 0.5,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.ROCA) to 0.5,
-    Pair(PokemonTipo.FUEGO, PokemonTipo.TIERRA) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.NORMAL) to 2,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.SINIESTRO) to 2,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.ACERO) to 2,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.HIELO) to 2,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.ROCA) to 2,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.BICHO) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.HADA) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.PSIQUICO) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.VENENO) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.VOLADOR) to 0.5,
-    Pair(PokemonTipo.LUCHA, PokemonTipo.FANTASMA) to 0,
-    Pair(PokemonTipo.VENENO, PokemonTipo.HADA) to 2,
-    Pair(PokemonTipo.VENENO, PokemonTipo.FANTASMA) to 0.5,
-    Pair(PokemonTipo.VENENO, PokemonTipo.ROCA) to 0.5,
-    Pair(PokemonTipo.VENENO, PokemonTipo.TIERRA) to 0.5,
-    Pair(PokemonTipo.VENENO, PokemonTipo.VENENO) to 0.5,
-    Pair(PokemonTipo.VENENO, PokemonTipo.ACERO) to 0,
-    Pair(PokemonTipo.ACERO, PokemonTipo.HADA) to 2,
-    Pair(PokemonTipo.ACERO, PokemonTipo.HIELO) to 2,
-    Pair(PokemonTipo.ACERO, PokemonTipo.ROCA) to 2,
-    Pair(PokemonTipo.ACERO, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.ACERO, PokemonTipo.AGUA) to 0.5,
-    Pair(PokemonTipo.ACERO, PokemonTipo.ELECTRICO) to 0.5,
-    Pair(PokemonTipo.ACERO, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.PLANTA) to 2,
-    Pair(PokemonTipo.BICHO, PokemonTipo.PSIQUICO) to 2,
-    Pair(PokemonTipo.BICHO, PokemonTipo.SINIESTRO) to 2,
-    Pair(PokemonTipo.BICHO, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.FANTASMA) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.HADA) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.LUCHA) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.VENENO) to 0.5,
-    Pair(PokemonTipo.BICHO, PokemonTipo.VOLADOR) to 0.5,
-    Pair(PokemonTipo.DRAGON, PokemonTipo.DRAGON) to 2,
-    Pair(PokemonTipo.DRAGON, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.DRAGON, PokemonTipo.HADA) to 0,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.AGUA) to 2,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.VOLADOR) to 2,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.DRAGON) to 0.5,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.ELECTRICO) to 0.5,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.PLANTA) to 0.5,
-    Pair(PokemonTipo.ELECTRICO, PokemonTipo.TIERRA) to 0,
-    Pair(PokemonTipo.HADA, PokemonTipo.DRAGON) to 2,
-    Pair(PokemonTipo.HADA, PokemonTipo.LUCHA) to 2,
-    Pair(PokemonTipo.HADA, PokemonTipo.SINIESTRO) to 2,
-    Pair(PokemonTipo.HADA, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.HADA, PokemonTipo.VENENO) to 0.5,
-    Pair(PokemonTipo.HIELO, PokemonTipo.PLANTA) to 2,
-    Pair(PokemonTipo.HIELO, PokemonTipo.TIERRA) to 2,
-    Pair(PokemonTipo.HIELO, PokemonTipo.VOLADOR) to 2,
-    Pair(PokemonTipo.HIELO, PokemonTipo.DRAGON) to 2,
-    Pair(PokemonTipo.HIELO, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.HIELO, PokemonTipo.AGUA) to 0.5,
-    Pair(PokemonTipo.HIELO, PokemonTipo.FUEGO) to 0.5,
-    Pair(PokemonTipo.HIELO, PokemonTipo.HIELO) to 0.5,
-    Pair(PokemonTipo.PSIQUICO, PokemonTipo.LUCHA) to 2,
-    Pair(PokemonTipo.PSIQUICO, PokemonTipo.VENENO) to 2,
-    Pair(PokemonTipo.PSIQUICO, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.PSIQUICO, PokemonTipo.PSIQUICO) to 0.5,
-    Pair(PokemonTipo.PSIQUICO, PokemonTipo.SINIESTRO) to 0,
-    Pair(PokemonTipo.ROCA, PokemonTipo.BICHO) to 2,
-    Pair(PokemonTipo.ROCA, PokemonTipo.FUEGO) to 2,
-    Pair(PokemonTipo.ROCA, PokemonTipo.HIELO) to 2,
-    Pair(PokemonTipo.ROCA, PokemonTipo.VOLADOR) to 2,
-    Pair(PokemonTipo.ROCA, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.ROCA, PokemonTipo.LUCHA) to 0.5,
-    Pair(PokemonTipo.ROCA, PokemonTipo.TIERRA) to 0.5,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.ACERO) to 2,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.ELECTRICO) to 2,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.FUEGO) to 2,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.ROCA) to 2,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.VENENO) to 2,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.BICHO) to 0.5,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.PLANTA) to 0.5,
-    Pair(PokemonTipo.TIERRA, PokemonTipo.VOLADOR) to 0,
-    Pair(PokemonTipo.SINIESTRO, PokemonTipo.PSIQUICO) to 2,
-    Pair(PokemonTipo.SINIESTRO, PokemonTipo.FANTASMA) to 2,
-    Pair(PokemonTipo.SINIESTRO, PokemonTipo.LUCHA) to 0.5,
-    Pair(PokemonTipo.SINIESTRO, PokemonTipo.HADA) to 0.5,
-    Pair(PokemonTipo.SINIESTRO, PokemonTipo.SINIESTRO) to 0.5,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.PLANTA) to 2,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.BICHO) to 2,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.LUCHA) to 2,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.ELECTRICO) to 0.5,
-    Pair(PokemonTipo.VOLADOR, PokemonTipo.ROCA) to 0.5,
-    Pair(PokemonTipo.FANTASMA, PokemonTipo.FANTASMA) to 2,
-    Pair(PokemonTipo.FANTASMA, PokemonTipo.PSIQUICO) to 2,
-    Pair(PokemonTipo.FANTASMA, PokemonTipo.SINIESTRO) to 0.5,
-    Pair(PokemonTipo.FANTASMA, PokemonTipo.NORMAL) to 0,
-    Pair(PokemonTipo.NORMAL, PokemonTipo.ACERO) to 0.5,
-    Pair(PokemonTipo.NORMAL, PokemonTipo.ROCA) to 0.5,
-    Pair(PokemonTipo.NORMAL, PokemonTipo.FANTASMA) to 0
-)
-*/

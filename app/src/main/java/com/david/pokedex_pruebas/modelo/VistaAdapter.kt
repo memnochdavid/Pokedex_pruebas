@@ -24,9 +24,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         var pokemonNumber: TextView = view.findViewById(R.id.num)
         val pokemonName: TextView = view.findViewById(R.id.nombre)
         val desc: TextView = view.findViewById(R.id.desc)
+        //tipos - ImageView de los tipos
         val pokemonTipo1: ImageView = itemView.findViewById(R.id.tipo1)
         val pokemonTipo2: ImageView = itemView.findViewById(R.id.tipo2)
-        //debilidades
+        //debilidades - Array que maneja los imageView de las debilidades
         val debilidades = listOf(
             itemView.findViewById(R.id.debil1) as ImageView,
             itemView.findViewById(R.id.debil2) as ImageView,
@@ -36,18 +37,17 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             itemView.findViewById(R.id.debil6) as ImageView,
             itemView.findViewById(R.id.debil7) as ImageView
         )
-        //fortalezas
+        //fortalezas - Array que maneja los imageView de las fortalezas
         val fortalezas = listOf(
             itemView.findViewById(R.id.fuerte1) as ImageView,
             itemView.findViewById(R.id.fuerte2) as ImageView,
             itemView.findViewById(R.id.fuerte3) as ImageView,
             itemView.findViewById(R.id.fuerte4) as ImageView,
-            itemView.findViewById(R.id.fuerte5) as ImageView
+            itemView.findViewById(R.id.fuerte5) as ImageView,
+            itemView.findViewById(R.id.fuerte6) as ImageView,
+            itemView.findViewById(R.id.fuerte7) as ImageView
         )
 
-        //puede que para borrar
-        val columna1 = view.findViewById<LinearLayout>(R.id.columna1)
-        val columna2 = view.findViewById<LinearLayout>(R.id.columna2)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -69,13 +69,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         else if(numero.length == 2) numero = "0${(position + 1)}"
         holder.pokemonNumber.text = "#${numero}"
 
-
         holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
         if (n_tipos==2) {
             holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
         }else holder.pokemonTipo2.visibility = View.GONE
-
-
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
 
@@ -179,6 +176,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].visibility=View.GONE
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
             }
             1 -> {
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
@@ -186,6 +185,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].visibility=View.GONE
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
             }
             2 -> {
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
@@ -193,6 +194,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].visibility=View.GONE
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
             }
             3 -> {
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
@@ -200,6 +203,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
             }
             4 -> {
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
@@ -207,6 +212,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
                 holder.fortalezas[4].visibility=View.GONE
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
             }
             5 -> {
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
@@ -214,18 +221,32 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
                 holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].visibility=View.GONE
+                holder.fortalezas[6].visibility=View.GONE
+            }
+            6 -> {
+                holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].setImageResource(forts(currentPokemon).get(5))
+                holder.fortalezas[6].visibility=View.GONE
+            }
+            7 -> {
+                holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].setImageResource(forts(currentPokemon).get(5))
+                holder.fortalezas[6].setImageResource(forts(currentPokemon).get(6))
             }
         }
-        //
-
-
     }
 
     override fun getItemCount():Int{
         return pokemonList.size
     }
-
-
-
 
 }
