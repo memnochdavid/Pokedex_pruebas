@@ -614,10 +614,6 @@ fun forts(poke:PokemonOld):List<Int>{
             }
         }
     }
-       /* var debug: MutableList<PokemonTipo> = mutableListOf()
-    for(i in fortalezas){
-        debug.add(drawableToEnum(i))
-    }*/
 
     return fortalezas
 }

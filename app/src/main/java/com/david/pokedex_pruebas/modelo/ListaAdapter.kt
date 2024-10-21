@@ -9,10 +9,13 @@ import android.widget.TextView
 //import androidx.compose.ui.semantics.text
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
+import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.ui.semantics.text
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.interfaz.VistaActivity
+//
+import kotlinx.coroutines.*
 
 //import androidx.compose.animation.with
 //import kotlin.io.path.name
@@ -42,9 +45,6 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         holder.pokemonTipo1.setImageResource(0) // Or a placeholder image
         holder.pokemonTipo2.setImageResource(0)
 
-
-
-
         var n_tipos=currentPokemon.tipo.size
         holder.pokemonImage.setImageResource(currentPokemon.foto)
         holder.pokemonName.text = currentPokemon.name
@@ -55,9 +55,15 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         holder.pokemonNumber.text = "#${numero}"
 
         holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
+        //Log.d("Nombre", currentPokemon.name)
+        //Log.d("Tipo1", drawableToEnum(currentPokemon.tipo[0]).toString())
+
         if (n_tipos ==2) {
             holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
+            //Log.d("Tipo2", drawableToEnum(currentPokemon.tipo[1]).toString())
         }else holder.pokemonTipo2.visibility = View.GONE
+
+
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, VistaActivity::class.java)
@@ -80,7 +86,7 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
                     v.animate().scaleX(1f).scaleY(1f).setDuration(100).start()
                 }
             };false
-         }
+        }
     }
 
     override fun getItemCount(): Int {

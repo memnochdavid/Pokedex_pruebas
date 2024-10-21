@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val recyclerView: RecyclerView = findViewById(R.id.pokelistRecyclerView)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
         recyclerView.adapter = PokemonAdapter(listaPoke)
 
         val busqueda = findViewById<SearchView>(R.id.busqueda)
@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        //para la búsqueda
         var oscurecer = findViewById<LinearLayout>(R.id.oscurece)
         val openBusqueda = findViewById<ImageButton>(R.id.open_menu)
         openBusqueda.setOnClickListener {

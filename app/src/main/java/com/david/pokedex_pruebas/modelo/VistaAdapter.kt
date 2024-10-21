@@ -74,6 +74,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         }else holder.pokemonTipo2.visibility = View.GONE
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
+
 /*
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, VistaActivity::class.java)
@@ -87,6 +88,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             holder.itemView.context.startActivity(intent)
         }
 */
+
         //debs
         var listaDebilidades=debs(currentPokemon)
 
