@@ -47,7 +47,6 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             itemView.findViewById(R.id.fuerte6) as ImageView,
             itemView.findViewById(R.id.fuerte7) as ImageView
         )
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -75,7 +74,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         }else holder.pokemonTipo2.visibility = View.GONE
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
-
+/*
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, VistaActivity::class.java)
             intent.putExtra("pokemon_name", currentPokemon.name)
@@ -87,7 +86,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             intent.putExtra("num", position)
             holder.itemView.context.startActivity(intent)
         }
-
+*/
         //debs
         var listaDebilidades=debs(currentPokemon)
 

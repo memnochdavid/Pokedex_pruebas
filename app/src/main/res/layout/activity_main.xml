@@ -69,6 +69,7 @@
         android:elevation="10dp"
         android:orientation="horizontal"
         android:visibility="gone"
+        android:clickable="true"
         android:background="#80000000"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
