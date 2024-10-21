@@ -12,6 +12,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.ui.semantics.text
+//import androidx.glance.visibility
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.interfaz.VistaActivity
 //
@@ -54,12 +55,13 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
         else if(numero.length == 2) numero = "0${(position + 1)}"
         holder.pokemonNumber.text = "#${numero}"
 
-        holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
+        holder.pokemonTipo1.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
         //Log.d("Nombre", currentPokemon.name)
         //Log.d("Tipo1", drawableToEnum(currentPokemon.tipo[0]).toString())
 
         if (n_tipos ==2) {
-            holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
+            holder.pokemonTipo2.visibility = View.VISIBLE////
+            holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
             //Log.d("Tipo2", drawableToEnum(currentPokemon.tipo[1]).toString())
         }else holder.pokemonTipo2.visibility = View.GONE
 

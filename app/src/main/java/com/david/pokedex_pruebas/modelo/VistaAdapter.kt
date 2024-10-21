@@ -2,6 +2,7 @@ package com.david.pokedex_pruebas.modelo
 
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.green
+//import androidx.glance.visibility
 import androidx.recyclerview.widget.RecyclerView
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.interfaz.VistaActivity
@@ -35,7 +37,8 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             itemView.findViewById(R.id.debil4) as ImageView,
             itemView.findViewById(R.id.debil5) as ImageView,
             itemView.findViewById(R.id.debil6) as ImageView,
-            itemView.findViewById(R.id.debil7) as ImageView
+            itemView.findViewById(R.id.debil7) as ImageView,
+            itemView.findViewById(R.id.debil8) as ImageView
         )
         //fortalezas - Array que maneja los imageView de las fortalezas
         val fortalezas = listOf(
@@ -45,8 +48,16 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             itemView.findViewById(R.id.fuerte4) as ImageView,
             itemView.findViewById(R.id.fuerte5) as ImageView,
             itemView.findViewById(R.id.fuerte6) as ImageView,
-            itemView.findViewById(R.id.fuerte7) as ImageView
+            itemView.findViewById(R.id.fuerte7) as ImageView,
+            itemView.findViewById(R.id.fuerte8) as ImageView
         )
+        //inmunidades - Array que maneja los imageView de las inmuidades
+        val inmunidades = listOf(
+            itemView.findViewById(R.id.inmune1) as ImageView,
+            itemView.findViewById(R.id.inmune2) as ImageView
+        )
+        val filaInmu = itemView.findViewById(R.id.inmune_fila) as LinearLayout
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -68,30 +79,19 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         else if(numero.length == 2) numero = "0${(position + 1)}"
         holder.pokemonNumber.text = "#${numero}"
 
-        holder.pokemonTipo1.setImageResource(currentPokemon.tipo.get(0))
+        holder.pokemonTipo1.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
+        //Log.d("Nombre", currentPokemon.name)
+        //Log.d("Tipo1", currentPokemon.tipo.get(0).toString())
         if (n_tipos==2) {
-            holder.pokemonTipo2.setImageResource(currentPokemon.tipo.get(1))
+            holder.pokemonTipo2.visibility = View.VISIBLE
+            holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
+            //Log.d("Tipo2", currentPokemon.tipo.get(1).toString())
         }else holder.pokemonTipo2.visibility = View.GONE
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
 
-/*
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView.context, VistaActivity::class.java)
-            intent.putExtra("pokemon_name", currentPokemon.name)
-            intent.putExtra("pokemon_image", currentPokemon.foto)
-            intent.putExtra("tipo1", currentPokemon.tipo.get(0))
-            if (n_tipos==2) {
-                intent.putExtra("tipo2", currentPokemon.tipo.get(1))
-            }
-            intent.putExtra("num", position)
-            holder.itemView.context.startActivity(intent)
-        }
-*/
-
         //debs
         var listaDebilidades=debs(currentPokemon)
-
         when(listaDebilidades.size){
             0 -> {
                 holder.debilidades[0].visibility=View.GONE
@@ -101,8 +101,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.debilidades[4].visibility=View.GONE
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             1 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
                 holder.debilidades[1].visibility=View.GONE
                 holder.debilidades[2].visibility=View.GONE
@@ -110,66 +112,118 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.debilidades[4].visibility=View.GONE
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             2 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
                 holder.debilidades[2].visibility=View.GONE
                 holder.debilidades[3].visibility=View.GONE
                 holder.debilidades[4].visibility=View.GONE
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
+
             }
             3 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
                 holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
                 holder.debilidades[3].visibility=View.GONE
                 holder.debilidades[4].visibility=View.GONE
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             4 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
                 holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
+                holder.debilidades[3].visibility=View.VISIBLE
                 holder.debilidades[3].setImageResource(debs(currentPokemon).get(3))
                 holder.debilidades[4].visibility=View.GONE
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             5 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
                 holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
+                holder.debilidades[3].visibility=View.VISIBLE
                 holder.debilidades[3].setImageResource(debs(currentPokemon).get(3))
+                holder.debilidades[4].visibility=View.VISIBLE
                 holder.debilidades[4].setImageResource(debs(currentPokemon).get(4))
                 holder.debilidades[5].visibility=View.GONE
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             6 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
                 holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
+                holder.debilidades[3].visibility=View.VISIBLE
                 holder.debilidades[3].setImageResource(debs(currentPokemon).get(3))
+                holder.debilidades[4].visibility=View.VISIBLE
                 holder.debilidades[4].setImageResource(debs(currentPokemon).get(4))
+                holder.debilidades[5].visibility=View.VISIBLE
                 holder.debilidades[5].setImageResource(debs(currentPokemon).get(5))
                 holder.debilidades[6].visibility=View.GONE
+                holder.debilidades[7].visibility=View.GONE
             }
             7 -> {
+                holder.debilidades[0].visibility=View.VISIBLE
                 holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
                 holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
                 holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
+                holder.debilidades[3].visibility=View.VISIBLE
                 holder.debilidades[3].setImageResource(debs(currentPokemon).get(3))
+                holder.debilidades[4].visibility=View.VISIBLE
                 holder.debilidades[4].setImageResource(debs(currentPokemon).get(4))
+                holder.debilidades[5].visibility=View.VISIBLE
                 holder.debilidades[5].setImageResource(debs(currentPokemon).get(5))
+                holder.debilidades[6].visibility=View.VISIBLE
                 holder.debilidades[6].setImageResource(debs(currentPokemon).get(6))
+                holder.debilidades[7].visibility=View.GONE
+            }
+            8->{
+                holder.debilidades[0].visibility=View.VISIBLE
+                holder.debilidades[0].setImageResource(debs(currentPokemon).get(0))
+                holder.debilidades[1].visibility=View.VISIBLE
+                holder.debilidades[1].setImageResource(debs(currentPokemon).get(1))
+                holder.debilidades[2].visibility=View.VISIBLE
+                holder.debilidades[2].setImageResource(debs(currentPokemon).get(2))
+                holder.debilidades[3].visibility=View.VISIBLE
+                holder.debilidades[3].setImageResource(debs(currentPokemon).get(3))
+                holder.debilidades[4].visibility=View.VISIBLE
+                holder.debilidades[4].setImageResource(debs(currentPokemon).get(4))
+                holder.debilidades[5].visibility=View.VISIBLE
+                holder.debilidades[5].setImageResource(debs(currentPokemon).get(5))
+                holder.debilidades[6].visibility=View.VISIBLE
+                holder.debilidades[6].setImageResource(debs(currentPokemon).get(6))
+                holder.debilidades[7].visibility=View.VISIBLE
+                holder.debilidades[7].setImageResource(debs(currentPokemon).get(7))
             }
 
         }
         //forts
         var listaFortalezas=forts(currentPokemon)
-
         when(listaFortalezas.size){
             0 -> {
                 holder.fortalezas[0].visibility=View.GONE
@@ -179,8 +233,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[4].visibility=View.GONE
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             1 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
                 holder.fortalezas[1].visibility=View.GONE
                 holder.fortalezas[2].visibility=View.GONE
@@ -188,62 +244,140 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                 holder.fortalezas[4].visibility=View.GONE
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             2 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
                 holder.fortalezas[2].visibility=View.GONE
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             3 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
                 holder.fortalezas[3].visibility=View.GONE
                 holder.fortalezas[4].visibility=View.GONE
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             4 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].visibility=View.VISIBLE
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
                 holder.fortalezas[4].visibility=View.GONE
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             5 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].visibility=View.VISIBLE
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].visibility=View.VISIBLE
                 holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
                 holder.fortalezas[5].visibility=View.GONE
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             6 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].visibility=View.VISIBLE
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].visibility=View.VISIBLE
                 holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].visibility=View.VISIBLE
                 holder.fortalezas[5].setImageResource(forts(currentPokemon).get(5))
                 holder.fortalezas[6].visibility=View.GONE
+                holder.fortalezas[7].visibility=View.GONE
             }
             7 -> {
+                holder.fortalezas[0].visibility=View.VISIBLE
                 holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
                 holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
                 holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].visibility=View.VISIBLE
                 holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].visibility=View.VISIBLE
                 holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].visibility=View.VISIBLE
                 holder.fortalezas[5].setImageResource(forts(currentPokemon).get(5))
+                holder.fortalezas[6].visibility=View.VISIBLE
                 holder.fortalezas[6].setImageResource(forts(currentPokemon).get(6))
+                holder.fortalezas[7].visibility=View.GONE
+            }
+            8->{
+                holder.fortalezas[0].visibility=View.VISIBLE
+                holder.fortalezas[0].setImageResource(forts(currentPokemon).get(0))
+                holder.fortalezas[1].visibility=View.VISIBLE
+                holder.fortalezas[1].setImageResource(forts(currentPokemon).get(1))
+                holder.fortalezas[2].visibility=View.VISIBLE
+                holder.fortalezas[2].setImageResource(forts(currentPokemon).get(2))
+                holder.fortalezas[3].visibility=View.VISIBLE
+                holder.fortalezas[3].setImageResource(forts(currentPokemon).get(3))
+                holder.fortalezas[4].visibility=View.VISIBLE
+                holder.fortalezas[4].setImageResource(forts(currentPokemon).get(4))
+                holder.fortalezas[5].visibility=View.VISIBLE
+                holder.fortalezas[5].setImageResource(forts(currentPokemon).get(5))
+                holder.fortalezas[6].visibility=View.VISIBLE
+                holder.fortalezas[6].setImageResource(forts(currentPokemon).get(6))
+                holder.fortalezas[7].visibility=View.VISIBLE
+                holder.fortalezas[7].setImageResource(forts(currentPokemon).get(7))
             }
         }
+        //inmunidades
+        var inmune=inmune(currentPokemon)
+        when(inmune.size) {
+            0 -> {
+                holder.filaInmu.visibility = View.GONE
+            }
+
+            1 -> {
+                holder.filaInmu.visibility = View.VISIBLE
+                holder.inmunidades[1].visibility = View.GONE
+                holder.inmunidades[0].setImageResource(inmune(currentPokemon).get(0))
+            }
+
+            2 -> {
+                holder.filaInmu.visibility = View.VISIBLE
+                holder.inmunidades[1].visibility = View.VISIBLE
+                holder.inmunidades[0].setImageResource(inmune(currentPokemon).get(0))
+                holder.inmunidades[1].setImageResource(inmune(currentPokemon).get(1))
+            }
+        }
+
+        /*
+        Log.d("Nombre", currentPokemon.name)
+        Log.d("Inmune a 1", drawableToEnum(inmune[0]).toString())
+        Log.d("Inmune a 2", drawableToEnum(inmune[1]).toString())*/
+
     }
 
     override fun getItemCount():Int{

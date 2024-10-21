@@ -32,7 +32,6 @@
             android:layout_height="0dp"
             android:background="#8F2626"
             android:orientation="horizontal"
-            android:clickable="false"
             app:layout_constraintBottom_toTopOf="@id/center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,13 +43,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#1B3AC1"
-            android:clickable="false"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toTopOf="@id/body"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_weight="0.4" />
+
+
 
         <ScrollView
             android:id="@+id/body"
@@ -68,7 +68,8 @@
                 android:id="@+id/abajo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top">
+                android:layout_gravity="top"
+                android:gravity="bottom">
 
                 <TextView
                     android:id="@+id/num"
@@ -129,7 +130,7 @@
                     android:layout_height="100dp"
                     android:text="DESCRIPCION"
                     android:textColor="@color/black"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:justificationMode="inter_word"
                     android:gravity="center_vertical"
                     app:layout_constraintTop_toBottomOf="@id/tipo1"
@@ -152,96 +153,18 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="top|center"
-                        android:background="#A24242"
-                        android:paddingBottom="10dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/debil"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Debilidades"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="20dp"
-                            android:layout_marginTop="10dp"/>
-                        <ImageView
-                            android:id="@+id/debil1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="15dp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/columna2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
                         android:background="#4CAF50"
                         android:paddingBottom="10dp"
-                        android:gravity="top|center">
+                        android:layout_weight="1">
 
                         <TextView
                             android:id="@+id/fuerte"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fortalezas"
+                            android:text="Eficaz contra"
                             android:textStyle="bold"
                             android:textColor="@color/black"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:layout_marginTop="10dp"/>
                         <ImageView
                             android:id="@+id/fuerte1"
@@ -298,13 +221,177 @@
                             android:elevation="3dp"
                             android:src="@drawable/agua"
                             android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/fuerte8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"/>
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/columna2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:background="#A24242"
+                        android:paddingBottom="10dp"
+                        android:gravity="top|center">
+
+                        <TextView
+                            android:id="@+id/debil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Débil ante"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:layout_marginTop="10dp"/>
+                        <ImageView
+                            android:id="@+id/debil1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                        <ImageView
+                            android:id="@+id/debil8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/inmune_fila"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:baselineAligned="false"
+                    android:background="@color/elec"
+                    app:layout_constraintTop_toBottomOf="@id/filatipos"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/inmuneCol1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="top|center"
+                        android:background="@color/elec"
+                        android:paddingBottom="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/inmuneText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Inmune a"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:textSize="20sp"
+                            android:layout_marginTop="10dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/inmuneCol2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="top|center"
+                        android:background="@color/elec"
+                        android:paddingBottom="10dp"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/inmune1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:elevation="3dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/agua"
+                            android:layout_marginTop="10dp"/>
+                        <ImageView
+                            android:id="@+id/inmune2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/agua"
+                            android:visibility="visible"
+                            android:layout_marginTop="5dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
