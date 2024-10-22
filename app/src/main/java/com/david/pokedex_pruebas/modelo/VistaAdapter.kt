@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.green
@@ -52,13 +53,16 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             itemView.findViewById(R.id.fuerte8) as ImageView
         )
         //inmunidades - Array que maneja los imageView de las inmuidades
+        val filaInmu = itemView.findViewById(R.id.inmune_fila) as LinearLayout//oculta/muestra la fila de inmuidades
         val inmunidades = listOf(
             itemView.findViewById(R.id.inmune1) as ImageView,
             itemView.findViewById(R.id.inmune2) as ImageView
         )
-        val filaInmu = itemView.findViewById(R.id.inmune_fila) as LinearLayout
+
 
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -80,17 +84,14 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         holder.pokemonNumber.text = "#${numero}"
 
         holder.pokemonTipo1.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
-        //Log.d("Nombre", currentPokemon.name)
-        //Log.d("Tipo1", currentPokemon.tipo.get(0).toString())
         if (n_tipos==2) {
             holder.pokemonTipo2.visibility = View.VISIBLE
             holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
-            //Log.d("Tipo2", currentPokemon.tipo.get(1).toString())
         }else holder.pokemonTipo2.visibility = View.GONE
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
 
-        //debs
+        //debilidades
         var listaDebilidades=debs(currentPokemon)
         when(listaDebilidades.size){
             0 -> {
@@ -222,7 +223,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             }
 
         }
-        //forts
+        //fortalezas
         var listaFortalezas=forts(currentPokemon)
         when(listaFortalezas.size){
             0 -> {
@@ -373,11 +374,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             }
         }
 
-        /*
+        /*plantilla de logs
         Log.d("Nombre", currentPokemon.name)
         Log.d("Inmune a 1", drawableToEnum(inmune[0]).toString())
         Log.d("Inmune a 2", drawableToEnum(inmune[1]).toString())*/
-
     }
 
     override fun getItemCount():Int{

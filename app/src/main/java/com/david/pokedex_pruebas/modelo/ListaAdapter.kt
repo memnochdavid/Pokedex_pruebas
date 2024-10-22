@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.HorizontalScrollView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.compose.ui.semantics.text
 //import androidx.glance.visibility
 import com.david.pokedex_pruebas.R
@@ -64,6 +66,8 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
             holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
             //Log.d("Tipo2", drawableToEnum(currentPokemon.tipo[1]).toString())
         }else holder.pokemonTipo2.visibility = View.GONE
+
+
 
 
 

@@ -1,0 +1,237 @@
+package com.david.pokedex_pruebas.interfaz
+
+import android.os.Bundle
+//import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+//import androidx.core.view.ViewCompat
+//import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.annotation.SuppressLint
+import android.util.Log
+import android.view.View
+import android.widget.HorizontalScrollView
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
+//import androidx.glance.visibility
+import com.david.pokedex_pruebas.modelo.PokemonAdapter
+import com.david.pokedex_pruebas.R
+//import com.david.pokedex_pruebas.modelo.busca
+import com.david.pokedex_pruebas.modelo.listaPoke
+
+class ListaActivity : AppCompatActivity() {
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_lista)
+        val recyclerView: RecyclerView = findViewById(R.id.pokelistRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this@ListaActivity)
+        recyclerView.adapter = PokemonAdapter(listaPoke)
+
+
+
+        val busqueda = findViewById<SearchView>(R.id.busqueda)
+        busqueda.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                var listaAux = listaPoke
+                //filtramos la listaAux con la busqueda
+                var listaAux2 = listaAux.filter { pokemon ->
+                    pokemon.name.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = PokemonAdapter(listaAux2)
+                recyclerView.adapter?.notifyDataSetChanged()
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val query = newText ?: "" // Handle null case
+                val listaAux = listaPoke.filter { pokemon ->
+                    pokemon.name.contains(query, ignoreCase = true)
+                }
+                recyclerView.adapter = PokemonAdapter(listaAux)
+                recyclerView.adapter?.notifyDataSetChanged()
+                return true
+            }
+        })
+
+        //para la búsqueda
+        var oscurecer = findViewById<LinearLayout>(R.id.oscurece)
+        val openBusqueda = findViewById<ImageButton>(R.id.open_menu)
+        val bottomLayout = findViewById<LinearLayout>(R.id.bottom)
+        openBusqueda.setOnClickListener {
+            bottomLayout.visibility = View.VISIBLE
+            openBusqueda.visibility = View.GONE
+            oscurecer.visibility = View.VISIBLE
+        }
+
+        //para la búsqueda por tipos
+        val tipoBusqueda: SwitchCompat = findViewById(R.id.tipo_busqueda)
+        val listaTipos: HorizontalScrollView = findViewById(R.id.lista_tipos)
+        tipoBusqueda.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                listaTipos.visibility = View.VISIBLE
+                openBusqueda.visibility = View.GONE
+                busqueda.visibility = View.GONE
+                oscurecer.visibility = View.VISIBLE
+            } else {
+                listaTipos.visibility = View.GONE
+                busqueda.visibility = View.VISIBLE
+            }
+        }
+        var tipoElegido=""
+        var indiceElegido=-1
+        val tiposParaBuscar = listOf(
+            findViewById<ImageButton>(R.id.planta),
+            findViewById<ImageButton>(R.id.agua),
+            findViewById<ImageButton>(R.id.fuego),
+            findViewById<ImageButton>(R.id.lucha),
+            findViewById<ImageButton>(R.id.veneno),
+            findViewById<ImageButton>(R.id.acero),
+            findViewById<ImageButton>(R.id.bicho),
+            findViewById<ImageButton>(R.id.dragon),
+            findViewById<ImageButton>(R.id.electrico),
+            findViewById<ImageButton>(R.id.hada),
+            findViewById<ImageButton>(R.id.hielo),
+            findViewById<ImageButton>(R.id.psiquico),
+            findViewById<ImageButton>(R.id.roca),
+            findViewById<ImageButton>(R.id.tierra),
+            findViewById<ImageButton>(R.id.sinistro),
+            findViewById<ImageButton>(R.id.normal),
+            findViewById<ImageButton>(R.id.volador),
+            findViewById<ImageButton>(R.id.fantasma)
+        )
+        if(listaTipos.visibility == View.VISIBLE && bottomLayout.visibility == View.VISIBLE){
+            for (i in tiposParaBuscar.indices) {
+                when (i) {
+                    0 -> {
+                        tipoElegido = "planta"
+                        indiceElegido = i
+                    }
+
+                    1 -> {
+                        tipoElegido = "agua"
+                        indiceElegido = i
+                    }
+
+                    2 -> {
+                        tipoElegido = "fuego"
+                        indiceElegido = i
+                    }
+
+                    3 -> {
+                        tipoElegido = "lucha"
+                        indiceElegido = i
+                    }
+
+                    4 -> {
+                        tipoElegido = "veneno"
+                        indiceElegido = i
+                    }
+
+                    5 -> {
+                        tipoElegido = "acero"
+                        indiceElegido = i
+                    }
+
+                    6 -> {
+                        tipoElegido = "bicho"
+                        indiceElegido = i
+                    }
+
+                    7 -> {
+                        tipoElegido = "dragon"
+                        indiceElegido = i
+                    }
+
+                    8 -> {
+                        tipoElegido = "electrico"
+                        indiceElegido = i
+                    }
+
+                    9 -> {
+                        tipoElegido = "hada"
+                        indiceElegido = i
+                    }
+
+                    10 -> {
+                        tipoElegido = "hielo"
+                        indiceElegido = i
+                    }
+
+                    11 -> {
+                        tipoElegido = "psiquico"
+                        indiceElegido = i
+                    }
+
+                    12 -> {
+                        tipoElegido = "roca"
+                        indiceElegido = i
+                    }
+
+                    13 -> {
+                        tipoElegido = "tierra"
+                        indiceElegido = i
+                    }
+
+                    14 -> {
+                        tipoElegido = "sinistro"
+                        indiceElegido = i
+                    }
+
+                    15 -> {
+                        tipoElegido = "normal"
+                        indiceElegido = i
+                    }
+
+                    16 -> {
+                        tipoElegido = "volador"
+                        indiceElegido = i
+                    }
+
+                    17 -> {
+                        tipoElegido = "fantasma"
+                        indiceElegido = i
+                    }
+                }
+
+            }
+            tiposParaBuscar[indiceElegido].setOnClickListener {
+                //filtramos la listaPoke con la busqueda
+                var listaAux = listaPoke.filter { pokemon ->
+                    pokemon.tipo.any { it.name.contains(tipoElegido, ignoreCase = true)}
+                }
+                recyclerView.adapter = PokemonAdapter(listaAux)
+                recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
+
+
+
+        //para cerrar la búsqueda
+        val cierraBusqueda = findViewById<ImageButton>(R.id.close_menu)
+        cierraBusqueda.setOnClickListener {
+            //val bottomLayout = findViewById<LinearLayout>(R.id.bottom)
+            bottomLayout.visibility = View.GONE
+            openBusqueda.visibility = View.VISIBLE
+            oscurecer.visibility = View.GONE
+            listaTipos.visibility = View.GONE
+        }
+
+
+
+
+
+    }
+        override fun onResume() {//establece por defecto al cargar
+            super.onResume()
+            val recyclerView: RecyclerView = findViewById(R.id.pokelistRecyclerView)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = PokemonAdapter(listaPoke)
+        }
+}
+
+/*plantilla de logs
+        Log.d("Nombre", currentPokemon.name)
+        Log.d("Inmune a 1", drawableToEnum(inmune[0]).toString())
+        Log.d("Inmune a 2", drawableToEnum(inmune[1]).toString())*/
