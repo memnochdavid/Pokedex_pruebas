@@ -63,6 +63,7 @@ class ListaActivity : AppCompatActivity() {
             bottomLayout.visibility = View.VISIBLE
             openBusqueda.visibility = View.GONE
             oscurecer.visibility = View.VISIBLE
+            busqueda.visibility=View.VISIBLE
         }
 
         //para la búsqueda por tipos
@@ -101,24 +102,21 @@ class ListaActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.volador).apply { tag = "volador" },
             findViewById<ImageButton>(R.id.fantasma).apply { tag = "fantasma" }
         )
-        //if(listaTipos.visibility == View.VISIBLE){
-            for (i in tiposParaBuscar) {
-                i.setOnClickListener {
-                    tipoElegido=i.tag as String
-                    //filtramos la listaPoke con la busqueda
-                    var listaAux = listaPoke.filter { pokemon ->
-                        pokemon.tipo.any { it.name.contains(tipoElegido, ignoreCase = true)}
-                    }
-                    recyclerView.adapter = PokemonAdapter(listaAux)
-                    recyclerView.adapter?.notifyDataSetChanged()
+        for (i in tiposParaBuscar) {
+            i.setOnClickListener {
+                tipoElegido=i.tag as String
+                //filtramos la listaPoke con la busqueda
+                var listaAux = listaPoke.filter { pokemon ->
+                    pokemon.tipo.any { it.name.contains(tipoElegido, ignoreCase = true)}
                 }
+                recyclerView.adapter = PokemonAdapter(listaAux)
+                recyclerView.adapter?.notifyDataSetChanged()
             }
-        //}
+        }
 
         //para cerrar la búsqueda
         val cierraBusqueda = findViewById<ImageButton>(R.id.close_menu)
         cierraBusqueda.setOnClickListener {
-            //val bottomLayout = findViewById<LinearLayout>(R.id.bottom)
             bottomLayout.visibility = View.GONE
             openBusqueda.visibility = View.VISIBLE
             oscurecer.visibility = View.GONE
