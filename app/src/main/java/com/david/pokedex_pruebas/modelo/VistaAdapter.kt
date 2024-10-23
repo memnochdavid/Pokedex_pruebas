@@ -91,6 +91,11 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
 
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
 
+
+
+
+
+
         //debilidades
         var listaDebilidades=debs(currentPokemon)
         when(listaDebilidades.size){

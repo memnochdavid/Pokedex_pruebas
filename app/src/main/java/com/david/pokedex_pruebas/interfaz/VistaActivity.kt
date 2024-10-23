@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 //import androidx.compose.ui.graphics.Shader
@@ -49,6 +50,32 @@ class VistaActivity : AppCompatActivity() {
         }
         val initialPosition = num
         layoutManager.scrollToPosition(initialPosition)
+/*
+        //imageViews de tipo dinámicos
+        val columna1 = findViewById<LinearLayout>(R.id.columna1)
+        val drawablesTipos = listOf(
+            R.drawable.agua,
+            R.drawable.planta,
+            R.drawable.agua,
+            R.drawable.fuego,
+            R.drawable.lucha,
+            R.drawable.veneno,
+            R.drawable.acero,
+            R.drawable.bicho,
+            R.drawable.dragon,
+            R.drawable.electrico,
+            R.drawable.hada,
+            R.drawable.hielo,
+            R.drawable.psiquico,
+            R.drawable.roca,
+            R.drawable.tierra,
+            R.drawable.siniestro,
+            R.drawable.normal,
+            R.drawable.volador,
+            R.drawable.fantasma,
+        )
+*/
+
     }
 
 
