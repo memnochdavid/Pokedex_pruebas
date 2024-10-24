@@ -89,6 +89,30 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
         }else holder.pokemonTipo2.visibility = View.GONE
 
+
+
+        //añadimos al  Linear layout @columna1 los elementos dinamicamente Primero un texto y luego tantas imagenes como tipos tenga el pokemon
+        var columna1 = holder.itemView.findViewById<LinearLayout>(R.id.columna1)
+        columna1.removeAllViews()
+
+        //creamos un textView
+        var t = TextView(holder.itemView.context)
+        t.text = "Debil contra"
+        t.textSize = 15f
+        t.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+        columna1.addView(t)
+
+        //añadimos las imagenes de las debilidades
+
+        for (tipo in debs(currentPokemon) ){
+            var i = ImageView(holder.itemView.context)
+            /*enum class PokemonTipo {
+    PLANTA, AGUA, FUEGO, LUCHA, VENENO, ACERO, BICHO, DRAGON, ELECTRICO,HADA, HIELO, PSIQUICO, ROCA, TIERRA, SINIESTRO, NORMAL, VOLADOR, FANTASMA, NULL
+}*/
+            i.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
+            columna1.addView(i)
+        }
+
         cambiaFondo(currentPokemon,holder)//fondo del header para cada tipo de pokemon
 
 
@@ -96,8 +120,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
 
 
 
-        //debilidades
+
+
         var listaDebilidades=debs(currentPokemon)
+        //debilidades
         when(listaDebilidades.size){
             0 -> {
                 holder.debilidades[0].visibility=View.GONE
