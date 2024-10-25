@@ -175,63 +175,6 @@
                             android:src="@drawable/agua"
                             android:visibility="visible"
                             android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/fuerte8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -260,63 +203,6 @@
                             android:elevation="3dp"
                             android:src="@drawable/agua"
                             android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
-                        <ImageView
-                            android:id="@+id/debil8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="3dp"
-                            android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginBottom="15dp"
                             android:layout_marginTop="5dp"/>
                     </LinearLayout>
 
@@ -358,30 +244,20 @@
                     <LinearLayout
                         android:id="@+id/inmuneCol2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:gravity="top|center"
+                        android:gravity="center"
                         android:background="@color/elec"
-                        android:paddingBottom="10dp"
                         android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/inmune1"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:elevation="3dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/agua"
-                            android:layout_marginTop="10dp"/>
-                        <ImageView
-                            android:id="@+id/inmune2"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:elevation="3dp"
                             android:layout_gravity="center"
                             android:src="@drawable/agua"
-                            android:visibility="visible"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginTop="10dp"/>
                     </LinearLayout>
 
                 </LinearLayout>
