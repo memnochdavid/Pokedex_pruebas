@@ -64,8 +64,11 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         //------------------------------------------------------------------
         //FORTALEZAS
         //añadimos al  Linear layout @columna2 los elementos dinamicamente Primero un texto y luego tantas imagenes como fortalezas tenga el pokemon
-        var col_fortalezas = holder.itemView.findViewById<LinearLayout>(R.id.columna1)
-        col_fortalezas.removeView(holder.itemView.findViewById<LinearLayout>(R.id.fuerte1))
+        var col_fortalezas = holder.itemView.findViewById<LinearLayout>(R.id.col_fort_tipo)
+        //col_fortalezas.removeView(holder.itemView.findViewById<LinearLayout>(R.id.fuerte1))
+        col_fortalezas.removeAllViews()
+
+
 
         //añadimos las imagenes de las debilidades
         for (fortaleza in forts(currentPokemon) ){
@@ -89,8 +92,9 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
 
         //DEBILIDADES
         //añadimos al  Linear layout @columna1 los elementos dinamicamente Primero un texto y luego tantas imagenes como debilidades tenga el pokemon
-        var col_debilidades = holder.itemView.findViewById<LinearLayout>(R.id.columna2)
-        col_debilidades.removeView(holder.itemView.findViewById<LinearLayout>(R.id.debil1))
+        var col_debilidades = holder.itemView.findViewById<LinearLayout>(R.id.col_deb_tipo)
+        //col_debilidades.removeView(holder.itemView.findViewById<LinearLayout>(R.id.debil1))
+        col_debilidades.removeAllViews()
 
         //se añaden las imágenes
         for (debilidad in debs(currentPokemon) ){
@@ -117,9 +121,12 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         var inmune_col2 = holder.itemView.findViewById<LinearLayout>(R.id.inmuneCol2)
         var fila_inmune = holder.itemView.findViewById<LinearLayout>(R.id.inmune_fila)
         inmune_col2.removeView(holder.itemView.findViewById<LinearLayout>(R.id.inmune1))
+        inmune_col2.removeAllViews()
+
         if(inmune(currentPokemon).size==0){
             fila_inmune.visibility=View.GONE
         }else {
+            fila_inmune.visibility=View.VISIBLE
             //se añaden las imágenes
             for (inmunidad in inmune(currentPokemon)) {
                 var i = ImageView(holder.itemView.context)
@@ -129,13 +136,12 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-
                 val topMarginInDp = 5 // 5 dp
                 val density = holder.itemView.context.resources.displayMetrics.density
                 val topMarginInPixels = (topMarginInDp * density + 0.5f).toInt()
-
                 params.setMargins(0, topMarginInPixels, 0, 0)
                 i.layoutParams = params
+
                 //añadimos la imagen
                 inmune_col2.addView(i)
             }
