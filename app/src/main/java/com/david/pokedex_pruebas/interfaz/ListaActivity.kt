@@ -102,6 +102,7 @@ class ListaActivity : AppCompatActivity() {
             findViewById<ImageButton>(R.id.volador).apply { tag = "volador" },
             findViewById<ImageButton>(R.id.fantasma).apply { tag = "fantasma" }
         )
+
         for (i in tiposParaBuscar) {
             i.setOnClickListener {
                 tipoElegido=i.tag as String
@@ -121,7 +122,16 @@ class ListaActivity : AppCompatActivity() {
             openBusqueda.visibility = View.VISIBLE
             oscurecer.visibility = View.GONE
             listaTipos.visibility = View.GONE
+            tipoBusqueda.isChecked = false
         }
+        oscurecer.setOnClickListener {
+            bottomLayout.visibility = View.GONE
+            openBusqueda.visibility = View.VISIBLE
+            oscurecer.visibility = View.GONE
+            listaTipos.visibility = View.GONE
+            tipoBusqueda.isChecked = false
+        }
+
     }
         override fun onResume() {//establece por defecto al cargar
             super.onResume()

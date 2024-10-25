@@ -12,6 +12,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.green
+import androidx.core.view.marginTop
 //import androidx.glance.visibility
 import androidx.recyclerview.widget.RecyclerView
 import com.david.pokedex_pruebas.R
@@ -60,7 +61,7 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
             holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
         }else holder.pokemonTipo2.visibility = View.GONE
 
-
+        //------------------------------------------------------------------
         //FORTALEZAS
         //añadimos al  Linear layout @columna2 los elementos dinamicamente Primero un texto y luego tantas imagenes como fortalezas tenga el pokemon
         var col_fortalezas = holder.itemView.findViewById<LinearLayout>(R.id.columna1)
@@ -69,8 +70,20 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         //añadimos las imagenes de las debilidades
         for (fortaleza in forts(currentPokemon) ){
             var i = ImageView(holder.itemView.context)
-
             i.setImageResource(fortaleza)
+            //añadimos el margin
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            val topMarginInDp = 5 // 5 dp
+            val density = holder.itemView.context.resources.displayMetrics.density
+            val topMarginInPixels = (topMarginInDp * density + 0.5f).toInt()
+
+            params.setMargins(0, topMarginInPixels, 0, 0)
+            i.layoutParams = params
+            //añadimos la imagen
             col_fortalezas.addView(i)
         }
 
@@ -83,6 +96,19 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         for (debilidad in debs(currentPokemon) ){
             var i = ImageView(holder.itemView.context)
             i.setImageResource(debilidad)
+            //añadimos el margin
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            val topMarginInDp = 5 // 5 dp
+            val density = holder.itemView.context.resources.displayMetrics.density
+            val topMarginInPixels = (topMarginInDp * density + 0.5f).toInt()
+
+            params.setMargins(0, topMarginInPixels, 0, 0)
+            i.layoutParams = params
+            //añadimos la imagen
             col_debilidades.addView(i)
         }
 
@@ -94,15 +120,27 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         if(inmune(currentPokemon).size==0){
             fila_inmune.visibility=View.GONE
         }else {
-
             //se añaden las imágenes
             for (inmunidad in inmune(currentPokemon)) {
                 var i = ImageView(holder.itemView.context)
                 i.setImageResource(inmunidad)
+                //añadimos el margin
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                val topMarginInDp = 5 // 5 dp
+                val density = holder.itemView.context.resources.displayMetrics.density
+                val topMarginInPixels = (topMarginInDp * density + 0.5f).toInt()
+
+                params.setMargins(0, topMarginInPixels, 0, 0)
+                i.layoutParams = params
+                //añadimos la imagen
                 inmune_col2.addView(i)
             }
         }
-
+        //-------------------------------------------------------------
         //fondo del header para cada tipo de pokemon
         cambiaFondo(currentPokemon,holder)
     }

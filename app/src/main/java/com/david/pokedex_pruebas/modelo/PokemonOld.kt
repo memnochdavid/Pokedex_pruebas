@@ -1,12 +1,9 @@
 package com.david.pokedex_pruebas.modelo
 
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokeVistaAdapter.ViewHolder
-import kotlin.text.toDouble
-import kotlin.text.toDoubleOrNull
 
 data class PokemonOld(
     var foto: Int=0,
@@ -170,8 +167,8 @@ var listaPoke : List<PokemonOld> = listOf(
 )
 
 fun cambiaFondo(poke:PokemonOld,holder: ViewHolder){
-    val header=holder.itemView.findViewById<View>(R.id.header)
-    val center=holder.itemView.findViewById<View>(R.id.center)
+    val header=holder.itemView.findViewById<View>(R.id.header1)
+    val center=holder.itemView.findViewById<View>(R.id.header2)
     if(poke.tipo.size==1){
         when(poke.tipo[0]){
             PokemonTipo.PLANTA -> {
