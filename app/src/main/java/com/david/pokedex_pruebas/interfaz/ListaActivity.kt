@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.drawerlayout.widget.DrawerLayout
 //import androidx.glance.visibility
 import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.R
@@ -131,6 +133,10 @@ class ListaActivity : AppCompatActivity() {
             listaTipos.visibility = View.GONE
             tipoBusqueda.isChecked = false
         }
+
+
+
+
 
     }
         override fun onResume() {//establece por defecto al cargar

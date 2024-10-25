@@ -51,15 +51,22 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         holder.pokemonName.text = currentPokemon.name
         holder.desc.text = currentPokemon.desc
 
+        //numero de pokemon
         if(numero.length == 1) numero = "00${(position + 1)}"
         else if(numero.length == 2) numero = "0${(position + 1)}"
         holder.pokemonNumber.text = "#${numero}"
 
-        holder.pokemonTipo1.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
+        //tipos
+        var fila_tipos = holder.itemView.findViewById<LinearLayout>(R.id.fila_tipos)
+        fila_tipos.removeAllViews()
+        var t1 = ImageView(holder.itemView.context)
+        var t2 = ImageView(holder.itemView.context)
+        t1.setImageResource(enumToDrawable(currentPokemon.tipo.get(0)))
+        fila_tipos.addView(t1)
         if (n_tipos==2) {
-            holder.pokemonTipo2.visibility = View.VISIBLE
-            holder.pokemonTipo2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
-        }else holder.pokemonTipo2.visibility = View.GONE
+            t2.setImageResource(enumToDrawable(currentPokemon.tipo.get(1)))
+            fila_tipos.addView(t2)
+        }
 
         //------------------------------------------------------------------
         //FORTALEZAS
