@@ -1,5 +1,6 @@
 package com.david.pokedex_pruebas.modelo
 
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.david.pokedex_pruebas.R
@@ -169,262 +170,62 @@ var listaPoke : List<PokemonOld> = listOf(
 fun cambiaFondo(poke:PokemonOld,holder: ViewHolder){
     val header=holder.itemView.findViewById<View>(R.id.header1)
     val center=holder.itemView.findViewById<View>(R.id.header2)
-    if(poke.tipo.size==1){
-        when(poke.tipo[0]){
-            PokemonTipo.PLANTA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.AGUA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.FUEGO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.LUCHA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.VENENO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ACERO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.BICHO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.DRAGON -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ELECTRICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.HADA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.HIELO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.PSIQUICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ROCA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.TIERRA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.SINIESTRO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.NORMAL -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.FANTASMA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.VOLADOR -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.NULL -> TODO()
+    if (poke.tipo.size == 1) {
+        val colorName = poke.tipo[0].tag
+        val colorResId = holder.itemView.context.resources.getIdentifier(colorName, "color", holder.itemView.context.packageName)
+
+        val color = if (colorResId != 0) {
+            ContextCompat.getColor(holder.itemView.context, colorResId)
+        } else {
+            ContextCompat.getColor(holder.itemView.context, R.color.black) // Color predeterminado
         }
+
+        header.setBackgroundColor(color) // Asigna el color al fondo
+        center.setBackgroundColor(color) // Asigna el color al fondo
     }
-    else if(poke.tipo.size==2){
-        when(poke.tipo[0]){
-            PokemonTipo.PLANTA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.AGUA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.FUEGO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.LUCHA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.VENENO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.ACERO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.BICHO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.DRAGON -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.ELECTRICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.HADA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.HIELO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.SINIESTRO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.ROCA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.TIERRA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.PSIQUICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.NORMAL -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.FANTASMA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.VOLADOR -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
-                header.setBackgroundColor(color)
-            }
-            PokemonTipo.NULL -> TODO()
-        }
-        when(poke.tipo[1]){
-            PokemonTipo.PLANTA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.planta) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.AGUA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.agua) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.FUEGO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fuego) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.LUCHA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.lucha) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.VENENO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.veneno) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ACERO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.acero) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.BICHO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.bicho) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.DRAGON -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.dragon) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ELECTRICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.elec) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.HADA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hada) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.HIELO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.hielo) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.SINIESTRO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.siniestro) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.ROCA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.roca) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.TIERRA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.tierra) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.PSIQUICO -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.psiq) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.NORMAL -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.normal) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.FANTASMA -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.fant) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.VOLADOR -> {
-                val color = ContextCompat.getColor(holder.itemView.context, R.color.vol) // Assuming you have a color named 'green' in your colors.xml
-                center.setBackgroundColor(color)
-            }
-            PokemonTipo.NULL -> TODO()
+    else if (poke.tipo.size == 2) {
+        val colorName1 = poke.tipo[0].tag
+        val colorName2 = poke.tipo[1].tag
+
+        val colorResId1 = holder.itemView.context.resources.getIdentifier(colorName1, "color", holder.itemView.context.packageName)
+        val colorResId2 = holder.itemView.context.resources.getIdentifier(colorName2, "color", holder.itemView.context.packageName)
+
+        val color1 = if (colorResId1 != 0) {
+            ContextCompat.getColor(holder.itemView.context, colorResId1)
+        } else {
+            ContextCompat.getColor(holder.itemView.context, R.color.black)
         }
 
+        val color2 = if (colorResId2 != 0) {
+            ContextCompat.getColor(holder.itemView.context, colorResId2)
+        } else {
+            ContextCompat.getColor(holder.itemView.context, R.color.black)
+        }
+        header.setBackgroundColor(color1)
+        center.setBackgroundColor(color2)
     }
-
-
-
-
 }//fondo del header para cada tipo de pokemon
 
-enum class PokemonTipo {
-    PLANTA, AGUA, FUEGO, LUCHA, VENENO, ACERO, BICHO, DRAGON, ELECTRICO,HADA, HIELO, PSIQUICO, ROCA, TIERRA, SINIESTRO, NORMAL, VOLADOR, FANTASMA, NULL
+enum class PokemonTipo(val tag: String) {
+    PLANTA("planta"),
+    AGUA("agua"),
+    FUEGO("fuego"),
+    LUCHA("lucha"),
+    VENENO("veneno"),
+    ACERO("acero"),
+    BICHO("bicho"),
+    DRAGON("dragon"),
+    ELECTRICO("electrico"),
+    HADA("hada"),
+    HIELO("hielo"),
+    PSIQUICO("psiquico"),
+    ROCA("roca"),
+    TIERRA("tierra"),
+    SINIESTRO("siniestro"),
+    NORMAL("normal"),
+    VOLADOR("volador"),
+    FANTASMA("fantasma"),
+    NULL("null");
 }
 
 val efectividad = mapOf(
@@ -668,7 +469,7 @@ fun enumToDrawable(tipo:PokemonTipo):Int{
         PokemonTipo.NORMAL -> R.drawable.normal
         PokemonTipo.VOLADOR -> R.drawable.volador
         PokemonTipo.FANTASMA -> R.drawable.fantasma
-        else -> { com.android.car.ui.R.drawable.car_ui_icon_error}
+        else -> { R.drawable.charmander}
     }
 }
 fun drawableToEnum(drawable:Int):PokemonTipo{

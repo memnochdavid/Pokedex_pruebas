@@ -5,12 +5,12 @@
     <color name="fuego">#8F2626</color>
     <color name="planta">#4CAF50</color>
     <color name="agua">#2196F3</color>
-    <color name="elec">#FFC107</color>
-    <color name="fant">#673AB7</color>
+    <color name="electrico">#FFC107</color>
+    <color name="fantasma">#673AB7</color>
     <color name="acero">#BABABA</color>
-    <color name="psiq">#714489</color>
+    <color name="psiquico">#714489</color>
     <color name="hada">#CB7ADB</color>
-    <color name="vol">#6B9BB1</color>
+    <color name="volador">#6B9BB1</color>
     <color name="bicho">#78A247</color>
     <color name="dragon">#3F51B5</color>
     <color name="hielo">#5998A0</color>
