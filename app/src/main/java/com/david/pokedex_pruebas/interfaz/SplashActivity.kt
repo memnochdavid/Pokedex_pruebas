@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         var pokeball_splash=findViewById<ImageView>(R.id.pokeball_splash)
         Glide.with(this)
             .asGif()
-            .load(R.drawable.pokeball_splash)
+            .load(R.drawable.ghost_splash)
             .fitCenter()
             .into(pokeball_splash)
 
@@ -28,6 +28,6 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, ListaActivity::class.java))
             finish() // Cierra la activity del splash screen
-        }, 5000) // 3 segundos de duración
+        }, 6500) // 3 segundos de duración
     }
 }
