@@ -34,6 +34,7 @@ class ListaActivity : AppCompatActivity() {
         recyclerView.adapter = PokemonAdapter(listaPoke)
 
 
+
         val busqueda = findViewById<SearchView>(R.id.busqueda)
         busqueda.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -153,7 +154,6 @@ class ListaActivity : AppCompatActivity() {
             editor.putInt("pos", 0)
             editor.apply()
         }
-
 
 }
 
