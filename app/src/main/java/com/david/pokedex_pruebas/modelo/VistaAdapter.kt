@@ -1,6 +1,7 @@
 package com.david.pokedex_pruebas.modelo
 
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,9 +30,10 @@ class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :
         val pokemonName: TextView = view.findViewById(R.id.nombre)
         val desc: TextView = view.findViewById(R.id.desc)
         //tipos - ImageView de los tipos
+        /*
         val pokemonTipo1: ImageView = itemView.findViewById(R.id.tipo1)
         val pokemonTipo2: ImageView = itemView.findViewById(R.id.tipo2)
-
+*/
     }
 
 

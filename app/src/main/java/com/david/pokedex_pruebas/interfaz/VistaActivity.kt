@@ -36,9 +36,33 @@ class VistaActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = PokeVistaAdapter(listaPoke)
         //efecto snap
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(recyclerView)
+        class NextItemSnapHelper : LinearSnapHelper() {
+            override fun findTargetSnapPosition(layoutManager: RecyclerView.LayoutManager, velocityX: Int, velocityY: Int): Int {
+                val currentView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
 
+                val currentPosition = layoutManager.getPosition(currentView)
+
+                // Determine the direction of the fling
+                val direction = if (layoutManager.canScrollHorizontally()) {
+                    if (velocityX > 0) 1 else -1
+                } else {
+                    if (velocityY > 0) 0 else -1
+                }
+
+                // Calculate the target position based on the direction
+                val targetPosition = currentPosition + direction
+
+                // Check if the target position is within bounds
+                return if (targetPosition in 0 until layoutManager.itemCount) {
+                    targetPosition
+                } else {
+                    RecyclerView.NO_POSITION
+                }
+            }
+        }
+        //
+        val snapHelper = NextItemSnapHelper()
+        snapHelper.attachToRecyclerView(recyclerView)
 
         //Para que muestre a partir del pokémon seleccionado
         val pokemonName = intent.getStringExtra("pokemon_name")
@@ -54,6 +78,7 @@ class VistaActivity : AppCompatActivity() {
             }
         }
         layoutManager.scrollToPosition(num)
+
 
     //
 
