@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -141,12 +142,18 @@ class ListaActivity : AppCompatActivity() {
         override fun onResume() {//establece por defecto al cargar
             super.onResume()
             val recyclerView: RecyclerView = findViewById(R.id.pokelistRecyclerView)
+            var num = intent.getIntExtra("pos", 0)
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = PokemonAdapter(listaPoke)
-            //recyclerView.scrollToPosition()
-
-
+            //guarda la posición en la lista entre activities, pero sólo durante la ejecución
+            val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            val posicion = sharedPrefs.getInt("pos", 0)
+            recyclerView.scrollToPosition(posicion)
+            val editor = sharedPrefs.edit()
+            editor.putInt("pos", 0)
+            editor.apply()
         }
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.david.pokedex_pruebas.interfaz
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -24,7 +25,6 @@ import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.modelo.listaPoke
 
 class VistaActivity : AppCompatActivity() {
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +46,14 @@ class VistaActivity : AppCompatActivity() {
         for(i in listaPoke){
             if(i.name==pokemonName){
                 num= listaPoke.indexOf(i)
+                //se comparte el pokemon seleccionado con el adaptador
+                val sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPrefs.edit()
+                editor.putInt("pos", num)
+                editor.apply()
             }
         }
-        val initialPosition = num
-        layoutManager.scrollToPosition(initialPosition)
-
+        layoutManager.scrollToPosition(num)
 
     //
 

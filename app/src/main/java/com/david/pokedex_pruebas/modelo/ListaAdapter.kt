@@ -76,10 +76,10 @@ class PokemonAdapter(private val pokemonList: List<PokemonOld>) :
             intent.putExtra("pokemon_name", currentPokemon.name)
             intent.putExtra("pokemon_image", currentPokemon.foto)
             intent.putExtra("tipo1", currentPokemon.tipo.get(0))
+            intent.putExtra("num", position)
             if (n_tipos==2) {
                 intent.putExtra("tipo2", currentPokemon.tipo.get(1))
             }
-            intent.putExtra("num", position)
             holder.itemView.context.startActivity(intent)
         }
 

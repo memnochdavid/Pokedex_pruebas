@@ -18,8 +18,7 @@
             android:id="@+id/pokeball_splash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/pokeball_splash"
-            android:scaleType="fitCenter"/>
+            android:src="@drawable/pokeball_splash"/>
 
     </LinearLayout>
 
