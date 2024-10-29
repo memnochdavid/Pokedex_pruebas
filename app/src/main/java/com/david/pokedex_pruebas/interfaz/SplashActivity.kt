@@ -23,6 +23,13 @@ class SplashActivity : AppCompatActivity() {
             .load(R.drawable.pokeball_splash)
             .fitCenter()
             .into(pokeball_splash)
+        var poke_logo=findViewById<ImageView>(R.id.poke_logo)
+        /*
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.poke_logo)
+            .fitCenter()
+            .into(poke_logo)*/
 
 
         Handler(Looper.getMainLooper()).postDelayed({
