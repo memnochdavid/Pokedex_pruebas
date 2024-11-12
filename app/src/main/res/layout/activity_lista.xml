@@ -230,6 +230,18 @@
         android:src="@drawable/car_ui_icon_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageButton
+        android:id="@+id/compose"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:contentDescription="AbreMenu"
+        android:scaleType="fitCenter"
+        android:elevation="1dp"
+        android:src="@drawable/mew"
+        app:layout_constraintStart_toEndOf="@id/open_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <LinearLayout
         android:id="@+id/oscurece"
@@ -245,5 +257,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

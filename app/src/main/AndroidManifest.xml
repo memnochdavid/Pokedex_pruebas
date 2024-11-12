@@ -6,31 +6,29 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pokedex_pruebas"
-        android:hardwareAccelerated="true"
         tools:targetApi="31">
         <activity
             android:name=".interfaz.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".interfaz.ListaActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
+            android:exported="false">
         </activity>
         <activity android:name=".interfaz.VistaActivity" />
-
+        <activity android:name=".interfaz.ComposeActivity" />
     </application>
 
 </manifest>

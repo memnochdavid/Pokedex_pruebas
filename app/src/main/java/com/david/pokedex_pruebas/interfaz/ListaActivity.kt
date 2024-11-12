@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -57,6 +58,13 @@ class ListaActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        //ABRE LA ACTIVITY DE COMPOSE
+        val compose = findViewById<ImageButton>(R.id.compose)
+        compose.setOnClickListener {
+            val intent = Intent(this, ComposeActivity::class.java)
+            startActivity(intent)
+        }
 
         //para la búsqueda
         var oscurecer = findViewById<LinearLayout>(R.id.oscurece)
