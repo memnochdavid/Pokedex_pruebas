@@ -3,6 +3,7 @@ package com.david.pokedex_pruebas.interfaz
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,22 +21,37 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.top
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,8 +62,10 @@ import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.delay
 
 private lateinit var refBBDD: DatabaseReference
+
 /*
 private lateinit var refStorage: StorageReference
 private lateinit var identificador: String
@@ -70,7 +88,11 @@ class ComposeListaActivity : ComponentActivity() {
             listaPokeFireBase = pokemonList
             isLoading = false // Está cargando
         }.addOnFailureListener { exception ->
-            Toast.makeText(this, "Error al cargar los datos de la base de datos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Error al cargar los datos de la base de datos",
+                Toast.LENGTH_SHORT
+            ).show()
             isLoading = false
         }
 
@@ -84,202 +106,312 @@ class ComposeListaActivity : ComponentActivity() {
 @Composable
 fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
     var selectedItemIndex by remember { mutableStateOf(0) }
+    var campoBusqueda by remember { mutableStateOf(false) }
+    var textobusqueda by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    var listaFiltrada by remember { mutableStateOf(pokemonList) }
 
-    if (isLoading) {
+    if (isLoading) { //se asegura de haber cargado los datos de la nube antes de empezar a mostrar nada
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(R.color.lista_con_foco)),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             CircularProgressIndicator(
                 color = colorResource(R.color.white),
                 strokeWidth = 10.dp,
                 modifier = Modifier.size(100.dp)
             )
         }
-    }
-    else {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 15.dp)
-            .background(colorResource(R.color.lista_con_foco))) {
+    } else {//cuando ha cargado, comienza a mostrar cosas
 
-            LazyColumn(modifier = Modifier.padding(top = 15.dp)){//recyclerview
-                items(pokemonList.size) { index ->
-                    val pokemon = pokemonList[index]
-                    val context = LocalContext.current
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .clickable(
-                                onClick = {
-                                    selectedItemIndex = index
-                                    val pokeAux: PokemonFB = PokemonFB(
-                                        pokemon.num,
-                                        pokemon.id,
-                                        pokemon.foto,
-                                        pokemon.name,
-                                        pokemon.desc,
-                                        pokemon.tipo
-                                    )
-                                    val intent = Intent(context, ComposeVistaActivity::class.java)
-                                    intent.putExtra("pokemon", pokeAux as Parcelable)
-                                    context.startActivity(intent)
-
-/*
-/////////////////////////////////////////////////////////////////////////////
-                                    //sube a Firebase
-                                    //refStorage = FirebaseStorage.getInstance().reference
-                                    for(i in pokemonList){
-                                        identificador = refBBDD.child("pokemones").push().key!!
-                                        refBBDD.child("pokemones").child(identificador).setValue(i)/*
-                                        refStorage.child("pokemones").child(identificador).putFile(
-                                            Uri.parse("android.resource://com.david.pokedex_pruebas/drawable/${i.foto}"))*/
-                                    }
-/////////////////////////////////////////////////////////////////////////
-*/
-
-                                }
-                            )
-                    )  {
-
-                        var num = "${(pokemon.num)}"
-                        if(num.length == 1) num = "00${(pokemon.num)}"
-                        else if(num.length == 2) num = "0${(pokemon.num)}"
-
-                        ConstraintLayout(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(colorResource(R.color.objeto_lista))
-                                .padding(end = 30.dp)
-                        ) {
-                            val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, menu) = createRefs()
-                            Image(
-                                painter = painterResource(id = R.drawable.pokeball_icon),
-                                contentDescription = "Pokeball",
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .padding(5.dp)
-                                    .constrainAs(pokeball) {
-                                        start.linkTo(parent.start)
-                                        top.linkTo(parent.top)
-                                    }
-                            )
-                            Image(
-                                painter = painterResource(id = pokemon.foto),
-                                contentDescription = "Pokemon Image",
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .fillMaxSize()
-                                    .constrainAs(pokemonImage) {
-                                        start.linkTo(parent.start)
-                                        top.linkTo(parent.top)
-                                        bottom.linkTo(parent.bottom)
-                                    }
-                            )
-                            Text(
-                                text = "#$num",
-                                color = Color.Black,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .padding(start = 15.dp)
-                                    .constrainAs(numero) {
-                                        start.linkTo(pokemonImage.end)
-                                        top.linkTo(parent.top)
-                                        bottom.linkTo(tipo1.top)
-                                        end.linkTo(pokemonName.start)
-                                    }
-                            )
-                            Text(
-                                text = pokemon.name,
-                                color = Color.Black,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier
-                                    .padding(start = 20.dp)
-                                    .constrainAs(pokemonName) {
-                                        start.linkTo(numero.end)
-                                        top.linkTo(parent.top)
-                                        bottom.linkTo(tipo1.top)
-                                        end.linkTo(parent.end)
-                                    }
-                            )
-                            if (pokemon.tipo.size == 1){
-                                Image(
-                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                                    contentDescription = "Tipo 1",
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .width(60.dp)
-                                        .height(25.dp)
-                                        .constrainAs(tipo1) {
-                                            start.linkTo(numero.start)
-                                            bottom.linkTo(menu.top)
-                                            top.linkTo(pokemonName.bottom)
-                                            end.linkTo(pokemonName.end)
-                                        }
-                                )
-                            }
-                            else{
-                                Image(
-                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                                    contentDescription = "Tipo 1",
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .width(60.dp)
-                                        .height(25.dp)
-                                        .constrainAs(tipo1) {
-                                            start.linkTo(numero.start)
-                                            bottom.linkTo(menu.top)
-                                            top.linkTo(pokemonName.bottom)
-                                            end.linkTo(tipo2.start)
-                                        }
-                                )
-                                Image(
-                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
-                                    contentDescription = "Tipo 2",
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .width(60.dp)
-                                        .height(25.dp)
-                                        .constrainAs(tipo2) {
-                                            start.linkTo(tipo1.end)
-                                            bottom.linkTo(menu.top)
-                                            top.linkTo(pokemonName.bottom)
-                                            end.linkTo(pokemonName.end)
-                                        }
-                                )
-                            }
-                        }
-                    }
-
+        LaunchedEffect(textobusqueda) {//filtramos la lista con la búsqueda de textobusqueda
+            delay(200)
+            listaFiltrada = if (textobusqueda.isEmpty()) {
+                pokemonList // Show all items when search is empty
+            } else {
+                pokemonList.filter { pokemon ->
+                    pokemon.name.contains(textobusqueda, ignoreCase = true)
                 }
             }
         }
-        Button(
-            onClick = {
-                //fdghdh
-            },
+
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.lupa),
-                contentDescription = "Menu",
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(15.dp)
-            )
+                .fillMaxSize()
+                .padding(vertical = 15.dp)
+                .background(colorResource(R.color.lista_con_foco))
+        ) {
+            ConstraintLayout {
+                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, menu, lazy, boton, layoutBusqueda) = createRefs()
+                val scrollState = rememberScrollState()
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp)
+                        .constrainAs(lazy) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(boton.top)
+                    }
+                ) {//recyclerview
+                    items(listaFiltrada) { pokemon ->
+                    //val pokemon = pokemonList[index]
+                        val context = LocalContext.current
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .clickable(
+                                    onClick = {
+                                        val index = pokemonList.indexOf(pokemon)
+                                        selectedItemIndex = index
+                                        val pokeAux: PokemonFB = PokemonFB(
+                                            pokemon.num,
+                                            pokemon.id,
+                                            pokemon.foto,
+                                            pokemon.name,
+                                            pokemon.desc,
+                                            pokemon.tipo
+                                        )
+                                        val intent =
+                                            Intent(context, ComposeVistaActivity::class.java)
+                                        intent.putExtra("pokemon", pokeAux as Parcelable)
+                                        context.startActivity(intent)
+
+                                        /*
+                                        ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE cuando se pulsa un elemento cualquiera de la lista
+                                                                            //sube a Firebase
+                                                                            //refStorage = FirebaseStorage.getInstance().reference
+                                                                            for(i in pokemonList){
+                                                                                identificador = refBBDD.child("pokemones").push().key!!
+                                                                                refBBDD.child("pokemones").child(identificador).setValue(i)/*
+                                                                                refStorage.child("pokemones").child(identificador).putFile(
+                                                                                    Uri.parse("android.resource://com.david.pokedex_pruebas/drawable/${i.foto}"))*/
+                                                                            }
+                                        /////////////////////////////////////////////////////////////////////////
+                                        */
+
+                                    }
+
+
+                                )
+                        ) {
+
+                            var num = "${(pokemon.num)}"
+                            if (num.length == 1) num = "00${(pokemon.num)}"
+                            else if (num.length == 2) num = "0${(pokemon.num)}"
+
+                            ConstraintLayout(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(colorResource(R.color.objeto_lista))
+                                    .padding(end = 30.dp)
+                            ) {
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.pokeball_icon),
+                                    contentDescription = "Pokeball",
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .padding(5.dp)
+                                        .constrainAs(pokeball) {
+                                            start.linkTo(parent.start)
+                                            top.linkTo(parent.top)
+                                        }
+                                )
+                                Image(
+                                    painter = painterResource(id = pokemon.foto),
+                                    contentDescription = "Pokemon Image",
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .fillMaxSize()
+                                        .constrainAs(pokemonImage) {
+                                            start.linkTo(parent.start)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(parent.bottom)
+                                        }
+                                )
+                                Text(
+                                    text = "#$num",
+                                    color = Color.Black,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .padding(start = 15.dp)
+                                        .constrainAs(numero) {
+                                            start.linkTo(pokemonImage.end)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(tipo1.top)
+                                            end.linkTo(pokemonName.start)
+                                        }
+                                )
+                                Text(
+                                    text = pokemon.name,
+                                    color = Color.Black,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .padding(start = 20.dp)
+                                        .constrainAs(pokemonName) {
+                                            start.linkTo(numero.end)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(tipo1.top)
+                                            end.linkTo(parent.end)
+                                        }
+                                )
+                                if (pokemon.tipo.size == 1) {
+                                    Image(
+                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                                        contentDescription = "Tipo 1",
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .width(60.dp)
+                                            .height(25.dp)
+                                            .constrainAs(tipo1) {
+                                                start.linkTo(numero.start)
+                                                bottom.linkTo(menu.top)
+                                                top.linkTo(pokemonName.bottom)
+                                                end.linkTo(pokemonName.end)
+                                            }
+                                    )
+                                } else {
+                                    Image(
+                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                                        contentDescription = "Tipo 1",
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .width(60.dp)
+                                            .height(25.dp)
+                                            .constrainAs(tipo1) {
+                                                start.linkTo(numero.start)
+                                                bottom.linkTo(menu.top)
+                                                top.linkTo(pokemonName.bottom)
+                                                end.linkTo(tipo2.start)
+                                            }
+                                    )
+                                    Image(
+                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
+                                        contentDescription = "Tipo 2",
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .width(60.dp)
+                                            .height(25.dp)
+                                            .constrainAs(tipo2) {
+                                                start.linkTo(tipo1.end)
+                                                bottom.linkTo(parent.bottom)
+                                                top.linkTo(pokemonName.bottom)
+                                                end.linkTo(pokemonName.end)
+                                            }
+                                    )
+                                }
+                            }
+                        }
+
+                    }
+                }
+                Button(
+                    onClick = {
+                        campoBusqueda = !campoBusqueda
+                    },
+                    modifier = Modifier
+                        .size(50.dp)
+                        .wrapContentHeight()
+                        .constrainAs(boton) {
+                            start.linkTo(parent.start)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.fuego), // Cambia el color de fondo a rojo
+                        contentColor = Color.White // Cambia el color del contenido a blanco
+                    )
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.lupa),
+                        contentDescription = "Menu",
+                        contentScale = ContentScale.Crop
+                    )
+                    Text(text = "Menu")
+                }
+                if (campoBusqueda) {
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .constrainAs(layoutBusqueda) {
+                                start.linkTo(boton.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ) {
+                        // Content of the new ConstraintLayout
+                        OutlinedTextField(
+                            value = textobusqueda,
+                            onValueChange = { textobusqueda = it },
+                            label = { Text("Buscar") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .onFocusChanged { focusState ->
+                                    if (!focusState.isFocused) {
+                                        textobusqueda = ""
+                                    }
+                                }
+                                .focusRequester(focusRequester), // Add this line
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Filled.Search,
+                                    contentDescription = "Buscar"
+                                )
+                            }
+                        )
+
+                    }
+                }
+            }
+
 
         }
 
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 @Preview(showBackground = true)
@@ -290,3 +422,4 @@ fun PokemonCardPreview() {
 
 
 */
+
