@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -76,11 +78,13 @@ class ComposeVistaActivity : AppCompatActivity() {
         //se rescatan los datos del intent
         //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
         val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
+        val indice = intent.getIntExtra("indice", 0)
+
 
 
         setContent {
             //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
-            VerListaPokemon(lista)
+            VerListaPokemon(lista, indice)
             //VerPokemon(lista[45])
         }
     }
@@ -135,7 +139,7 @@ fun VerPokemon(pokemon: PokemonFB) {
             contentDescription = null,
             modifier = Modifier
                 .fillMaxHeight(0.4f)
-                .constrainAs(foto){
+                .constrainAs(foto) {
                     top.linkTo(header1.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -145,7 +149,7 @@ fun VerPokemon(pokemon: PokemonFB) {
         )
 
         Text(modifier = Modifier
-            .constrainAs(number){
+            .constrainAs(number) {
                 top.linkTo(foto.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
@@ -227,8 +231,12 @@ fun VerPokemon(pokemon: PokemonFB) {
 }
 
 @Composable
-fun VerListaPokemon(lista: List<PokemonFB>) {
+fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = indice
+    )
     LazyRow(
+        state = listState,
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.transparente))

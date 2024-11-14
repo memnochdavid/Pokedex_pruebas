@@ -189,6 +189,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                         val intent =
                                             Intent(context, ComposeVistaActivity::class.java)
                                         intent.putParcelableArrayListExtra("lista", pokemonList as ArrayList<PokemonFB>)
+                                        intent.putExtra("indice", index)
                                         context.startActivity(intent)
 
                                         /*
