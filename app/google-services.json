@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "519068823043",
+    "firebase_url": "https://com-david-pokedexpruebas-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "com-david-pokedexpruebas",
+    "storage_bucket": "fir-class-f2d3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519068823043:android:890e15959caaf42f60a836",
+        "android_client_info": {
+          "package_name": "com.david.pokedex_pruebas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIbN6Ny3fb2w1VDfPIbaTwGoO8GVXc05I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

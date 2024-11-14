@@ -62,7 +62,7 @@ class ListaActivity : AppCompatActivity() {
         //ABRE LA ACTIVITY DE COMPOSE
         val compose = findViewById<ImageButton>(R.id.compose)
         compose.setOnClickListener {
-            val intent = Intent(this, ComposeActivity::class.java)
+            val intent = Intent(this, ComposeListaActivity::class.java)
             startActivity(intent)
         }
 

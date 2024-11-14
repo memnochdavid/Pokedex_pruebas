@@ -22,4 +22,6 @@
     <color name="siniestro">#39304D</color>
     <color name="lista_sin_foco">#370C0C</color>
     <color name="lista_con_foco">#661111</color>
+    <color name="objeto_lista">#F2D985</color>
+
 </resources>

@@ -1,0 +1,292 @@
+package com.david.pokedex_pruebas.interfaz
+
+import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.modelo.PokemonFB
+import com.david.pokedex_pruebas.modelo.enumToDrawableFB
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.StorageReference
+
+private lateinit var refBBDD: DatabaseReference
+/*
+private lateinit var refStorage: StorageReference
+private lateinit var identificador: String
+*/
+class ComposeListaActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        refBBDD = FirebaseDatabase.getInstance().reference
+
+        var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
+        var isLoading by mutableStateOf(true)
+        refBBDD.child("pokemones").get().addOnSuccessListener { dataSnapshot ->
+            val pokemonList = mutableListOf<PokemonFB>()
+            for (childSnapshot in dataSnapshot.children) {
+                val pokemon = childSnapshot.getValue(PokemonFB::class.java)
+                pokemon?.let { pokemonList.add(it) }
+            }
+            listaPokeFireBase = pokemonList
+            isLoading = false // Está cargando
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Error al cargar los datos de la base de datos", Toast.LENGTH_SHORT).show()
+            isLoading = false
+        }
+
+        enableEdgeToEdge()
+        setContent {
+            VerListaPoke(listaPokeFireBase, isLoading)//listaPokeFireBase--isLoading
+        }
+    }
+}
+
+@Composable
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
+    var selectedItemIndex by remember { mutableStateOf(0) }
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorResource(R.color.lista_con_foco)),
+            contentAlignment = Alignment.Center
+        ){
+            CircularProgressIndicator(
+                color = colorResource(R.color.white),
+                strokeWidth = 10.dp,
+                modifier = Modifier.size(100.dp)
+            )
+        }
+    }
+    else {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 15.dp)
+            .background(colorResource(R.color.lista_con_foco))) {
+
+            LazyColumn(modifier = Modifier.padding(top = 15.dp)){//recyclerview
+                items(pokemonList.size) { index ->
+                    val pokemon = pokemonList[index]
+                    val context = LocalContext.current
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .clickable(
+                                onClick = {
+                                    selectedItemIndex = index
+                                    val pokeAux: PokemonFB = PokemonFB(
+                                        pokemon.num,
+                                        pokemon.id,
+                                        pokemon.foto,
+                                        pokemon.name,
+                                        pokemon.desc,
+                                        pokemon.tipo
+                                    )
+                                    val intent = Intent(context, ComposeVistaActivity::class.java)
+                                    intent.putExtra("pokemon", pokeAux as Parcelable)
+                                    context.startActivity(intent)
+
+/*
+/////////////////////////////////////////////////////////////////////////////
+                                    //sube a Firebase
+                                    //refStorage = FirebaseStorage.getInstance().reference
+                                    for(i in pokemonList){
+                                        identificador = refBBDD.child("pokemones").push().key!!
+                                        refBBDD.child("pokemones").child(identificador).setValue(i)/*
+                                        refStorage.child("pokemones").child(identificador).putFile(
+                                            Uri.parse("android.resource://com.david.pokedex_pruebas/drawable/${i.foto}"))*/
+                                    }
+/////////////////////////////////////////////////////////////////////////
+*/
+
+                                }
+                            )
+                    )  {
+
+                        var num = "${(pokemon.num)}"
+                        if(num.length == 1) num = "00${(pokemon.num)}"
+                        else if(num.length == 2) num = "0${(pokemon.num)}"
+
+                        ConstraintLayout(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(colorResource(R.color.objeto_lista))
+                                .padding(end = 30.dp)
+                        ) {
+                            val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, menu) = createRefs()
+                            Image(
+                                painter = painterResource(id = R.drawable.pokeball_icon),
+                                contentDescription = "Pokeball",
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .padding(5.dp)
+                                    .constrainAs(pokeball) {
+                                        start.linkTo(parent.start)
+                                        top.linkTo(parent.top)
+                                    }
+                            )
+                            Image(
+                                painter = painterResource(id = pokemon.foto),
+                                contentDescription = "Pokemon Image",
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .fillMaxSize()
+                                    .constrainAs(pokemonImage) {
+                                        start.linkTo(parent.start)
+                                        top.linkTo(parent.top)
+                                        bottom.linkTo(parent.bottom)
+                                    }
+                            )
+                            Text(
+                                text = "#$num",
+                                color = Color.Black,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .padding(start = 15.dp)
+                                    .constrainAs(numero) {
+                                        start.linkTo(pokemonImage.end)
+                                        top.linkTo(parent.top)
+                                        bottom.linkTo(tipo1.top)
+                                        end.linkTo(pokemonName.start)
+                                    }
+                            )
+                            Text(
+                                text = pokemon.name,
+                                color = Color.Black,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .padding(start = 20.dp)
+                                    .constrainAs(pokemonName) {
+                                        start.linkTo(numero.end)
+                                        top.linkTo(parent.top)
+                                        bottom.linkTo(tipo1.top)
+                                        end.linkTo(parent.end)
+                                    }
+                            )
+                            if (pokemon.tipo.size == 1){
+                                Image(
+                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                                    contentDescription = "Tipo 1",
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier
+                                        .width(60.dp)
+                                        .height(25.dp)
+                                        .constrainAs(tipo1) {
+                                            start.linkTo(numero.start)
+                                            bottom.linkTo(menu.top)
+                                            top.linkTo(pokemonName.bottom)
+                                            end.linkTo(pokemonName.end)
+                                        }
+                                )
+                            }
+                            else{
+                                Image(
+                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                                    contentDescription = "Tipo 1",
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier
+                                        .width(60.dp)
+                                        .height(25.dp)
+                                        .constrainAs(tipo1) {
+                                            start.linkTo(numero.start)
+                                            bottom.linkTo(menu.top)
+                                            top.linkTo(pokemonName.bottom)
+                                            end.linkTo(tipo2.start)
+                                        }
+                                )
+                                Image(
+                                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
+                                    contentDescription = "Tipo 2",
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier
+                                        .width(60.dp)
+                                        .height(25.dp)
+                                        .constrainAs(tipo2) {
+                                            start.linkTo(tipo1.end)
+                                            bottom.linkTo(menu.top)
+                                            top.linkTo(pokemonName.bottom)
+                                            end.linkTo(pokemonName.end)
+                                        }
+                                )
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        Button(
+            onClick = {
+                //fdghdh
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.lupa),
+                contentDescription = "Menu",
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(15.dp)
+            )
+
+        }
+
+
+    }
+}
+
+/*
+@Preview(showBackground = true)
+@Composable
+fun PokemonCardPreview() {
+    VerListaPoke(listaPokeFireBase, true)
+}
+
+
+*/

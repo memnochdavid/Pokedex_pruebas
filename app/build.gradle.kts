@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -41,6 +43,11 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.tv.material)
     val composeBom = platform("androidx.compose:compose-bom:2024.09.03")
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -77,9 +84,29 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.4.0")
     //compose
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.compose.ui:ui:1.3.3")            // Use the latest version
+    implementation("androidx.compose.ui:ui-graphics:1.3.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
+    implementation("androidx.compose.material3:material3:1.1.0-alpha08")
     //
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    //Firebase
+
+    implementation ("com.google.firebase:firebase-database:20.0.2")
+    implementation ("com.google.firebase:firebase-core:20.0.0")
+    implementation ("com.google.firebase:firebase-storage:20.0.0")
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("com.google.firebase:firebase-analytics:20.0.2")
+    implementation ("com.google.android.gms:play-services-auth:20.1.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1")
+    implementation ("com.google.firebase:firebase-bom:32.2.3")
+    implementation ("com.google.firebase:firebase-appcheck")
+    //
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
 }
 
 /*https://developer.android.com/develop/ui/compose/compiler?hl=es-419*/

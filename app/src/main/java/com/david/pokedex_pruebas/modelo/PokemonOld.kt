@@ -1,17 +1,17 @@
 package com.david.pokedex_pruebas.modelo
 
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokeVistaAdapter.ViewHolder
+import java.io.Serializable
 
 data class PokemonOld(
     var foto: Int=0,
     var name: String="",
     var desc: String="",
     var tipo: List<PokemonTipo> = listOf()
-)
+): Serializable
 
 var listaPoke : List<PokemonOld> = listOf(
     PokemonOld(R.drawable.bulbasaur01, "Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipo.PLANTA, PokemonTipo.VENENO)),
@@ -518,4 +518,3 @@ fun enumToColor(tipo:PokemonTipo):Int{
         else -> { R.color.black}
     }
 }
-
