@@ -37,6 +37,7 @@ enum class PokemonTipoFB(val tag: String) {
     FANTASMA("fantasma"),
     NULL("null");
 }
+
 fun enumToDrawableFB(tipo:PokemonTipoFB):Int{
     return when(tipo){
         PokemonTipoFB.PLANTA -> R.drawable.planta
@@ -60,6 +61,250 @@ fun enumToDrawableFB(tipo:PokemonTipoFB):Int{
         else -> { R.drawable.charmander}
     }
 }
+fun enumToColorFB(tipo:PokemonTipoFB):Int{
+    return when(tipo){
+        PokemonTipoFB.PLANTA -> R.color.planta
+        PokemonTipoFB.AGUA -> R.color.agua
+        PokemonTipoFB.FUEGO -> R.color.fuego
+        PokemonTipoFB.LUCHA -> R.color.lucha
+        PokemonTipoFB.VENENO -> R.color.veneno
+        PokemonTipoFB.ACERO -> R.color.acero
+        PokemonTipoFB.BICHO -> R.color.bicho
+        PokemonTipoFB.DRAGON -> R.color.dragon
+        PokemonTipoFB.ELECTRICO -> R.color.electrico
+        PokemonTipoFB.HADA -> R.color.hada
+        PokemonTipoFB.HIELO -> R.color.hielo
+        PokemonTipoFB.PSIQUICO -> R.color.psiquico
+        PokemonTipoFB.ROCA -> R.color.roca
+        PokemonTipoFB.TIERRA -> R.color.tierra
+        PokemonTipoFB.SINIESTRO -> R.color.siniestro
+        PokemonTipoFB.NORMAL -> R.color.normal
+        PokemonTipoFB.VOLADOR -> R.color.volador
+        PokemonTipoFB.FANTASMA -> R.color.fantasma
+        else -> { R.color.black}
+    }
+}
+val efectividadFB = mapOf(
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.AGUA) to "2",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.TIERRA) to "2",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.BICHO) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.DRAGON) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.PLANTA) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO) to "0.5",
+    Pair(PokemonTipoFB.PLANTA, PokemonTipoFB.VOLADOR) to "0.5",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.FUEGO) to "2",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.TIERRA) to "2",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.AGUA) to "0.5",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.DRAGON) to "0.5",
+    Pair(PokemonTipoFB.AGUA, PokemonTipoFB.PLANTA) to "0.5",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.PLANTA) to "2",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.BICHO) to "2",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.HIELO) to "2",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.ACERO) to "2",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.DRAGON) to "0.5",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.ROCA) to "0.5",
+    Pair(PokemonTipoFB.FUEGO, PokemonTipoFB.TIERRA) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.NORMAL) to "2",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.SINIESTRO) to "2",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.ACERO) to "2",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.HIELO) to "2",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.BICHO) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.HADA) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.PSIQUICO) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.VENENO) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.VOLADOR) to "0.5",
+    Pair(PokemonTipoFB.LUCHA, PokemonTipoFB.FANTASMA) to "0",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.HADA) to "2",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.PLANTA) to "2",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.FANTASMA) to "0.5",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.ROCA) to "0.5",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.TIERRA) to "0.5",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.VENENO) to "0.5",
+    Pair(PokemonTipoFB.VENENO, PokemonTipoFB.ACERO) to "0",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.HADA) to "2",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.HIELO) to "2",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.AGUA) to "0.5",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.ELECTRICO) to "0.5",
+    Pair(PokemonTipoFB.ACERO, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.PLANTA) to "2",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.PSIQUICO) to "2",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.SINIESTRO) to "2",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.FANTASMA) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.HADA) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.LUCHA) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO) to "0.5",
+    Pair(PokemonTipoFB.BICHO, PokemonTipoFB.VOLADOR) to "0.5",
+    Pair(PokemonTipoFB.DRAGON, PokemonTipoFB.DRAGON) to "2",
+    Pair(PokemonTipoFB.DRAGON, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.DRAGON, PokemonTipoFB.HADA) to "0",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.AGUA) to "2",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.VOLADOR) to "2",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.DRAGON) to "0.5",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.ELECTRICO) to "0.5",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PLANTA) to "0.5",
+    Pair(PokemonTipoFB.ELECTRICO, PokemonTipoFB.TIERRA) to "0",
+    Pair(PokemonTipoFB.HADA, PokemonTipoFB.DRAGON) to "2",
+    Pair(PokemonTipoFB.HADA, PokemonTipoFB.LUCHA) to "2",
+    Pair(PokemonTipoFB.HADA, PokemonTipoFB.SINIESTRO) to "2",
+    Pair(PokemonTipoFB.HADA, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.HADA, PokemonTipoFB.VENENO) to "0.5",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.PLANTA) to "2",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.TIERRA) to "2",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.VOLADOR) to "2",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.DRAGON) to "2",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.AGUA) to "0.5",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.FUEGO) to "0.5",
+    Pair(PokemonTipoFB.HIELO, PokemonTipoFB.HIELO) to "0.5",
+    Pair(PokemonTipoFB.PSIQUICO, PokemonTipoFB.LUCHA) to "2",
+    Pair(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VENENO) to "2",
+    Pair(PokemonTipoFB.PSIQUICO, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.PSIQUICO, PokemonTipoFB.PSIQUICO) to "0.5",
+    Pair(PokemonTipoFB.PSIQUICO, PokemonTipoFB.SINIESTRO) to "0",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.BICHO) to "2",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.FUEGO) to "2",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.HIELO) to "2",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.VOLADOR) to "2",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.LUCHA) to "0.5",
+    Pair(PokemonTipoFB.ROCA, PokemonTipoFB.TIERRA) to "0.5",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO) to "2",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.ELECTRICO) to "2",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.FUEGO) to "2",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.ROCA) to "2",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.VENENO) to "2",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.BICHO) to "0.5",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.PLANTA) to "0.5",
+    Pair(PokemonTipoFB.TIERRA, PokemonTipoFB.VOLADOR) to "0",
+    Pair(PokemonTipoFB.SINIESTRO, PokemonTipoFB.PSIQUICO) to "2",
+    Pair(PokemonTipoFB.SINIESTRO, PokemonTipoFB.FANTASMA) to "2",
+    Pair(PokemonTipoFB.SINIESTRO, PokemonTipoFB.LUCHA) to "0.5",
+    Pair(PokemonTipoFB.SINIESTRO, PokemonTipoFB.HADA) to "0.5",
+    Pair(PokemonTipoFB.SINIESTRO, PokemonTipoFB.SINIESTRO) to "0.5",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.PLANTA) to "2",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.BICHO) to "2",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.LUCHA) to "2",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.ELECTRICO) to "0.5",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.ROCA) to "0.5",
+    Pair(PokemonTipoFB.VOLADOR, PokemonTipoFB.HIELO) to "0.5",////
+    Pair(PokemonTipoFB.FANTASMA, PokemonTipoFB.FANTASMA) to "2",
+    Pair(PokemonTipoFB.FANTASMA, PokemonTipoFB.PSIQUICO) to "2",
+    Pair(PokemonTipoFB.FANTASMA, PokemonTipoFB.SINIESTRO) to "0.5",
+    Pair(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL) to "0",
+    Pair(PokemonTipoFB.NORMAL, PokemonTipoFB.ACERO) to "0.5",
+    Pair(PokemonTipoFB.NORMAL, PokemonTipoFB.ROCA) to "0.5",
+    Pair(PokemonTipoFB.NORMAL, PokemonTipoFB.FANTASMA) to "0"
+)
+
+fun debsFB(poke: PokemonFB): List<Int> {
+    val debilidades = mutableListOf<Int>()
+
+    when (poke.tipo.size) {
+        1 -> {
+            for ((key, value) in efectividadFB) {
+                if (key.second == poke.tipo[0] && value == "2") {
+                    debilidades.add(enumToDrawableFB(key.first))
+                }
+            }
+        }
+        2 -> {
+            // 1. Accumulate weaknesses from both types
+            for ((key, value) in efectividadFB) {
+                if (key.second == poke.tipo[0] && value == "2") {
+                    debilidades.add(enumToDrawableFB(key.first))
+                }
+                if (key.second == poke.tipo[1] && value == "2") {
+                    //if (!debilidades.contains(enumToDrawable(key.first))) {
+                    debilidades.add(enumToDrawableFB(key.first))
+                    //}
+                }
+            }
+
+            for ((key, value) in efectividadFB) {
+                if ((key.first == poke.tipo[0] || key.first == poke.tipo[1]) && (value == "0.5" || value == "0")) {
+                    if (efectividadFB[Pair(key.second, poke.tipo[0])] == "0.5" ||
+                        efectividadFB[Pair(key.second, poke.tipo[0])] == "0" ||
+                        efectividadFB[Pair(key.second, poke.tipo[1])] == "0.5" ||
+                        efectividadFB[Pair(key.second, poke.tipo[1])] == "0") {
+                        debilidades.remove(enumToDrawableFB(key.second))
+                    }
+                }
+            }
+        }
+    }
+    return debilidades.distinct()
+}
+fun fortsFB(poke:PokemonFB):List<Int>{
+    val fortalezas: MutableList<Int> = mutableListOf()
+    when(poke.tipo.size){
+        1->{
+            for(i in efectividadFB){
+                if(i.key.first==poke.tipo[0] && i.value.equals("2")) {
+                    fortalezas.add(enumToDrawableFB(i.key.second))
+                }
+            }
+        }
+        2->{
+            for(i in efectividadFB){
+                if(i.key.first==poke.tipo[0] && i.value.equals("2")) {
+                    fortalezas.add(enumToDrawableFB(i.key.second))
+                }
+            }
+            for(i in efectividadFB){
+                if(i.key.first==poke.tipo[1] && i.value.equals("2")) {
+                    //if(!fortalezas.contains(enumToDrawable(i.key.second)))fortalezas.add(enumToDrawable(i.key.second))
+                    fortalezas.add(enumToDrawableFB(i.key.second))
+                }
+            }
+        }
+    }
+
+    return fortalezas.distinct()
+}
+fun inmuneFB(poke:PokemonFB):List<Int>{
+    val inmu: MutableList<Int> = mutableListOf()
+    when(poke.tipo.size){
+        1-> {
+            for (i in efectividadFB) {
+                if (i.key.second == poke.tipo[0] && i.value.equals("0")) {
+                    inmu.add(enumToDrawableFB(i.key.first))
+                }
+            }
+        }
+        2-> {
+            for (i in efectividadFB) {
+                if (i.key.second == poke.tipo[0] && i.value.equals("0")) {
+                    inmu.add(enumToDrawableFB(i.key.first))
+                }
+            }
+            for (i in efectividadFB) {
+                if (i.key.second == poke.tipo[1] && i.value.equals("0")) {
+                    inmu.add(enumToDrawableFB(i.key.first))
+                }
+            }
+        }
+    }
+    return inmu.distinct()
+}
+
+
+
+
+
+/*
 fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
     return when(drawable){
         R.drawable.planta -> PokemonTipoFB.PLANTA
@@ -83,31 +328,21 @@ fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
         else -> { PokemonTipoFB.NULL}
     }
 }
-fun enumToColor(tipo:PokemonTipoFB):Int{
-    return when(tipo){
-        PokemonTipoFB.PLANTA -> R.color.planta
-        PokemonTipoFB.AGUA -> R.color.agua
-        PokemonTipoFB.FUEGO -> R.color.fuego
-        PokemonTipoFB.LUCHA -> R.color.lucha
-        PokemonTipoFB.VENENO -> R.color.veneno
-        PokemonTipoFB.ACERO -> R.color.acero
-        PokemonTipoFB.BICHO -> R.color.bicho
-        PokemonTipoFB.DRAGON -> R.color.dragon
-        PokemonTipoFB.ELECTRICO -> R.color.electrico
-        PokemonTipoFB.HADA -> R.color.hada
-        PokemonTipoFB.HIELO -> R.color.hielo
-        PokemonTipoFB.PSIQUICO -> R.color.psiquico
-        PokemonTipoFB.ROCA -> R.color.roca
-        PokemonTipoFB.TIERRA -> R.color.tierra
-        PokemonTipoFB.SINIESTRO -> R.color.siniestro
-        PokemonTipoFB.NORMAL -> R.color.normal
-        PokemonTipoFB.VOLADOR -> R.color.volador
-        PokemonTipoFB.FANTASMA -> R.color.fantasma
-        else -> { R.color.black}
-    }
-}
+*/
 
-/*
+
+
+
+
+
+
+
+
+
+
+
+
+
 var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1,"",R.drawable.bulbasaur01, "Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
     PokemonFB(2,"",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
@@ -361,4 +596,4 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(250,"",R.drawable.hooh, "Ho-Oh","Cuenta la leyenda que este Pokémon vuela por el cielo con sus magníficas alas de siete colores.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.VOLADOR)),
     PokemonFB(251,"",R.drawable.celebi, "Celebi","Este Pokémon vaga por el tiempo. La hierba y los árboles crecen por los campos por donde pasa.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.PLANTA))
 )
-*/
+

@@ -16,12 +16,13 @@
         <activity
             android:name=".interfaz.ComposeListaActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateVisible"
             android:label="@string/title_activity_compose_lista"
             android:theme="@style/Theme.Pokedex_pruebas" />
         <activity
             android:name=".interfaz.SplashActivity"
             android:exported="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/TemaLight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,6 +30,7 @@
         </activity>
         <activity
             android:name=".interfaz.ListaActivity"
+            android:theme="@style/TemaLight"
             android:exported="false"/>
         <activity android:name=".interfaz.VistaActivity" />
         <activity android:name=".interfaz.ComposeVistaActivity" />

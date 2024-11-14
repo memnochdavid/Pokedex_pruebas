@@ -3,7 +3,7 @@
     "project_number": "519068823043",
     "firebase_url": "https://com-david-pokedexpruebas-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "com-david-pokedexpruebas",
-    "storage_bucket": "fir-class-f2d3c.appspot.com"
+    "storage_bucket": "com-david-pokedexpruebas.firebasestorage.app"
   },
   "client": [
     {
