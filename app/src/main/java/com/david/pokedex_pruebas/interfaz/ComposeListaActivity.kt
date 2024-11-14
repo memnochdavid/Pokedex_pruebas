@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -32,7 +33,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -155,7 +158,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                             bottom.linkTo(boton.top)
-                    }
+                        }
                 ) {//recyclerview
                     items(listaFiltrada) { pokemon ->
                     //val pokemon = pokemonList[index]
@@ -176,9 +179,16 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             pokemon.desc,
                                             pokemon.tipo
                                         )
+                                        /*
+                                        //esto para el item entero
                                         val intent =
                                             Intent(context, ComposeVistaActivity::class.java)
                                         intent.putExtra("pokemon", pokeAux as Parcelable)
+                                        context.startActivity(intent)
+                                        */
+                                        val intent =
+                                            Intent(context, ComposeVistaActivity::class.java)
+                                        intent.putParcelableArrayListExtra("lista", pokemonList as ArrayList<PokemonFB>)
                                         context.startActivity(intent)
 
                                         /*
@@ -272,7 +282,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             .height(25.dp)
                                             .constrainAs(tipo1) {
                                                 start.linkTo(numero.start)
-                                                bottom.linkTo(menu.top)
+                                                bottom.linkTo(parent.bottom)
                                                 top.linkTo(pokemonName.bottom)
                                                 end.linkTo(pokemonName.end)
                                             }
@@ -287,7 +297,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             .height(25.dp)
                                             .constrainAs(tipo1) {
                                                 start.linkTo(numero.start)
-                                                bottom.linkTo(menu.top)
+                                                bottom.linkTo(parent.bottom)
                                                 top.linkTo(pokemonName.bottom)
                                                 end.linkTo(tipo2.start)
                                             }
@@ -338,8 +348,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 if (campoBusqueda) {
                     ConstraintLayout(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray)
                             .constrainAs(layoutBusqueda) {
                                 start.linkTo(boton.end)
                                 bottom.linkTo(parent.bottom)
@@ -351,7 +359,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                             onValueChange = { textobusqueda = it },
                             label = { Text("Buscar") },
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .padding(horizontal = 15.dp)
+                                .background(color=colorResource(id = R.color.white))
                                 .onFocusChanged { focusState ->
                                     if (!focusState.isFocused) {
                                         textobusqueda = ""
@@ -363,7 +372,9 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = "Buscar"
                                 )
-                            }
+                            },
+                            shape = RoundedCornerShape(16.dp)
+
                         )
 
                     }
