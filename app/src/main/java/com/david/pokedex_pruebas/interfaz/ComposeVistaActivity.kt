@@ -94,14 +94,14 @@ fun VerPokemon(pokemon: PokemonFB) {
             contentDescription = null,
             modifier = Modifier
                 //.fillMaxHeight(0.5f)
-                //.fillMaxWidth()
+                .fillMaxWidth()
                 .constrainAs(foto) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     //bottom.linkTo(datos.top)
                 },
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.FillWidth
         )
 
         Column(
@@ -121,7 +121,7 @@ fun VerPokemon(pokemon: PokemonFB) {
             ){
                 Text(modifier = Modifier
                     .constrainAs(number) {
-                        top.linkTo(parent.top)
+                        //top.linkTo(foto.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         //bottom.linkTo(nombre.top)
@@ -187,10 +187,10 @@ fun VerPokemon(pokemon: PokemonFB) {
 
                 Text(modifier = Modifier
                     .constrainAs(desc) {
-                        top.linkTo(nombre.bottom)
+                        top.linkTo(tipo1.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
+                        bottom.linkTo(interacciones.top)
                     }
                     .width(300.dp)
                     .padding(horizontal = 20.dp),//, vertical = 35.dp),
@@ -204,7 +204,6 @@ fun VerPokemon(pokemon: PokemonFB) {
                             top.linkTo(desc.bottom)
                             bottom.linkTo(parent.bottom)
                         }
-
                 ){
                     Column(
                         modifier = Modifier

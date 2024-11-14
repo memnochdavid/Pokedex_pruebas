@@ -63,8 +63,8 @@ private lateinit var refBBDD: DatabaseReference
 
 /*
 private lateinit var refStorage: StorageReference
-private lateinit var identificador: String
-*/
+private lateinit var identificador: String*/
+
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,8 @@ class ComposeListaActivity : ComponentActivity() {
 
         //enableEdgeToEdge()
         setContent {
-            VerListaPoke(listaPokeFB, isLoading)//listaPokeFireBase--isLoading    /   listaPokeFB
+            //VerListaPoke(listaPokeFB, isLoading)//Local
+            VerListaPoke(listaPokeFireBase, isLoading)//FireBase -- false
         }
     }
 }
