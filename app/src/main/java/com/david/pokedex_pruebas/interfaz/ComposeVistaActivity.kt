@@ -1,11 +1,15 @@
+
 package com.david.pokedex_pruebas.interfaz
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.core.copy
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +49,7 @@ import com.david.pokedex_pruebas.modelo.enumToColorFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -85,7 +90,7 @@ fun VerPokemon(pokemon: PokemonFB) {
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
 
-    //val scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
     ConstraintLayout(
         modifier = Modifier
@@ -109,9 +114,10 @@ fun VerPokemon(pokemon: PokemonFB) {
             contentScale = ContentScale.Fit
         )
 
-        Column(
+        Box(
             modifier = Modifier
-                //.verticalScroll(scrollState)
+                .verticalScroll(scrollState)
+                .heightIn(min = 0.dp, max = 750.dp)
                 .constrainAs(datos) {
                     top.linkTo(foto.bottom)
                     start.linkTo(parent.start)
@@ -119,12 +125,12 @@ fun VerPokemon(pokemon: PokemonFB) {
                     //bottom.linkTo(parent.bottom)
                     //height = Dimension.fillToConstraints
                 }
-                //.padding(top = 20.dp)
+            //.padding(top = 20.dp)
         ){
             ConstraintLayout(
                 modifier = Modifier
                     .fillMaxWidth()
-                    //.fillMaxHeight(0.2f)
+                //.fillMaxHeight(0.2f)
             ){
                 Text(modifier = Modifier
                     .constrainAs(number) {
@@ -214,6 +220,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
+                        .wrapContentHeight()//-------------------
                         .constrainAs(interacciones) {
                             top.linkTo(desc.bottom)
                             //bottom.linkTo(parent.bottom)
@@ -229,7 +236,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                         horizontalAlignment = Alignment.CenterHorizontally
 
                     ){
-                        Text(text = "Eficaz contra", fontWeight = FontWeight.Bold)
+                        Text(text = "Eficaz contra", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
                         for (fortaleza in fortsFB(pokemon)){
                             Image(
                                 painter = painterResource(id = fortaleza),
@@ -249,7 +256,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                             .background(colorResource(id = R.color.fuego)),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ){
-                        Text(text = "Débil ante",fontWeight = FontWeight.Bold)
+                        Text(text = "Débil ante", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
                         for (debilidad in debsFB(pokemon)){
                             Image(
                                 painter = painterResource(id = debilidad),
@@ -271,7 +278,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                                 .background(colorResource(id = R.color.objeto_lista)),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ){
-                            Text(text = "Inmune a",fontWeight = FontWeight.Bold)
+                            Text(text = "Inmune a", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
                             for (inmu in inmuneFB(pokemon)){
                                 Image(
                                     painter = painterResource(id = inmu),
@@ -299,18 +306,22 @@ fun VerPokemon(pokemon: PokemonFB) {
 
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
 
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = indice
     )
+
+
     LazyRow(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
             .fillMaxHeight(0.6f)
-            .wrapContentHeight()
+            .wrapContentHeight(),
+        flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
     ){
         items(lista) { pokemon ->
 
