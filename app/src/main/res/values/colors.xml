@@ -5,17 +5,17 @@
     <color name="fuego">#8F2626</color>
     <color name="planta">#4CAF50</color>
     <color name="agua">#2196F3</color>
-    <color name="electrico">#FFC107</color>
-    <color name="fantasma">#4C276F</color>
+    <color name="electrico">#F8BF00</color>
+    <color name="fantasma">#6F3F6F</color>
     <color name="acero">#BABABA</color>
-    <color name="psiquico">#8A4BAB</color>
-    <color name="hada">#CB7ADB</color>
+    <color name="psiquico">#ED3F79</color>
+    <color name="hada">#ED6FED</color>
     <color name="volador">#6B9BB1</color>
-    <color name="bicho">#78A247</color>
+    <color name="bicho">#91A112</color>
     <color name="dragon">#3F51B5</color>
     <color name="hielo">#5998A0</color>
     <color name="lucha">#BF6E54</color>
-    <color name="veneno">#392859</color>
+    <color name="veneno">#913FCA</color>
     <color name="normal">#9F97AD</color>
     <color name="roca">#946951</color>
     <color name="tierra">#664E42</color>
@@ -24,5 +24,4 @@
     <color name="lista_con_foco">#661111</color>
     <color name="objeto_lista">#F2D985</color>
     <color name="transparente">#00D5D5D5</color>
-
 </resources>

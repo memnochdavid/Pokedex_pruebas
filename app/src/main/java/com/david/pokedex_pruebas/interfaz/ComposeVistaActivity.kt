@@ -50,6 +50,12 @@ import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -113,17 +119,17 @@ fun VerPokemon(pokemon: PokemonFB) {
                 },
             contentScale = ContentScale.Fit
         )
-
         Box(
             modifier = Modifier
                 .verticalScroll(scrollState)
-                .heightIn(min = 0.dp, max = 750.dp)
+                //.wrapContentSize()
+                //.heightIn(min = 0.dp, max = 750.dp)
                 .constrainAs(datos) {
                     top.linkTo(foto.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    //bottom.linkTo(parent.bottom)
-                    //height = Dimension.fillToConstraints
+                    bottom.linkTo(parent.bottom)
+                    height = Dimension.fillToConstraints
                 }
             //.padding(top = 20.dp)
         ){
@@ -203,7 +209,6 @@ fun VerPokemon(pokemon: PokemonFB) {
                     )
                 }
 
-
                 Text(modifier = Modifier
                     .constrainAs(desc) {
                         top.linkTo(tipo1.bottom)
@@ -218,12 +223,13 @@ fun VerPokemon(pokemon: PokemonFB) {
 
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(vertical = 10.dp)
-                        .wrapContentHeight()//-------------------
+                        //.wrapContentHeight()//-------------------
+                        //.height(IntrinsicSize.Max)
                         .constrainAs(interacciones) {
                             top.linkTo(desc.bottom)
-                            //bottom.linkTo(parent.bottom)
+                            bottom.linkTo(parent.bottom)
                         }
                 ){
                     Column(
@@ -289,21 +295,12 @@ fun VerPokemon(pokemon: PokemonFB) {
                                         .padding(vertical = 2.5.dp)
                                 )
                             }
-
-
                         }
-
                     }
                 }
-
             }
-
         }
-
-
-
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
