@@ -2,6 +2,7 @@ package com.david.pokedex_pruebas.interfaz
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,8 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
@@ -61,7 +67,7 @@ class ComposeVistaActivity : AppCompatActivity() {
         //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
         val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
         val indice = intent.getIntExtra("indice", 0)
-
+        //enableEdgeToEdge()
         setContent{
             //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
             VerListaPokemon(lista, indice)
@@ -79,14 +85,12 @@ fun VerPokemon(pokemon: PokemonFB) {
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
 
-    val scrollState = rememberScrollState()
-
-
-
+    //val scrollState = rememberScrollState()
 
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 0.dp)
     ) {
         val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones) = createRefs()
         Image(
@@ -94,25 +98,28 @@ fun VerPokemon(pokemon: PokemonFB) {
             contentDescription = null,
             modifier = Modifier
                 //.fillMaxHeight(0.5f)
-                .fillMaxWidth()
+                //.fillMaxWidth()
+                .size(350.dp)
                 .constrainAs(foto) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    //bottom.linkTo(datos.top)
+                    //bottom.linkTo(number.top)
                 },
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.Fit
         )
 
         Column(
             modifier = Modifier
-                .verticalScroll(scrollState)
+                //.verticalScroll(scrollState)
                 .constrainAs(datos) {
                     top.linkTo(foto.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
+                    //bottom.linkTo(parent.bottom)
+                    //height = Dimension.fillToConstraints
                 }
+                //.padding(top = 20.dp)
         ){
             ConstraintLayout(
                 modifier = Modifier
@@ -121,15 +128,28 @@ fun VerPokemon(pokemon: PokemonFB) {
             ){
                 Text(modifier = Modifier
                     .constrainAs(number) {
-                        //top.linkTo(foto.bottom)
+                        top.linkTo(parent.top)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         //bottom.linkTo(nombre.top)
-                    },
-                    //.padding(top = 40.dp),
+                    }
+                    .padding(bottom = 10.dp),
                     fontWeight = FontWeight.Bold,
                     text = "#$numero",
-                    fontSize = 20.sp)
+                    fontSize = 30.sp)
+
+                Text(modifier = Modifier
+                    .constrainAs(nombre) {
+                        top.linkTo(number.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(tipo1.top)
+                    }
+                    .padding(vertical = 10.dp),
+                    //.padding(top = 40.dp),
+                    fontWeight = FontWeight.Bold,
+                    text = pokemon.name,
+                    fontSize = 30.sp)
 
                 if (pokemon.tipo.size == 1) {
                     Image(
@@ -138,6 +158,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
                             .width(80.dp)
+                            .padding(vertical = 10.dp)
                             .constrainAs(tipo1) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
@@ -152,6 +173,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
                             .width(80.dp)
+                            .padding(vertical = 10.dp)
                             .constrainAs(tipo1) {
                                 start.linkTo(parent.start)
                                 end.linkTo(tipo2.start)
@@ -165,6 +187,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier
                             .width(80.dp)
+                            .padding(vertical = 10.dp)
                             .constrainAs(tipo2) {
                                 start.linkTo(tipo1.end)
                                 end.linkTo(parent.end)
@@ -173,17 +196,7 @@ fun VerPokemon(pokemon: PokemonFB) {
                             }
                     )
                 }
-                Text(modifier = Modifier
-                    .constrainAs(nombre) {
-                        top.linkTo(number.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        //bottom.linkTo(desc.top)
-                    },
-                    //.padding(top = 40.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = pokemon.name,
-                    fontSize = 20.sp)
+
 
                 Text(modifier = Modifier
                     .constrainAs(desc) {
@@ -193,16 +206,17 @@ fun VerPokemon(pokemon: PokemonFB) {
                         bottom.linkTo(interacciones.top)
                     }
                     .width(300.dp)
-                    .padding(horizontal = 20.dp),//, vertical = 35.dp),
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
                     text = pokemon.desc,
                     fontSize = 18.sp)
 
                 Row(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
                         .constrainAs(interacciones) {
                             top.linkTo(desc.bottom)
-                            bottom.linkTo(parent.bottom)
+                            //bottom.linkTo(parent.bottom)
                         }
                 ){
                     Column(
@@ -296,6 +310,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
         modifier = Modifier
             .fillMaxSize()
             .fillMaxHeight(0.6f)
+            .wrapContentHeight()
     ){
         items(lista) { pokemon ->
 
@@ -306,14 +321,15 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
             }
 
             Box(modifier = Modifier
-                .fillParentMaxWidth()
+                //.fillParentMaxWidth()
+                .fillParentMaxSize()
                 .background(colorResource(id = R.color.white))
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(color2)
-                        .fillMaxHeight(0.4f)
+                        .fillMaxHeight(0.4f)//0.4f!!
                 )
                 Box(
                     modifier = Modifier
@@ -336,149 +352,3 @@ fun DefaultPreview() {
     VerListaPokemon(listaAux, 0)
     //VerPokemon(listaAux[0])
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-@Composable
-fun VerPokemonScreen(pokemon:PokemonFB) {
-    VerPokemon(pokemon) // Display the Pokemon list
-}*/
-
-
-/*
-@Composable
-fun VerPokemon2(pokemon:PokemonFB){
-    //var selectedItemIndex by remember { mutableStateOf(0) }
-    val num=pokemon.num
-    var color1: Color=colorResource(id = enumToColor(pokemon.tipo[0]))
-    var color2: Color=colorResource(id = enumToColor(pokemon.tipo[0]))
-    var numero = "${(num)}"
-    if(numero.length == 1) numero = "00${(num)}"
-    else if(numero.length == 2) numero = "0${(num)}"
-    if (pokemon.tipo.size == 2) {
-        color2 = colorResource(id = enumToColor(pokemon.tipo[1]))
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(color1)
-            ) {
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(color2)
-            ) {
-            }
-            ConstraintLayout(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f)
-                    .background(colorResource(R.color.white))
-            ) {
-                val (number, nombre, desc) = createRefs()
-
-                Text(modifier = Modifier
-                    .constrainAs(number){
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(nombre.top)
-                    }
-                    .padding(top = 40.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = "#$numero",
-                    fontSize = 20.sp)
-
-                Text(modifier = Modifier
-                    .constrainAs(nombre) {
-                        top.linkTo(number.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(desc.top)
-                    }
-                    .padding(top = 40.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = pokemon.name,
-                    fontSize = 20.sp)
-
-                Text(modifier = Modifier
-                    .constrainAs(desc) {
-                        top.linkTo(nombre.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .width(300.dp)
-                    .padding(all = 20.dp),
-                    text = pokemon.desc,
-                    fontSize = 20.sp)
-            }
-        }
-        Image(
-            painter = painterResource(id = pokemon.foto),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .align(Alignment.TopCenter)
-                .offset(y = (-10).dp),
-            contentScale = ContentScale.FillHeight
-        )
-
-    }
-}
-*/
-
-
-
-
-
-/*
-@Preview(widthDp = 300, heightDp = 500)
-@Composable
-fun DefaultPreview() {
-    VerPokemon(poke)
-}
-*/
