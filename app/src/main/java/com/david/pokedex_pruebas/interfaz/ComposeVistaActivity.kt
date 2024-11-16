@@ -60,6 +60,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import coil.compose.AsyncImage
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -109,6 +110,7 @@ fun VerPokemon(pokemon: PokemonFB) {
             .padding(top = 0.dp)
     ) {
         val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones) = createRefs()
+        /*
         Image(
             painter = painterResource(id = pokemon.foto),
             contentDescription = null,
@@ -123,6 +125,20 @@ fun VerPokemon(pokemon: PokemonFB) {
                     bottom.linkTo(datos.top)
                 },
             contentScale = ContentScale.Fit
+        )*/
+        AsyncImage(
+            model = pokemon.imagenFB,
+            contentDescription = null,
+            //contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(350.dp)
+                .fillMaxSize()
+                .constrainAs(foto) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(datos.top)
+                }
         )
         ConstraintLayout(
             modifier = Modifier

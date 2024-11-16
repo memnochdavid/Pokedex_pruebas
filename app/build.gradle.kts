@@ -90,6 +90,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:1.3.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
     implementation("androidx.compose.material3:material3:1.1.0-alpha08")
+    implementation("io.coil-kt:coil-compose:2.4.0")
     //
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -110,6 +111,6 @@ dependencies {
 
     //appwrite
     implementation("io.appwrite:sdk-for-kotlin:5.0.1")
-    //implementation("io.appwrite:sdk-for-android:6.0.0")
+    //implementation("io.appwrite:sdk-android:1.0.0")
 }
 /*https://developer.android.com/develop/ui/compose/compiler?hl=es-419*/

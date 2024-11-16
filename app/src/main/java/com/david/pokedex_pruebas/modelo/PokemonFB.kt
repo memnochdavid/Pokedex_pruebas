@@ -11,8 +11,8 @@ import java.io.Serializable
 data class PokemonFB(
     var num:Int=0,
     var id: String="",
-    var foto:Int=0,
-    var imagenFB: Bitmap? = null,
+    var foto:Int=0,//soporte local
+    var imagenFB: String? = null,//soporte en la nube
     var name: String="",
     var desc: String="",
     var tipo: List<PokemonTipoFB> = listOf()
@@ -352,24 +352,24 @@ fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
 
 
 
-
 /*
+
 var listaPokeFB : List<PokemonFB> = listOf(
-    PokemonFB(1,"",R.drawable.bulbasaur01,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
+    PokemonFB(1,"",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
     PokemonFB(2,"",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
-    PokemonFB(3,"",R.drawable.venusaur01, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
-    PokemonFB(4,"",R.drawable.charmander01, "Charmander", "La llama en la punta de su cola chisporrotea al arder. Sólo se oye en lugares silenciosos.", listOf(PokemonTipoFB.FUEGO)),
-    PokemonFB(5,"",R.drawable.charmeleon01, "Charmeleon", "Las duras luchas excitan a este Pokémon. Entonces, lanzará llamaradas blanco-azuladas.", listOf(PokemonTipoFB.FUEGO)),
-    PokemonFB(6,"",R.drawable.charizard01, "Charizard", "Cuando lanza una descarga de fuego súper caliente, la roja llama de su cola brilla más intensamente.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.VOLADOR)),
+    PokemonFB(3,"",R.drawable.venusaur, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
+    PokemonFB(4,"",R.drawable.charmander, "Charmander", "La llama en la punta de su cola chisporrotea al arder. Sólo se oye en lugares silenciosos.", listOf(PokemonTipoFB.FUEGO)),
+    PokemonFB(5,"",R.drawable.charmeleon, "Charmeleon", "Las duras luchas excitan a este Pokémon. Entonces, lanzará llamaradas blanco-azuladas.", listOf(PokemonTipoFB.FUEGO)),
+    PokemonFB(6,"",R.drawable.charizard, "Charizard", "Cuando lanza una descarga de fuego súper caliente, la roja llama de su cola brilla más intensamente.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.VOLADOR)),
     PokemonFB(7,"",R.drawable.squirtle01, "Squirtle", "Lanza agua a su presa desde el agua. Se esconde en su concha cuando se siente en peligro.", listOf(PokemonTipoFB.AGUA)),
-    PokemonFB(8,"",R.drawable.wartortle01, "Wartortle", "Si es golpeado, esconderá su cabeza. Aun así, su cola puede seguir golpeando.", listOf(PokemonTipoFB.AGUA)),
-    PokemonFB(9,"",R.drawable.blastoise01, "Blastoise", "Cuando ataca a un enemigo, su descarga de agua es aún más potente que una manga de bombero.", listOf(PokemonTipoFB.AGUA)),
-    PokemonFB(10,"",R.drawable.caterpie01, "Caterpie", "Si tocas los receptores de su cabeza, soltará un terrible olor para protegerse.", listOf(PokemonTipoFB.BICHO)),
-    PokemonFB(11,"",R.drawable.metapod01, "Metapod", "Endurece su concha para protegerse. De todos modos, un gran impacto puede afectarle.", listOf(PokemonTipoFB.BICHO)),
-    PokemonFB(12,"",R.drawable.butterfree01, "Butterfree", "Sus alas están cubiertas de polvos venenosos. Como repelen el agua, puede volar bajo la lluvia.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VOLADOR)),
-    PokemonFB(13,"",R.drawable.weedle01, "Weedle", "Cuidado con el aguijón venenoso de su cabeza. Se esconde en la hierba y arbustos mientras come.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
-    PokemonFB(14,"",R.drawable.kakuna01, "Kakuna", "Sólo puede moverse un poco. Cuando está en peligro, envenena a su enemigo con su aguijón.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
-    PokemonFB(15,"",R.drawable.beedril01, "Beedril", "Tiene 3 aguijones venenosos en sus patas y cola. Suele pinchar a sus enemigos repetidas veces.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
+    PokemonFB(8,"",R.drawable.wartortle, "Wartortle", "Si es golpeado, esconderá su cabeza. Aun así, su cola puede seguir golpeando.", listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(9,"",R.drawable.blastoise, "Blastoise", "Cuando ataca a un enemigo, su descarga de agua es aún más potente que una manga de bombero.", listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(10,"",R.drawable.caterpie, "Caterpie", "Si tocas los receptores de su cabeza, soltará un terrible olor para protegerse.", listOf(PokemonTipoFB.BICHO)),
+    PokemonFB(11,"",R.drawable.metapod, "Metapod", "Endurece su concha para protegerse. De todos modos, un gran impacto puede afectarle.", listOf(PokemonTipoFB.BICHO)),
+    PokemonFB(12,"",R.drawable.butterfree, "Butterfree", "Sus alas están cubiertas de polvos venenosos. Como repelen el agua, puede volar bajo la lluvia.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VOLADOR)),
+    PokemonFB(13,"",R.drawable.weedle, "Weedle", "Cuidado con el aguijón venenoso de su cabeza. Se esconde en la hierba y arbustos mientras come.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
+    PokemonFB(14,"",R.drawable.kakuna, "Kakuna", "Sólo puede moverse un poco. Cuando está en peligro, envenena a su enemigo con su aguijón.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
+    PokemonFB(15,"",R.drawable.beedril, "Beedril", "Tiene 3 aguijones venenosos en sus patas y cola. Suele pinchar a sus enemigos repetidas veces.", listOf(PokemonTipoFB.BICHO, PokemonTipoFB.VENENO)),
     PokemonFB(16,"",R.drawable.pidgey, "Pidgey", "Son muy dóciles. Si son atacados, suelen lanzar arena en lugar de repeler el ataque.", listOf(PokemonTipoFB.NORMAL, PokemonTipoFB.VOLADOR)),
     PokemonFB(17,"",R.drawable.pidgeotto, "Pidgeotto", "Su visión es extraordinaria. Aunque vuele muy alto, detectará todo movimiento de su presa.", listOf(PokemonTipoFB.NORMAL, PokemonTipoFB.VOLADOR)),
     PokemonFB(18,"",R.drawable.pidgeot, "Pidgeot", "Este Pokémon vuela a velocidad Mach 2. Sus grandes garras son armas muy peligrosas.", listOf(PokemonTipoFB.NORMAL, PokemonTipoFB.VOLADOR)),

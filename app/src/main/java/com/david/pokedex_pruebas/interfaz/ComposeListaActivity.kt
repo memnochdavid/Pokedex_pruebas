@@ -1,13 +1,11 @@
 package com.david.pokedex_pruebas.interfaz
 
+
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -37,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,58 +47,37 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import kotlinx.coroutines.delay
-//appwrite
 import io.appwrite.Client
-import io.appwrite.ID
-import io.appwrite.services.Databases
-import io.appwrite.models.Database
-import io.appwrite.models.Collection
-import io.appwrite.models.InputFile
 import io.appwrite.services.Storage
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 //para firebase
 private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
 
-/*
-        //para appwrite
-        val client = Client()
-            .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject("6738854a0011e2bc643f")
-        //.setKey("<YOUR_API_KEY>");
+//para appwrite
+val client = Client()
+    .setEndpoint("https://cloud.appwrite.io/v1")
+    .setProject("6738854a0011e2bc643f")
+val storage = Storage(client)//habilitar para subir archivos
 
-        val storage = Storage(client)
-
-        val result = storage.createFile(
-            bucketId = "6738855e0002d76f1141",
-            fileId = identificador,
-            file = InputFile.fromPath("file.png")
-        )
-
-
- */
+lateinit var scope: CoroutineScope
 
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         refBBDD = FirebaseDatabase.getInstance().reference
 
@@ -114,6 +91,15 @@ class ComposeListaActivity : ComponentActivity() {
             for (childSnapshot in dataSnapshot.children) {
                 val pokemon = childSnapshot.getValue(PokemonFB::class.java)
                 pokemon?.let { pokemonList.add(it) }
+
+                //appwrite
+                val identificadorAppWrite = childSnapshot.key?.substring(1, 20) ?: "" // Get the identificador
+
+                //pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/preview?project=[PROJECT_ID]"//--plantilla
+                if (pokemon != null) {
+                    pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
+                }
+
             }
             listaPokeFireBase = pokemonList
             isLoading = false // Está cargando
@@ -128,8 +114,9 @@ class ComposeListaActivity : ComponentActivity() {
 
         //enableEdgeToEdge()
         setContent {
-            //VerListaPoke(listaPokeFB, isLoading)//Local
+            //VerListaPoke(listaPokeFB, false)//Local
             VerListaPoke(listaPokeFireBase, isLoading)//FireBase -- false
+            scope = rememberCoroutineScope()
         }
     }
 }
@@ -213,15 +200,54 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
                                         /*
                                         ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE cuando se pulsa un elemento cualquiera de la lista
-                                                                            //sube a Firebase
-                                                                            //refStorage = FirebaseStorage.getInstance().reference
-                                                                            for(i in pokemonList){
-                                                                                identificador = refBBDD.child("pokemones").push().key!!
-                                                                                refBBDD.child("pokemones").child(identificador).setValue(i)
-                                                                                /*
-                                                                                refStorage.child("pokemones").child(identificador).putFile(
-                                                                                    Uri.parse("android.resource://com.david.pokedex_pruebas/drawable/${i.foto}"))*/
-                                                                            }
+                                        //sube a Firebase y AppWrite
+                                        //refStorage = FirebaseStorage.getInstance().reference
+                                        for (i in pokemonList) {
+                                            try {
+                                                val resources = context.resources
+                                                resources
+                                                    .openRawResource(i.foto)
+                                                    .use { inputStream ->
+                                                        val identificador = refBBDD
+                                                            .child("pokemones")
+                                                            .push().key!!
+                                                        refBBDD
+                                                            .child("pokemones")
+                                                            .child(identificador)
+                                                            .setValue(i)
+
+                                                        val tempFile = File.createTempFile(
+                                                            identificador.drop(1),
+                                                            ".png",
+                                                            context.cacheDir
+                                                        )
+                                                        inputStream.use { input ->
+                                                            tempFile
+                                                                .outputStream()
+                                                                .use { output ->
+                                                                    input.copyTo(output)
+                                                                }
+                                                        }
+                                                        scope.launch {
+                                                            withContext(
+                                                                Dispatchers.IO
+                                                            ) {
+                                                                storage.createFile(
+                                                                    bucketId = "6738855e0002d76f1141",
+                                                                    fileId = identificador.drop(1),//elimina "_"
+                                                                    file = InputFile.fromPath(
+                                                                        tempFile.absolutePath
+                                                                    )
+                                                                )
+                                                                tempFile.delete() // Delete after upload
+                                                            }
+                                                        }
+                                                    }
+                                            } catch (e: Exception) {
+                                                // Handle exceptions appropriately
+
+                                            }
+                                        }
                                         /////////////////////////////////////////////////////////////////////////
                                         */
 
@@ -252,10 +278,23 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             start.linkTo(parent.start)
                                             top.linkTo(parent.top)
                                         }
-                                )
+                                )/*
                                 Image(
                                     painter = painterResource(id = pokemon.foto),
                                     contentDescription = "Pokemon Image",
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .fillMaxSize()
+                                        .constrainAs(pokemonImage) {
+                                            start.linkTo(parent.start)
+                                            top.linkTo(parent.top)
+                                            bottom.linkTo(parent.bottom)
+                                        }
+                                )*/
+                                AsyncImage(
+                                    model = pokemon.imagenFB,
+                                    contentDescription = "Pokemon Image",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
                                         .size(100.dp)
                                         .fillMaxSize()
