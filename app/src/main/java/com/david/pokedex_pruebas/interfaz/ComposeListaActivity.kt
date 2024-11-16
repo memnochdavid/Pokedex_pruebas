@@ -75,6 +75,12 @@ val storage = Storage(client)//habilitar para subir archivos
 
 lateinit var scope: CoroutineScope
 
+//appwrite bucket
+//https://cloud.appwrite.io/console/project-6738854a0011e2bc643f/storage
+
+//firebase realtime database
+//https://console.firebase.google.com/u/0/project/com-david-pokedexpruebas/database/com-david-pokedexpruebas-default-rtdb/data/~2F?hl=es-419
+
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,10 +99,10 @@ class ComposeListaActivity : ComponentActivity() {
                 pokemon?.let { pokemonList.add(it) }
 
                 //appwrite
-                val identificadorAppWrite = childSnapshot.key?.substring(1, 20) ?: "" // Get the identificador
-
+                val identificadorAppWrite = childSnapshot.key?.substring(1, 20) ?: "" // coge el identificador
                 //pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/preview?project=[PROJECT_ID]"//--plantilla
                 if (pokemon != null) {
+                    //guarda la URL de la imagen en el objeto PokemonFB como string en pokemon.imagenFB
                     pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
                 }
 
@@ -165,13 +171,13 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 .background(colorResource(R.color.lista_con_foco))
         ) {
             ConstraintLayout {
-                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, menu, lazy, boton, layoutBusqueda) = createRefs()
+                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda) = createRefs()
                 //val scrollState = rememberScrollState()
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 60.dp)
-                        .constrainAs(lazy) {
+                        .constrainAs(lazyC) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
