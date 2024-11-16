@@ -107,6 +107,9 @@ dependencies {
     implementation ("com.google.firebase:firebase-appcheck")
     //
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-}
 
+    //appwrite
+    implementation("io.appwrite:sdk-for-kotlin:5.0.1")
+    //implementation("io.appwrite:sdk-for-android:6.0.0")
+}
 /*https://developer.android.com/develop/ui/compose/compiler?hl=es-419*/

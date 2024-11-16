@@ -1,6 +1,7 @@
 package com.david.pokedex_pruebas.modelo
 
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import com.david.pokedex_pruebas.R
 import kotlinx.android.parcel.Parcelize
@@ -11,10 +12,20 @@ data class PokemonFB(
     var num:Int=0,
     var id: String="",
     var foto:Int=0,
+    var imagenFB: Bitmap? = null,
     var name: String="",
     var desc: String="",
     var tipo: List<PokemonTipoFB> = listOf()
-):Serializable, Parcelable
+):Serializable, Parcelable{
+    constructor(
+        num: Int,
+        id: String,
+        foto: Int,
+        name: String,
+        desc: String,
+        tipo: List<PokemonTipoFB>
+    ) : this(num, id, foto, null, name, desc, tipo)
+}
 
 enum class PokemonTipoFB(val tag: String) {
     PLANTA("planta"),
@@ -342,9 +353,9 @@ fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
 
 
 
-
+/*
 var listaPokeFB : List<PokemonFB> = listOf(
-    PokemonFB(1,"",R.drawable.bulbasaur01, "Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
+    PokemonFB(1,"",R.drawable.bulbasaur01,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
     PokemonFB(2,"",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
     PokemonFB(3,"",R.drawable.venusaur01, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
     PokemonFB(4,"",R.drawable.charmander01, "Charmander", "La llama en la punta de su cola chisporrotea al arder. Sólo se oye en lugares silenciosos.", listOf(PokemonTipoFB.FUEGO)),
@@ -597,3 +608,4 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(251,"",R.drawable.celebi, "Celebi","Este Pokémon vaga por el tiempo. La hierba y los árboles crecen por los campos por donde pasa.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.PLANTA))
 )
 
+*/

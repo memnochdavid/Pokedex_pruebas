@@ -1,6 +1,8 @@
 package com.david.pokedex_pruebas.interfaz
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -54,16 +56,46 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
-import com.david.pokedex_pruebas.modelo.listaPokeFB
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.delay
+//appwrite
+import io.appwrite.Client
+import io.appwrite.ID
+import io.appwrite.services.Databases
+import io.appwrite.models.Database
+import io.appwrite.models.Collection
+import io.appwrite.models.InputFile
+import io.appwrite.services.Storage
+import kotlinx.coroutines.coroutineScope
 
+
+//para firebase
 private lateinit var refBBDD: DatabaseReference
+private lateinit var identificador: String
 
 /*
-private lateinit var refStorage: StorageReference
-private lateinit var identificador: String*/
+        //para appwrite
+        val client = Client()
+            .setEndpoint("https://cloud.appwrite.io/v1")
+            .setProject("6738854a0011e2bc643f")
+        //.setKey("<YOUR_API_KEY>");
+
+        val storage = Storage(client)
+
+        val result = storage.createFile(
+            bucketId = "6738855e0002d76f1141",
+            fileId = identificador,
+            file = InputFile.fromPath("file.png")
+        )
+
+
+ */
 
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +103,9 @@ class ComposeListaActivity : ComponentActivity() {
 
 
         refBBDD = FirebaseDatabase.getInstance().reference
+
+
+
 
         var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
         var isLoading by mutableStateOf(true)
@@ -182,7 +217,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                                                             //refStorage = FirebaseStorage.getInstance().reference
                                                                             for(i in pokemonList){
                                                                                 identificador = refBBDD.child("pokemones").push().key!!
-                                                                                refBBDD.child("pokemones").child(identificador).setValue(i)/*
+                                                                                refBBDD.child("pokemones").child(identificador).setValue(i)
+                                                                                /*
                                                                                 refStorage.child("pokemones").child(identificador).putFile(
                                                                                     Uri.parse("android.resource://com.david.pokedex_pruebas/drawable/${i.foto}"))*/
                                                                             }
@@ -349,7 +385,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                             label = { Text("Buscar") },
                             modifier = Modifier
                                 .padding(horizontal = 15.dp)
-                                .background(color=colorResource(id = R.color.white))
+                                .background(color = colorResource(id = R.color.white))
                                 .onFocusChanged { focusState ->
                                     if (!focusState.isFocused) {
                                         textobusqueda = ""
@@ -413,13 +449,66 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
 
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PokemonCardPreview() {
     VerListaPoke(listaPokeFB, false)
 }
+*/
 
 
 
 
+/*
+private lateinit var refBBDD: DatabaseReference
+private lateinit var refStorage: StorageReference
+private lateinit var identificador: String
+
+
+class ComposeListaActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        refBBDD = FirebaseDatabase.getInstance().reference
+        refStorage = FirebaseStorage.getInstance().reference
+
+        //var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
+        var pokemonList = mutableListOf<PokemonFB>()
+        var isLoading by mutableStateOf(true)
+        refBBDD.child("pokemones").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                pokemonList = mutableListOf<PokemonFB>()
+                for (pokemonSnapshot in snapshot.children) {
+                    val pokemon = pokemonSnapshot.getValue(PokemonFB::class.java)
+                    pokemon?.let {
+                        val identificador = pokemonSnapshot.key // Get the identificador
+                        val imagePath = "pokemones/$identificador" // Construct image path
+                        refStorage.child(imagePath).getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            pokemon.imagenFB = bitmap // Associate image with Pokemon
+                            pokemonList.add(pokemon)
+
+                            //listaPokeFireBase=pokemonList
+
+
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+
+        //enableEdgeToEdge()
+        setContent {
+            //VerListaPoke(listaPokeFB, false)//Local
+            VerListaPoke(pokemonList, isLoading)//FireBase -- false
+        }
+    }
+}
+
+*/
