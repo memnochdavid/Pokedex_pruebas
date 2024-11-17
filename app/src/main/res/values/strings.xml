@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Pokedex_pruebas</string>
     <string name="title_activity_compose_lista">ComposeListaActivity</string>
+    <string name="title_activity_compose_splash">ComposeSplashActivity</string>
 </resources>

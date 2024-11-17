@@ -35,6 +35,6 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, ComposeListaActivity::class.java))
             finish() // Cierra la activity del splash screen
-        }, 1) // CAMBIAAARRRR
+        }, 3000) // CAMBIAAARRRR
     }
 }
