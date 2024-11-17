@@ -173,6 +173,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
         targetValue = if (campoBusqueda) 300f else 0f,
         animationSpec = tween(durationMillis = 300) // duración
     )
+    val context = LocalContext.current
 
     //
     //intents
@@ -235,7 +236,12 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 //abre activity para crear un usuario - borrar cuando menu
                 Button(
                     onClick = {
-                        //intents aquí
+
+                        val intent =
+                            Intent(context, ComposeCreaUser::class.java)
+                        context.startActivity(intent)
+
+
                     },
                     modifier = Modifier
                         .size(120.dp)
@@ -285,7 +291,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                 stiffness = Spring.StiffnessMedium // Moderate stiffness
                             )
                         )
-                        val context = LocalContext.current
+                        //val context = LocalContext.current
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
