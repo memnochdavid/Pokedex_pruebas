@@ -70,6 +70,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
@@ -228,8 +229,40 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                     .systemBarsPadding()
                     .imePadding()
             ) {
-                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda) = createRefs()
-                //val scrollState = rememberScrollState()
+                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda, botonUserActivity) = createRefs()
+
+                /////////////////////////////////////////////////
+                //abre activity para crear un usuario - borrar cuando menu
+                Button(
+                    onClick = {
+                        //intents aquí
+                    },
+                    modifier = Modifier
+                        .size(120.dp)
+                        .padding(20.dp)
+                        //.wrapContentHeight()
+                        .constrainAs(botonUserActivity) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                        }
+                        .zIndex(2f),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 100.dp
+                    ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.fuego), // Cambia el color de fondo a rojo
+                    )
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.pokeball_icon),
+                        contentDescription = "Menu",
+                        contentScale = ContentScale.FillWidth
+                    )
+                    Text(text = "MenuUser")
+                }
+                //////////////////////////////
+
+
                 LazyColumn(
                     modifier = Modifier
                         //.fillMaxWidth()
@@ -616,6 +649,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                 }
                             }
                         }
+
                     }
                 }
             }
