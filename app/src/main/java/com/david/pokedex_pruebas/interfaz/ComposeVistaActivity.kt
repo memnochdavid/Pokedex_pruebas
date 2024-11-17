@@ -52,12 +52,16 @@ import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import coil.compose.AsyncImage
@@ -93,9 +97,9 @@ class ComposeVistaActivity : AppCompatActivity() {
 }
 
 
+
 @Composable
 fun VerPokemon(pokemon: PokemonFB) {
-
     val num=pokemon.num
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
@@ -109,7 +113,7 @@ fun VerPokemon(pokemon: PokemonFB) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones, lazyC_inside) = createRefs()
         /*
         Image(
             painter = painterResource(id = pokemon.foto),
@@ -139,11 +143,10 @@ fun VerPokemon(pokemon: PokemonFB) {
                     end.linkTo(parent.end)
                     bottom.linkTo(datos.top)
                 }
+
         )
-        ConstraintLayout(
+        LazyColumn(
             modifier = Modifier
-                //.wrapContentSize()
-                //.heightIn(min = 0.dp, max =columnHeight.dp)
                 .constrainAs(datos) {
                     top.linkTo(foto.bottom)
                     start.linkTo(parent.start)
@@ -151,194 +154,195 @@ fun VerPokemon(pokemon: PokemonFB) {
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
-                .verticalScroll(state=scrollState)
+                .fillMaxHeight()
+                //.verticalScroll(state=scrollState)
             //.padding(top = 20.dp)
         ){
-            Text(modifier = Modifier
-                .constrainAs(number) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    //bottom.linkTo(nombre.top)
-                }
-                .padding(bottom = 10.dp),
-                fontWeight = FontWeight.Bold,
-                text = "#$numero",
-                fontSize = 30.sp)
-
-            Text(modifier = Modifier
-                .constrainAs(nombre) {
-                    top.linkTo(number.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(tipo1.top)
-                }
-                .padding(vertical = 10.dp),
-                //.padding(top = 40.dp),
-                fontWeight = FontWeight.Bold,
-                text = pokemon.name,
-                fontSize = 30.sp)
-
-            if (pokemon.tipo.size == 1) {
-                Image(
-                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                    contentDescription = "Tipo 1",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .padding(vertical = 10.dp)
-                        .constrainAs(tipo1) {
+            item {
+                ConstraintLayout{
+                    Text(modifier = Modifier
+                        .constrainAs(number) {
+                            top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            top.linkTo(nombre.bottom)
-                            bottom.linkTo(desc.top)
+                            //bottom.linkTo(parent.bottom)
                         }
-                )
-            } else {
-                Image(
-                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                    contentDescription = "Tipo 1",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .padding(vertical = 10.dp)
-                        .constrainAs(tipo1) {
+                        .padding(bottom = 10.dp)
+                        .fillMaxHeight(),//////////
+                        fontWeight = FontWeight.Bold,
+                        text = "#$numero",
+                        fontSize = 30.sp)
+
+                    Text(modifier = Modifier
+                        .constrainAs(nombre) {
+                            top.linkTo(number.bottom)
                             start.linkTo(parent.start)
-                            end.linkTo(tipo2.start)
-                            top.linkTo(nombre.bottom)
-                            bottom.linkTo(desc.top)
-                        },
-                )
-                Image(
-                    painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
-                    contentDescription = "Tipo 2",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .width(80.dp)
-                        .padding(vertical = 10.dp)
-                        .constrainAs(tipo2) {
-                            start.linkTo(tipo1.end)
                             end.linkTo(parent.end)
-                            top.linkTo(nombre.bottom)
-                            bottom.linkTo(desc.top)
+                            bottom.linkTo(tipo1.top)
                         }
-                )
-            }
+                        .padding(vertical = 10.dp),
+                        //.padding(top = 40.dp),
+                        fontWeight = FontWeight.Bold,
+                        text = pokemon.name,
+                        fontSize = 30.sp)
 
-            Text(modifier = Modifier
-                .constrainAs(desc) {
-                    top.linkTo(tipo1.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(interacciones.top)
-                }
-                .width(300.dp)
-                .padding(horizontal = 20.dp, vertical = 10.dp),
-                text = pokemon.desc,
-                fontSize = 18.sp)
-
-
-
-            var altura=0
-            var altura_forts=fortsFB(pokemon).size
-            var altura_debs=debsFB(pokemon).size
-
-            if(altura_debs>altura_forts)
-                altura=altura_debs
-            else altura=altura_forts
-
-            altura=(altura+5)*16
-
-
-            Log.d("ALTURAAAAAAAA", altura.toString())
-
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 10.dp)
-                    //.wrapContentHeight()//-------------------
-                    //.height(columnHeight.dp)
-                    .constrainAs(interacciones) {
-                        top.linkTo(desc.bottom)
-                        bottom.linkTo(parent.bottom)
-                    }
-            ){
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 10.dp)
-                        .background(colorResource(id = R.color.planta))
-                        .height(altura.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Text(text = "Eficaz contra", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                    for (fortaleza in fortsFB(pokemon)){
+                    if (pokemon.tipo.size == 1) {
                         Image(
-                            painter = painterResource(id = fortaleza),
-                            contentDescription = "Debilidad",
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                            contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(vertical = 2.5.dp)
+                                .padding(vertical = 10.dp)
+                                .constrainAs(tipo1) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    top.linkTo(nombre.bottom)
+                                    bottom.linkTo(desc.top)
+                                }
                         )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(vertical = 10.dp)
-                        //.fillMaxHeight()
-                        .background(colorResource(id = R.color.fuego))
-                        .height(altura.dp),
-
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Text(text = "Débil ante", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                    for (debilidad in debsFB(pokemon)){
+                    } else {
                         Image(
-                            painter = painterResource(id = debilidad),
-                            contentDescription = "Debilidad",
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                            contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(vertical = 2.5.dp)
-
-
+                                .padding(vertical = 10.dp)
+                                .constrainAs(tipo1) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(tipo2.start)
+                                    top.linkTo(nombre.bottom)
+                                    bottom.linkTo(desc.top)
+                                },
+                        )
+                        Image(
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
+                            contentDescription = "Tipo 2",
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier
+                                .width(80.dp)
+                                .padding(vertical = 10.dp)
+                                .constrainAs(tipo2) {
+                                    start.linkTo(tipo1.end)
+                                    end.linkTo(parent.end)
+                                    top.linkTo(nombre.bottom)
+                                    bottom.linkTo(desc.top)
+                                }
                         )
                     }
-                }
 
-                var inmus=inmuneFB(pokemon)
-                if(inmus.size>0){
-                    Column(
+                    Text(modifier = Modifier
+                        .constrainAs(desc) {
+                            top.linkTo(tipo1.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(interacciones.top)
+                        }
+                        .width(300.dp)
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                        text = pokemon.desc,
+                        fontSize = 18.sp)
+                    var altura=0
+                    var altura_forts=fortsFB(pokemon).size
+                    var altura_debs=debsFB(pokemon).size
+
+                    if(altura_debs>altura_forts)
+                        altura=altura_debs
+                    else altura=altura_forts
+
+                    altura=(altura+5)*16
+
+                    Row(
                         modifier = Modifier
-                            .weight(1f)
+                            .fillMaxSize()
                             .padding(vertical = 10.dp)
-                            //.fillMaxHeight()
-                            .height(altura.dp)
-                            .background(colorResource(id = R.color.objeto_lista)),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            //.wrapContentHeight()//-------------------
+                            //.height(columnHeight.dp)
+                            .constrainAs(interacciones) {
+                                top.linkTo(desc.bottom)
+                                bottom.linkTo(parent.bottom)
+                            }
                     ){
-                        Text(text = "Inmune a", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                        for (inmu in inmuneFB(pokemon)){
-                            Image(
-                                painter = painterResource(id = inmu),
-                                contentDescription = "Debilidad",
-                                contentScale = ContentScale.FillWidth,
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 10.dp)
+                                .background(colorResource(id = R.color.planta))
+                                .height(altura.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Text(text = "Eficaz contra", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                            for (fortaleza in fortsFB(pokemon)){
+                                Image(
+                                    painter = painterResource(id = fortaleza),
+                                    contentDescription = "Debilidad",
+                                    contentScale = ContentScale.FillWidth,
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .padding(vertical = 2.5.dp)
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 10.dp)
+                                //.fillMaxHeight()
+                                .background(colorResource(id = R.color.fuego))
+                                .height(altura.dp),
+
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ){
+                            Text(text = "Débil ante", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                            for (debilidad in debsFB(pokemon)){
+                                Image(
+                                    painter = painterResource(id = debilidad),
+                                    contentDescription = "Debilidad",
+                                    contentScale = ContentScale.FillWidth,
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .padding(vertical = 2.5.dp)
+
+
+                                )
+                            }
+                        }
+
+                        var inmus=inmuneFB(pokemon)
+                        if(inmus.size>0){
+                            Column(
                                 modifier = Modifier
-                                    .width(80.dp)
-                                    .padding(vertical = 2.5.dp)
-                            )
+                                    .weight(1f)
+                                    .padding(vertical = 10.dp)
+                                    //.fillMaxHeight()
+                                    .height(altura.dp)
+                                    .background(colorResource(id = R.color.objeto_lista)),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ){
+                                Text(text = "Inmune a", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                                for (inmu in inmuneFB(pokemon)){
+                                    Image(
+                                        painter = painterResource(id = inmu),
+                                        contentDescription = "Debilidad",
+                                        contentScale = ContentScale.FillWidth,
+                                        modifier = Modifier
+                                            .width(80.dp)
+                                            .padding(vertical = 2.5.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+
             }
+
         }
     }
 }
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {

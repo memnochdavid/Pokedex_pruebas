@@ -22,8 +22,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -54,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -88,7 +91,7 @@ import okhttp3.internal.wait
 //para firebase
 private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
-
+var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -143,13 +146,23 @@ class ComposeListaActivity : ComponentActivity() {
             VerListaPoke(listaPokeFireBase, isLoading)//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
+
     }
+    //evita el cierre al pulsar Back cuando se sólo se quiere cerrar la búsqueda
+    override fun onBackPressed() {
+        if (campoBusqueda) {
+            campoBusqueda = false // Change campoBusqueda to false
+        } else {
+            super.onBackPressed() // Default back press behavior (close the app)
+        }
+    }
+
 }
 
 @Composable
 fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
     var selectedItemIndex by remember { mutableStateOf(0) }
-    var campoBusqueda by remember { mutableStateOf(false) }
+
     var busquedaTipos by remember { mutableStateOf(false) }
     var textobusqueda by remember { mutableStateOf("") }
     var tipoBuscado by remember { mutableStateOf("") }
@@ -208,13 +221,19 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 //.padding(vertical = 15.dp)
                 .background(colorResource(R.color.lista_con_foco))
         ) {
-            ConstraintLayout {
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 0.dp)
+                    .systemBarsPadding()
+                    .imePadding()
+            ) {
                 val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda) = createRefs()
                 //val scrollState = rememberScrollState()
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        //.wrapContentHeight()
+                        //.fillMaxWidth()
+                        .fillMaxSize()/////////
                         .constrainAs(lazyC) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
@@ -253,7 +272,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                         context.startActivity(intent)*/
 
                                         /*
-                                        ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE cuando se pulsa un elemento cualquiera de la lista
+                                        ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                                         //sube a Firebase y AppWrite
                                         //refStorage = FirebaseStorage.getInstance().reference
                                         for (i in pokemonList) {
@@ -311,12 +330,14 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                     interactionSource = interactionSource,
                                     indication = null
                                 )
-                                .pointerInput(Unit) {
+                                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
                                     detectTapGestures(
                                         onPress = {
+                                            //efectos
                                             isPressed = true
                                             awaitRelease()
                                             isPressed = false
+                                            //intent a ComposeVistaActivity
                                             val index = pokemonList.indexOf(pokemon)
                                             selectedItemIndex = index
                                             val intent =
@@ -324,6 +345,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             intent.putParcelableArrayListExtra("lista", arrayPoke)
                                             intent.putExtra("indice", index)
                                             context.startActivity(intent)
+                                            //oculta campo de búsqueda
+                                            campoBusqueda=false
                                         }
                                     )
                                 }
