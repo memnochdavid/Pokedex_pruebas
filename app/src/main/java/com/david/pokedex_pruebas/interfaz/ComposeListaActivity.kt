@@ -6,10 +6,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,9 +26,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -28,6 +41,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,22 +52,29 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
+import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
+import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
+import com.david.pokedex_pruebas.modelo.listaPokeFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import io.appwrite.Client
@@ -61,6 +82,7 @@ import io.appwrite.services.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 
 //para firebase
@@ -86,9 +108,6 @@ class ComposeListaActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         refBBDD = FirebaseDatabase.getInstance().reference
-
-
-
 
         var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
         var isLoading by mutableStateOf(true)
@@ -121,7 +140,7 @@ class ComposeListaActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaPokeFireBase, isLoading)//FireBase -- false
+            VerListaPoke(listaPokeFireBase, isLoading)//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
     }
@@ -131,9 +150,18 @@ class ComposeListaActivity : ComponentActivity() {
 fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
     var selectedItemIndex by remember { mutableStateOf(0) }
     var campoBusqueda by remember { mutableStateOf(false) }
+    var busquedaTipos by remember { mutableStateOf(false) }
     var textobusqueda by remember { mutableStateOf("") }
-    val focusRequester = remember { FocusRequester() }
+    var tipoBuscado by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
+    //efectos
+    val alturaCampoBusqueda by animateFloatAsState(
+        targetValue = if (campoBusqueda) 300f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+
+    //
+    //intents
     var arrayPoke=ArrayList<PokemonFB>()
     arrayPoke.addAll(pokemonList)
 
@@ -156,53 +184,73 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
         LaunchedEffect(textobusqueda) {//filtramos la lista con la búsqueda de textobusqueda
             delay(200)
             listaFiltrada = if (textobusqueda.isEmpty()) {
-                pokemonList // Show all items when search is empty
+                pokemonList //reestablece la lsta cuando no hay búsqueda
             } else {
                 pokemonList.filter { pokemon ->
                     pokemon.name.contains(textobusqueda, ignoreCase = true)
                 }
             }
         }
+        LaunchedEffect(tipoBuscado) {//filtramos la lista con la búsqueda de tipoBuscado
+            delay(200)
+            listaFiltrada = if (tipoBuscado.isEmpty()) {
+                pokemonList //reestablece la lsta cuando no hay búsqueda
+            } else {
+                pokemonList.filter { pokemon ->
+                    pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true)}
+                }
+            }
+        }
 
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 //.padding(vertical = 15.dp)
                 .background(colorResource(R.color.lista_con_foco))
         ) {
             ConstraintLayout {
-                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda) = createRefs()
+                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda) = createRefs()
                 //val scrollState = rememberScrollState()
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 60.dp)
+                        //.wrapContentHeight()
                         .constrainAs(lazyC) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            bottom.linkTo(boton.top)
+                            if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
+                            else bottom.linkTo(parent.bottom)
                         }
-                ) {//recyclerview
+                ) {
                     items(listaFiltrada) { pokemon ->
-                    //val pokemon = pokemonList[index]
+                        var isPressed by remember { mutableStateOf(false) }
+                        val interactionSource = remember { MutableInteractionSource() }
+                        val scale = animateFloatAsState(
+                            targetValue = if (isPressed) 0.90f else 1f,
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+                                stiffness = Spring.StiffnessMedium // Moderate stiffness
+                            )
+                        )
                         val context = LocalContext.current
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
-
+                                .scale(scale.value)
                                 .clickable(
-                                    onClick = {
+                                    interactionSource = interactionSource,
+                                    indication = null, // Remove default ripple effect
 
-
+                                    onClick = {/*
                                         val index = pokemonList.indexOf(pokemon)
                                         selectedItemIndex = index
                                         val intent =
                                             Intent(context, ComposeVistaActivity::class.java)
                                         intent.putParcelableArrayListExtra("lista", arrayPoke)
                                         intent.putExtra("indice", index)
-                                        context.startActivity(intent)
+                                        context.startActivity(intent)*/
 
                                         /*
                                         ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE cuando se pulsa un elemento cualquiera de la lista
@@ -258,9 +306,27 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                         */
 
                                     }
-
-
                                 )
+                                .indication(
+                                    interactionSource = interactionSource,
+                                    indication = null
+                                )
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onPress = {
+                                            isPressed = true
+                                            awaitRelease()
+                                            isPressed = false
+                                            val index = pokemonList.indexOf(pokemon)
+                                            selectedItemIndex = index
+                                            val intent =
+                                                Intent(context, ComposeVistaActivity::class.java)
+                                            intent.putParcelableArrayListExtra("lista", arrayPoke)
+                                            intent.putExtra("indice", index)
+                                            context.startActivity(intent)
+                                        }
+                                    )
+                                }
                         ) {
 
                             var num = "${(pokemon.num)}"
@@ -284,7 +350,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             start.linkTo(parent.start)
                                             top.linkTo(parent.top)
                                         }
-                                )/*
+                                )
+                                /*
                                 Image(
                                     painter = painterResource(id = pokemon.foto),
                                     contentDescription = "Pokemon Image",
@@ -391,15 +458,22 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 Button(
                     onClick = {
                         campoBusqueda = !campoBusqueda
+                        tipoBuscado=""
+                        textobusqueda=""
                     },
                     modifier = Modifier
                         .size(120.dp)
                         .padding(20.dp)
-                        .wrapContentHeight()
+                        //.wrapContentHeight()
                         .constrainAs(boton) {
                             start.linkTo(parent.start)
-                            bottom.linkTo(parent.bottom)
+                            if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
+                            else bottom.linkTo(parent.bottom)
+
                         },
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 10.dp
+                    ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(R.color.fuego), // Cambia el color de fondo a rojo
                         contentColor = Color.White // Cambia el color del contenido a blanco
@@ -412,49 +486,117 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                     )
                     Text(text = "Menu")
                 }
-                if (campoBusqueda) {
+
+                //////////////////////////////////////
+                //campoBusqueda=true//borrar - sólo preview
+                /////////////////////////////////////
+
+                if (campoBusqueda || alturaCampoBusqueda > 0f) {
                     ConstraintLayout(
                         modifier = Modifier
                             .constrainAs(layoutBusqueda) {
-                                top.linkTo(boton.top)
-                                start.linkTo(boton.end)
+                                top.linkTo(lazyC.bottom)
+                                start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
                             }
-                            .padding(top = 10.dp)
+                            //.fillMaxSize()//
+                            .wrapContentHeight()
+                            //.padding(vertical = 30.dp)
+                            //.background(color = colorResource(id = R.color.lista_sin_foco))
+                            //.height(300.dp)
+                            .height(alturaCampoBusqueda.dp)
                     ) {
-                        // Content of the new ConstraintLayout
-                        OutlinedTextField(
+                        var tipoBus=""
+                        if(!busquedaTipos)tipoBus="NOMBRE"
+                        else tipoBus="TIPO"
+                        Text(
+                            text = "$tipoBus",
+                            fontSize = 18.sp,
+                            color = colorResource(R.color.white),
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .constrainAs(descBusqueda) {
+                                    top.linkTo(parent.top)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(switchBusqueda.start)
+                                    bottom.linkTo(busquedaTipo.top)
+                                }
+                                .padding(horizontal = 10.dp)
+                                //.wrapContentWidth()
+                        )
+                        Switch(
+                            modifier = Modifier
+                                .constrainAs(switchBusqueda){
+                                    top.linkTo(parent.top)
+                                    //start.linkTo(descBusqueda.end)
+                                    bottom.linkTo(busquedaTipo.top)
+                                    end.linkTo(parent.end)
+                                },
+                            checked = busquedaTipos,
+                            onCheckedChange = {
+                                busquedaTipos = it
+                            }
+                        )
+                        if(!busquedaTipos)OutlinedTextField(
                             value = textobusqueda,
                             onValueChange = { textobusqueda = it },
                             label = { Text("Buscar") },
                             modifier = Modifier
-                                .padding(horizontal = 15.dp)
+                                .padding(all = 25.dp)
+                                .width(300.dp)
                                 .background(color = colorResource(id = R.color.white))
-                                .onFocusChanged { focusState ->
-                                    if (!focusState.isFocused) {
-                                        textobusqueda = ""
-                                    }
+                                .constrainAs(busquedaTipo) {
+                                    top.linkTo(switchBusqueda.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    //bottom.linkTo(parent.bottom)
                                 }
-                                .focusRequester(focusRequester), // Add this line
+                                .clip(RoundedCornerShape(10.dp)),
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = "Buscar"
                                 )
                             },
+                            placeholder = { Text("nombre del Pokémon") },
                             shape = RoundedCornerShape(16.dp)
-
                         )
-
+                        else{
+                            LazyRow (
+                                modifier = Modifier
+                                    .padding(all = 25.dp)
+                                    //.wrapContentHeight()
+                                    .width(300.dp)
+                                    .constrainAs(busquedaTipo) {
+                                        top.linkTo(switchBusqueda.bottom)
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                        //bottom.linkTo(parent.bottom)
+                                    },
+                            ){
+                                items(PokemonTipoFB.entries) { tipo ->
+                                    Image(
+                                        painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
+                                        contentDescription = "Tipo",
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .padding(horizontal = 5.dp)
+                                            .width(50.dp)
+                                            .height(50.dp)
+                                            .clickable(
+                                                onClick = {
+                                                    tipoBuscado = tipo.tag
+                                                }
+                                            )
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
-
-
         }
-
-
     }
 }
 
@@ -494,13 +636,13 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
 
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun PokemonCardPreview() {
     VerListaPoke(listaPokeFB, false)
 }
-*/
+
 
 
 

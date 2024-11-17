@@ -72,6 +72,29 @@ fun enumToDrawableFB(tipo:PokemonTipoFB):Int{
         else -> { R.drawable.charmander}
     }
 }
+fun enumToDrawableFB_busqueda(tipo:PokemonTipoFB):Int{
+    return when(tipo){
+        PokemonTipoFB.PLANTA -> R.drawable.planta2
+        PokemonTipoFB.AGUA -> R.drawable.agua2
+        PokemonTipoFB.FUEGO -> R.drawable.fuego2
+        PokemonTipoFB.LUCHA -> R.drawable.lucha2
+        PokemonTipoFB.VENENO -> R.drawable.veneno2
+        PokemonTipoFB.ACERO -> R.drawable.acero2
+        PokemonTipoFB.BICHO -> R.drawable.bicho2
+        PokemonTipoFB.DRAGON -> R.drawable.dragon2
+        PokemonTipoFB.ELECTRICO -> R.drawable.electrico2
+        PokemonTipoFB.HADA -> R.drawable.hada2
+        PokemonTipoFB.HIELO -> R.drawable.hielo2
+        PokemonTipoFB.PSIQUICO -> R.drawable.psiquico2
+        PokemonTipoFB.ROCA -> R.drawable.roca2
+        PokemonTipoFB.TIERRA -> R.drawable.tierra2
+        PokemonTipoFB.SINIESTRO -> R.drawable.siniestro2
+        PokemonTipoFB.NORMAL -> R.drawable.normal2
+        PokemonTipoFB.VOLADOR -> R.drawable.volador2
+        PokemonTipoFB.FANTASMA -> R.drawable.fantasma2
+        else -> { R.drawable.charmander}
+    }
+}
 fun enumToColorFB(tipo:PokemonTipoFB):Int{
     return when(tipo){
         PokemonTipoFB.PLANTA -> R.color.planta
@@ -352,7 +375,7 @@ fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
 
 
 
-/*
+
 
 var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1,"",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO)),
@@ -608,4 +631,3 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(251,"",R.drawable.celebi, "Celebi","Este Pokémon vaga por el tiempo. La hierba y los árboles crecen por los campos por donde pasa.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.PLANTA))
 )
 
-*/
