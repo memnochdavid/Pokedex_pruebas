@@ -111,6 +111,7 @@ dependencies {
     //implementation("com.google.accompanist:accompanist-drawablepainter:0.35.0-alpha")
     //appwrite
     implementation("io.appwrite:sdk-for-kotlin:5.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     //implementation("io.appwrite:sdk-android:1.0.0")
 }
 /*https://developer.android.com/develop/ui/compose/compiler?hl=es-419*/

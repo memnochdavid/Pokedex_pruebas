@@ -309,7 +309,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                         intent.putParcelableArrayListExtra("lista", arrayPoke)
                                         intent.putExtra("indice", index)
                                         context.startActivity(intent)*/
-
                                         /*
                                         ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                                         //sube a Firebase y AppWrite
