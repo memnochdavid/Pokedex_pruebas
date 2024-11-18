@@ -240,12 +240,12 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                 /////////////////////////////////////////////////
                 //abre activity para crear un usuario - borrar cuando menu
                 IconButton(
-                    onClick = {//para abrir el activity perfil de usuario TODO()
-                        /*
+                    onClick = {//para abrir el activity perfil de usuario
 
-                        val intent =
-                            Intent(context, ComposeCreaUser::class.java)
-                        context.startActivity(intent)*/
+                        val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
+                        intent.putParcelableArrayListExtra("sesion", arrayListOf(sesion))
+                        context.startActivity(intent)
+
                     },
                     modifier = Modifier
                         .size(90.dp)
@@ -260,7 +260,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                 ) {
                     AsyncImage(
                         model = sesion.avatar,
-                        contentDescription = "Pokemon Image",
+                        contentDescription = "avatar de usuario",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()

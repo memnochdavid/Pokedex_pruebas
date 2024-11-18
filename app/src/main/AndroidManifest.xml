@@ -16,6 +16,11 @@
         android:theme="@style/Theme.Pokedex_pruebas"
         tools:targetApi="31">
         <activity
+            android:name=".interfaz.ComposePerfilUsuarioActivity"
+            android:exported="false"
+            android:label="@string/title_activity_compose_perfil_usuario"
+            android:theme="@style/Theme.Pokedex_pruebas" />
+        <activity
             android:name=".interfaz.ComposeLoginActivity"
             android:exported="false"
             android:label="@string/title_activity_compose_login"

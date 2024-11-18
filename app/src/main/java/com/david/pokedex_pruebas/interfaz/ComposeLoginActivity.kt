@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -135,8 +136,13 @@ fun Login() {
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-
+            Button(
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.hielo),
+                    contentColor = colorResource(R.color.white)
+                ),
+                shape = RoundedCornerShape(10.dp),
+                onClick = {
                 refBBDD = FirebaseDatabase.getInstance().reference
                 if (email.isNotEmpty() && password.isNotEmpty()) {
                     refBBDD.child("usuarios")
@@ -177,7 +183,13 @@ fun Login() {
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = {
+            Button(
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.hielo),
+                    contentColor = colorResource(R.color.white)
+                ),
+                shape = RoundedCornerShape(10.dp),
+                onClick = {
                 val intent = Intent(context, ComposeCreaUser::class.java)
                 context.startActivity(intent)
             }) {

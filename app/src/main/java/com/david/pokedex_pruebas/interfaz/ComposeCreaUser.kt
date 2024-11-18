@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -171,7 +172,13 @@ fun FormNewUser(scopeUser: CoroutineScope) {
 
             Button(modifier = Modifier
                 .padding(vertical = 8.dp),
-                onClick = { launcher.launch("image/*") }) {
+                onClick = { launcher.launch("image/*") },
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.hielo),
+                    contentColor = colorResource(R.color.white)
+                ),
+                shape = RoundedCornerShape(10.dp),
+                ) {
                 Text("Seleccionar foto de perfil")
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -184,6 +191,11 @@ fun FormNewUser(scopeUser: CoroutineScope) {
             }
             Button(modifier = Modifier
                 .padding(vertical = 8.dp),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.hielo),
+                    contentColor = colorResource(R.color.white)
+                ),
+                shape = RoundedCornerShape(10.dp),
                 onClick = {
                 if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || selectedImageUri != null) {
                     refBBDD = FirebaseDatabase.getInstance().reference
