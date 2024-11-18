@@ -166,7 +166,7 @@ class ComposeListaActivity : ComponentActivity() {
 }
 
 @Composable
-fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb , busquedaActiva: Boolean = false) {
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb) {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
     var busquedaTipos by remember { mutableStateOf(false) }
@@ -175,7 +175,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb 
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
     //efectos
     val alturaCampoBusqueda by animateFloatAsState(
-        targetValue = if (campoBusqueda) 300f else 0f,
+        targetValue = if (campoBusqueda) 150f else 0f,
         animationSpec = tween(durationMillis = 300) // duración
     )
     val context = LocalContext.current
@@ -555,11 +555,11 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb 
                 if (campoBusqueda || alturaCampoBusqueda > 0f) {
                     ConstraintLayout(
                         modifier = Modifier
-                            .constrainAs(layoutBusqueda) {/*
-                                top.linkTo(parent.top)
+                            .constrainAs(layoutBusqueda) {
+                                //top.linkTo(parent.top)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)*/
+                                bottom.linkTo(parent.bottom)
                                 linkTo(layoutBusqueda.bottom,parent.bottom,bias = 1f)
                             }
                             .background(colorResource(R.color.fuego))
