@@ -36,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,6 +59,7 @@ import com.google.firebase.database.FirebaseDatabase
 import io.appwrite.Client
 import io.appwrite.models.InputFile
 import io.appwrite.services.Storage
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,21 +71,22 @@ import kotlinx.coroutines.flow.collect
 private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
 private lateinit var urlImagen: Uri
-
+lateinit var scopeUser: CoroutineScope
 
 class ComposeCreaUser : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FormNewUser()
+            scopeUser = rememberCoroutineScope()
+            FormNewUser(scopeUser)
         }
     }
 }
 
 
 @Composable
-fun FormNewUser() {
+fun FormNewUser(scopeUser: CoroutineScope) {
     lateinit var newUser :UserFb
     val context = LocalContext.current
 
@@ -158,7 +161,7 @@ fun FormNewUser() {
                     val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
                     if (inputStream != null) {
 
-                        scope.launch {
+                        scopeUser.launch {
                             try{
                                 val file = inputStream.use { input ->
                                     val tempFile = kotlin.io.path.createTempFile().toFile()
@@ -174,6 +177,8 @@ fun FormNewUser() {
                                         file = file
                                     )
                                 }
+                                newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
+                                newUser = UserFb(username,email,password,newUserAvatar)
                                 refBBDD.child("usuarios").child(identificador).setValue(newUser)
 
                             }catch (e: Exception){
@@ -188,9 +193,7 @@ fun FormNewUser() {
                         }
                     }
 
-                    newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
 
-                    newUser = UserFb(username,email,password,newUserAvatar)
 
 
 
@@ -217,6 +220,7 @@ fun FormNewUser() {
 
                 //arraySesion.add(newUser)//debe ser un array para el intent
                 //pasar a la siguiente pantalla con los datos de la sesión
+
                 val intent = Intent(context, ComposeLoginActivity::class.java)
                 //intent.putParcelableArrayListExtra("sesion", arraySesion)
                 context.startActivity(intent)
@@ -234,9 +238,9 @@ fun FormNewUser() {
     }
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    FormNewUser()
-}
+    FormNewUser(null)
+}*/

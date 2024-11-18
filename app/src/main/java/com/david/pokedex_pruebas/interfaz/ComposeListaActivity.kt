@@ -76,6 +76,7 @@ import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
+import com.david.pokedex_pruebas.modelo.UserFb
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
 import com.david.pokedex_pruebas.modelo.listaPokeFB
@@ -111,6 +112,8 @@ class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
+
         refBBDD = FirebaseDatabase.getInstance().reference
 
         var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
@@ -144,7 +147,7 @@ class ComposeListaActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaPokeFireBase, isLoading)//FireBase,AppWrite -- false
+            VerListaPoke(listaPokeFireBase, isLoading,sesion[0])//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
 
@@ -161,7 +164,7 @@ class ComposeListaActivity : ComponentActivity() {
 }
 
 @Composable
-fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb) {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
     var busquedaTipos by remember { mutableStateOf(false) }
@@ -258,10 +261,15 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(R.color.fuego), // Cambia el color de fondo a rojo
                     )
-                ) {
+                ) {/*
                     Image(
                         painter = painterResource(id = R.drawable.pokeball_icon),
                         contentDescription = "Menu",
+                        contentScale = ContentScale.FillWidth
+                    )*/
+                    AsyncImage(
+                        model = sesion.avatar,
+                        contentDescription = "Pokemon Image",
                         contentScale = ContentScale.FillWidth
                     )
                     Text(text = "MenuUser")
@@ -695,7 +703,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
 
 
-
+/*
 
 @Preview(showBackground = true)
 @Composable
@@ -703,7 +711,7 @@ fun PokemonCardPreview() {
     VerListaPoke(listaPokeFB, false)
 }
 
-
+*/
 
 
 
