@@ -166,7 +166,7 @@ class ComposeListaActivity : ComponentActivity() {
 }
 
 @Composable
-fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb) {
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb , busquedaActiva: Boolean = false) {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
     var busquedaTipos by remember { mutableStateOf(false) }
@@ -277,7 +277,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
+                            if (campoBusqueda) bottom.linkTo(parent.bottom)
                             else bottom.linkTo(parent.bottom)
                         }
                 ) {
@@ -530,8 +530,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                             start.linkTo(parent.start)
                             if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
                             else bottom.linkTo(parent.bottom)
-
                         },
+
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 10.dp
                     ),
@@ -555,14 +555,16 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                 if (campoBusqueda || alturaCampoBusqueda > 0f) {
                     ConstraintLayout(
                         modifier = Modifier
-                            .constrainAs(layoutBusqueda) {
-                                top.linkTo(lazyC.bottom)
+                            .constrainAs(layoutBusqueda) {/*
+                                top.linkTo(parent.top)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(parent.bottom)*/
+                                linkTo(layoutBusqueda.bottom,parent.bottom,bias = 1f)
                             }
+                            .background(colorResource(R.color.fuego))
                             //.fillMaxSize()//
-                            .wrapContentHeight()
+                            //.wrapContentHeight()
                             //.padding(vertical = 30.dp)
                             //.background(color = colorResource(id = R.color.lista_sin_foco))
                             //.height(300.dp)
@@ -708,7 +710,12 @@ fun PokemonCardPreview() {
 
 
 
+//una preview para tener desplegado el search bar
+@Preview(showBackground = true)
+@Composable
+fun PokemonCardPreview2() {
 
+}
 
 /*
 private lateinit var refBBDD: DatabaseReference

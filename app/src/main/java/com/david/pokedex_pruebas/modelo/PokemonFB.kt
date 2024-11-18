@@ -335,9 +335,6 @@ fun inmuneFB(poke:PokemonFB):List<Int>{
 }
 
 
-
-
-
 /*
 fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
     return when(drawable){
@@ -363,18 +360,6 @@ fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
     }
 }
 */
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var listaPokeFB : List<PokemonFB> = listOf(
