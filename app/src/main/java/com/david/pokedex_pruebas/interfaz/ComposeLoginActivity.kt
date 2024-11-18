@@ -102,36 +102,35 @@ fun Login() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(onClick = {
-                //
+
                 refBBDD = FirebaseDatabase.getInstance().reference
                 if (email.isNotEmpty() && password.isNotEmpty()) {
-
                     refBBDD.child("usuarios")
                         .addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                snapshot.children.forEach { pojo ->
-                                    var checkUser = pojo.getValue(UserFb::class.java)
-                                    if (email == checkUser?.email && password == checkUser?.pass){
-                                        Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
+                                loginExiste = false
+                                for (pojo in snapshot.children) {
+                                    val checkUser = pojo.getValue(UserFb::class.java)
+                                    if (email == checkUser?.email && password == checkUser?.pass) {
                                         loginExiste = true
                                         arraySesion.add(checkUser)
-                                        //pasar a la siguiente pantalla con los datos de la sesión
-                                        val intent =Intent(context, ComposeListaActivity::class.java)
+                                        Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
+                                        val intent = Intent(context, ComposeListaActivity::class.java)
                                         intent.putParcelableArrayListExtra("sesion", arraySesion)
                                         context.startActivity(intent)
-                                    }
-                                    else{
-                                        Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                                        loginExiste = false
+                                        break
                                     }
                                 }
+                                if (!loginExiste) {
+                                    Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                }
                             }
+
                             override fun onCancelled(error: DatabaseError) {
                                 Toast.makeText(context, "Error en la conexión", Toast.LENGTH_SHORT).show()
                             }
                         })
-
-                }else{
+                } else {
                     Toast.makeText(context, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
                 }
 

@@ -199,7 +199,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
         }
     } else {//cuando ha cargado, comienza a mostrar cosas
 
-        LaunchedEffect(textobusqueda) {//filtramos la lista con la búsqueda de textobusqueda
+        LaunchedEffect(key1 = textobusqueda) {//filtramos la lista con la búsqueda de textobusqueda
             delay(200)
             listaFiltrada = if (textobusqueda.isEmpty()) {
                 pokemonList //reestablece la lsta cuando no hay búsqueda
@@ -209,7 +209,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                 }
             }
         }
-        LaunchedEffect(tipoBuscado) {//filtramos la lista con la búsqueda de tipoBuscado
+        LaunchedEffect(key1=tipoBuscado) {//filtramos la lista con la búsqueda de tipoBuscado
             delay(200)
             listaFiltrada = if (tipoBuscado.isEmpty()) {
                 pokemonList //reestablece la lsta cuando no hay búsqueda
@@ -243,8 +243,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         val intent =
                             Intent(context, ComposeCreaUser::class.java)
                         context.startActivity(intent)*/
-
-
                     },
                     modifier = Modifier
                         .size(120.dp)
