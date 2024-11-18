@@ -109,51 +109,82 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 selectedImageUri = uri
             }
         )
-        //var arraySesion=ArrayList<UserFb>()
-
+        var arraySesion=ArrayList<UserFb>()
+        val (col1, col2)=createRefs()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .constrainAs(col1){
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(col2.top)
+                }
+                .fillMaxHeight(0.5f)
+        ){
+            Spacer(modifier = Modifier.fillMaxHeight())
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
+                .constrainAs(col2){
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(col1.bottom)
+                    bottom.linkTo(parent.bottom)
+                }
+                .fillMaxHeight(1f),
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(Color.White)
+                    .fillMaxWidth(),
                 value = username,
                 onValueChange = { username = it },
                 label = { Text("Nombre de usuario") }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(Color.White)
+                    .fillMaxWidth(),
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Correo electrónico") }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 value = password,
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(Color.White)
+                    .fillMaxWidth(),
                 onValueChange = { password = it },
                 label = { Text("Contraseña") },
                 visualTransformation = PasswordVisualTransformation()
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
 
-            Button(onClick = { launcher.launch("image/*") }) {
+            Button(modifier = Modifier
+                .padding(vertical = 8.dp),
+                onClick = { launcher.launch("image/*") }) {
                 Text("Seleccionar foto de perfil")
             }
-
-
-
             Spacer(modifier = Modifier.height(8.dp))
-
-
-
-            Button(onClick = {
+            if (selectedImageUri != null) {
+                AsyncImage(
+                    model = selectedImageUri,
+                    contentDescription = "Selected image",
+                    modifier = Modifier.size(100.dp)
+                )
+            }
+            Button(modifier = Modifier
+                .padding(vertical = 8.dp),
+                onClick = {
                 if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || selectedImageUri != null) {
                     refBBDD = FirebaseDatabase.getInstance().reference
                     identificador = refBBDD.child("usuarios").push().key!!
@@ -204,43 +235,23 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 Text("Crear usuario")
             }
 
-
-
-            if (selectedImageUri != null) {
-                AsyncImage(
-                    model = selectedImageUri,
-                    contentDescription = "Selected image",
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-
             if (objetoCreado) {
-
                 Text("El usuario se ha creado: ${newUser.nick}")
 
-                //arraySesion.add(newUser)//debe ser un array para el intent
+                arraySesion.add(newUser)//debe ser un array para el intent
                 //pasar a la siguiente pantalla con los datos de la sesión
 
                 val intent = Intent(context, ComposeLoginActivity::class.java)
-                //intent.putParcelableArrayListExtra("sesion", arraySesion)
+                intent.putParcelableArrayListExtra("sesion", arraySesion)
                 context.startActivity(intent)
-
-                AsyncImage(
-                    model = newUserAvatar,
-                    contentDescription = "Selected image",
-                    modifier = Modifier.size(100.dp)
-                )
-
-
             }
-
         }
     }
 }
 
-/*
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    FormNewUser(null)
-}*/
+    scopeUser = rememberCoroutineScope()
+    FormNewUser(scopeUser)
+}

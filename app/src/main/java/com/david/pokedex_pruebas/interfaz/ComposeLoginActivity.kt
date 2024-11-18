@@ -13,7 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,12 +29,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
@@ -50,9 +55,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private lateinit var refBBDD: DatabaseReference
+private lateinit var sesionUser: ArrayList<UserFb>
 
 class ComposeLoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (intent.hasExtra("sesion")) {
+            sesionUser = intent.getParcelableArrayListExtra("sesion")!!
+        }else{
+            sesionUser = arrayListOf()
+        }
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -63,8 +74,8 @@ class ComposeLoginActivity : ComponentActivity() {
 
 @Composable
 fun Login() {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].email) }
+    var password by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].pass) }
 //    var mailVacio by remember { mutableStateOf(true) }
 //    var passVacio by remember { mutableStateOf(true) }
     var loginExiste by remember { mutableStateOf(false) }
@@ -76,30 +87,53 @@ fun Login() {
             .fillMaxSize()
             .padding(top = 0.dp)
             .background(colorResource(R.color.fuego))
-    ) {
 
+    ) {
+        val (col1, col2)=createRefs()
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp)
+                .constrainAs(col1){
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(col2.top)
+                }
+                .fillMaxHeight(0.5f)
+        ){}
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .constrainAs(col2){
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(col1.bottom)
+                    bottom.linkTo(parent.bottom)
+                }
+                .fillMaxHeight(1f),
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(Color.White)
+                    .fillMaxWidth(),
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Correo electrónico") }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
-                value = password,
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(Color.White)
+                    .fillMaxWidth(),
+                value = password,
                 onValueChange = { password = it },
                 label = { Text("Contraseña") },
                 visualTransformation = PasswordVisualTransformation()
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = {
 
@@ -125,7 +159,6 @@ fun Login() {
                                     Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
                                 }
                             }
-
                             override fun onCancelled(error: DatabaseError) {
                                 Toast.makeText(context, "Error en la conexión", Toast.LENGTH_SHORT).show()
                             }
@@ -133,11 +166,17 @@ fun Login() {
                 } else {
                     Toast.makeText(context, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
                 }
-
             }) {
                 Text("Login")
             }
-            Text("¿No tienes cuenta? ¡Regístrate!")
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text="¿No tienes cuenta? ¡Regístrate!",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             Button(onClick = {
                 val intent = Intent(context, ComposeCreaUser::class.java)
                 context.startActivity(intent)

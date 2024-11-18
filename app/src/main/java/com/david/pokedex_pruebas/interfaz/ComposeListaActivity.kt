@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -42,6 +43,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -237,40 +239,34 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
 
                 /////////////////////////////////////////////////
                 //abre activity para crear un usuario - borrar cuando menu
-                Button(
-                    onClick = {/*
+                IconButton(
+                    onClick = {//para abrir el activity perfil de usuario TODO()
+                        /*
 
                         val intent =
                             Intent(context, ComposeCreaUser::class.java)
                         context.startActivity(intent)*/
                     },
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(90.dp)
                         .padding(20.dp)
                         //.wrapContentHeight()
                         .constrainAs(botonUserActivity) {
                             end.linkTo(parent.end)
                             top.linkTo(parent.top)
                         }
-                        .zIndex(2f),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 100.dp
-                    ),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.fuego), // Cambia el color de fondo a rojo
-                    )
-                ) {/*
-                    Image(
-                        painter = painterResource(id = R.drawable.pokeball_icon),
-                        contentDescription = "Menu",
-                        contentScale = ContentScale.FillWidth
-                    )*/
+                        .zIndex(2f)
+
+                ) {
                     AsyncImage(
                         model = sesion.avatar,
                         contentDescription = "Pokemon Image",
-                        contentScale = ContentScale.FillWidth
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(colorResource(R.color.fuego))
                     )
-                    Text(text = "MenuUser")
                 }
 
                 LazyColumn(
@@ -388,7 +384,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                             intent.putExtra("indice", index)
                                             context.startActivity(intent)
                                             //oculta campo de búsqueda
-                                            campoBusqueda=false
+                                            campoBusqueda = false
                                         }
                                     )
                                 }
@@ -640,7 +636,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                         //bottom.linkTo(parent.bottom)
                                     },
                             ){
-                                items(PokemonTipoFB.entries) { tipo ->
+                                items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
                                     Image(
                                         painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
                                         contentDescription = "Tipo",
@@ -701,15 +697,16 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
 
 
 
-/*
+
 
 @Preview(showBackground = true)
 @Composable
 fun PokemonCardPreview() {
-    VerListaPoke(listaPokeFB, false)
+    var userAux=UserFb("","","","https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/OC-7tUbUj0_3AIjTMOy/preview?project=6738854a0011e2bc643f")
+    VerListaPoke(listaPokeFB, false, userAux)
 }
 
-*/
+
 
 
 
