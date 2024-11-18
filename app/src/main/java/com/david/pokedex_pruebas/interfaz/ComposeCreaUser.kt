@@ -1,8 +1,11 @@
 package com.david.pokedex_pruebas.interfaz
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -65,6 +68,7 @@ import kotlinx.coroutines.flow.collect
 //para firebase
 private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
+private lateinit var urlImagen: Uri
 
 
 class ComposeCreaUser : ComponentActivity() {
@@ -81,7 +85,6 @@ class ComposeCreaUser : ComponentActivity() {
 @Composable
 fun FormNewUser() {
     lateinit var newUser :UserFb
-    refBBDD = FirebaseDatabase.getInstance().reference
     val context = LocalContext.current
 
 
@@ -91,10 +94,11 @@ fun FormNewUser() {
             .padding(top = 0.dp)
             .background(colorResource(R.color.fuego))
     ) {
-        var objetoCreado by remember { mutableStateOf(Boolean) }
+        var objetoCreado by remember { mutableStateOf(false) }
         var username by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
+        var newUserAvatar by remember { mutableStateOf("") }
         var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
@@ -102,6 +106,7 @@ fun FormNewUser() {
                 selectedImageUri = uri
             }
         )
+        //var arraySesion=ArrayList<UserFb>()
 
         Column(
             modifier = Modifier
@@ -133,6 +138,8 @@ fun FormNewUser() {
                 visualTransformation = PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(8.dp))
+
+
             Button(onClick = { launcher.launch("image/*") }) {
                 Text("Seleccionar foto de perfil")
             }
@@ -140,6 +147,61 @@ fun FormNewUser() {
 
 
             Spacer(modifier = Modifier.height(8.dp))
+
+
+
+            Button(onClick = {
+                if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || selectedImageUri != null) {
+                    refBBDD = FirebaseDatabase.getInstance().reference
+                    identificador = refBBDD.child("usuarios").push().key!!
+                    val identificadorAppWrite = identificador.substring(1, 20) ?: "" // coge el identificador
+                    val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
+                    if (inputStream != null) {
+
+                        scope.launch {
+                            try{
+                                val file = inputStream.use { input ->
+                                    val tempFile = kotlin.io.path.createTempFile().toFile()
+                                    tempFile.outputStream().use { output ->
+                                        input.copyTo(output)
+                                    }
+                                    InputFile.fromFile(tempFile) // Use fromFile method
+                                }
+                                withContext(Dispatchers.IO) {
+                                    storage.createFile(
+                                        bucketId = "6738855e0002d76f1141",
+                                        fileId = identificadorAppWrite,
+                                        file = file
+                                    )
+                                }
+                                refBBDD.child("usuarios").child(identificador).setValue(newUser)
+
+                            }catch (e: Exception){
+                                Log.e("UploadError", "Failed to upload image: ${e.message}")
+                            }
+                            finally {
+                                Toast.makeText(context, "Usuario $username creado con éxito", Toast.LENGTH_SHORT).show()
+                            }
+                            withContext(Dispatchers.Main) { // Update on main thread
+                                objetoCreado = true
+                            }
+                        }
+                    }
+
+                    newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
+
+                    newUser = UserFb(username,email,password,newUserAvatar)
+
+
+
+                }else{
+                    Toast.makeText(context, "Rellena todos los campos y elige una imagen", Toast.LENGTH_SHORT).show()
+                }
+            }) {
+                Text("Crear usuario")
+            }
+
+
 
             if (selectedImageUri != null) {
                 AsyncImage(
@@ -149,15 +211,25 @@ fun FormNewUser() {
                 )
             }
 
+            if (objetoCreado) {
 
-            Button(onClick = {
-                newUser = UserFb(username,email,password)
-                //TODO: upload image to Firebase Storage and get download URL
-                //TODO: update newUser.imagenFB with the download URL
-                //TODO: save newUser to Firebase Realtime Database
-            }) {
-                Text("Crear usuario")
+                Text("El usuario se ha creado: ${newUser.nick}")
+
+                //arraySesion.add(newUser)//debe ser un array para el intent
+                //pasar a la siguiente pantalla con los datos de la sesión
+                val intent = Intent(context, ComposeLoginActivity::class.java)
+                //intent.putParcelableArrayListExtra("sesion", arraySesion)
+                context.startActivity(intent)
+
+                AsyncImage(
+                    model = newUserAvatar,
+                    contentDescription = "Selected image",
+                    modifier = Modifier.size(100.dp)
+                )
+
+
             }
+
         }
     }
 }

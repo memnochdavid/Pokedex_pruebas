@@ -3,4 +3,5 @@
     <string name="title_activity_compose_lista">ComposeListaActivity</string>
     <string name="title_activity_compose_splash">ComposeSplashActivity</string>
     <string name="title_activity_compose_crea_user">ComposeCreaUser</string>
+    <string name="title_activity_compose_login">ComposeLoginActivity</string>
 </resources>

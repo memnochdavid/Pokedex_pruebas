@@ -9,8 +9,13 @@ data class UserFb(
     var nick: String="",
     var email: String="",
     var pass: String="",
-    var imagenFB: String? = null,
+    var avatar: String? = null,
     var admin: Boolean=false,
     var denunciado: Boolean=false,
     var detallesDenuncia: String? = null
-): Serializable, Parcelable
+): Serializable, Parcelable{
+
+    override fun toString(): String {
+        return "UserFb(nick='$nick', email='$email', pass='$pass', avatar='$avatar', admin=$admin, denunciado=$denunciado, detallesDenuncia='$detallesDenuncia')"
+    }
+}

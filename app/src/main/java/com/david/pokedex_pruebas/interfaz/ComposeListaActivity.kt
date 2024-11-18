@@ -266,8 +266,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                     )
                     Text(text = "MenuUser")
                 }
-                //////////////////////////////
-
 
                 LazyColumn(
                     modifier = Modifier
