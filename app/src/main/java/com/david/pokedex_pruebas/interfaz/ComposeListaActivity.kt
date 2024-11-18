@@ -238,11 +238,11 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                 /////////////////////////////////////////////////
                 //abre activity para crear un usuario - borrar cuando menu
                 Button(
-                    onClick = {
+                    onClick = {/*
 
                         val intent =
                             Intent(context, ComposeCreaUser::class.java)
-                        context.startActivity(intent)
+                        context.startActivity(intent)*/
 
 
                     },
