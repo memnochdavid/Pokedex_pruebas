@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -55,6 +56,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.app.ActivityCompat.recreate
 import androidx.lifecycle.get
@@ -162,49 +164,68 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                 )
             }*/
 
-                //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
-                Surface(modifier = Modifier
-                    .fillMaxSize()
-                    .background(colorResource(R.color.lista_con_foco))
-                ) {
-                    //val context = LocalContext.current
-                    //val placeholder = R.drawable.tr
-                    val imageUrl = usuario.avatar
-                    // Build an ImageRequest with Coil
-                    val listener = object : ImageRequest.Listener {
-                        override fun onError(request: ImageRequest, result: ErrorResult) {
-                            super.onError(request, result)
-                        }
+                //abre activity para crear un usuario - borrar cuando menu
+                IconButton(
+                    onClick = {
+                        //
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.8f)
 
-                        override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                            super.onSuccess(request, result)
-                        }
-                    }
-                    val imageRequest = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .listener(listener)
-                        .dispatcher(Dispatchers.IO)
-                        .memoryCacheKey(imageUrl)
-                        .diskCacheKey(imageUrl)/*
-                        .placeholder(ColorDrawable(R.color.fuego))
-                        .error(placeholder)
-                        .fallback(placeholder)*/
-                        .diskCachePolicy(CachePolicy.DISABLED)
-                        .memoryCachePolicy(CachePolicy.DISABLED)
-                        .build()
-
-                    // se carga el request en el AsyncImage
+                ) {/*
                     AsyncImage(
-                        model = imageRequest,
+                        model = sesion.avatar,
                         contentDescription = "avatar de usuario",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.8f)
+                            .fillMaxSize()
                             .clip(CircleShape)
-                    )
+                            .background(colorResource(R.color.fuego))
+                    )*/
+
+                    //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        //val context = LocalContext.current
+                        val placeholder = R.drawable.placeholder
+                        val imageUrl = usuario.avatar
+
+                        // Build an ImageRequest with Coil
+                        val listener = object : ImageRequest.Listener {
+                            override fun onError(request: ImageRequest, result: ErrorResult) {
+                                super.onError(request, result)
+                            }
+
+                            override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                                super.onSuccess(request, result)
+                            }
+                        }
+                        val imageRequest = ImageRequest.Builder(context)
+                            .data(imageUrl)
+                            .listener(listener)
+                            .dispatcher(Dispatchers.IO)
+                            .memoryCacheKey(imageUrl)
+                            .diskCacheKey(imageUrl)
+                            .placeholder(placeholder)
+                            .error(placeholder)
+                            .fallback(placeholder)
+                            .diskCachePolicy(CachePolicy.DISABLED)
+                            .memoryCachePolicy(CachePolicy.DISABLED)
+                            .build()
+
+                        // Load and display the image with AsyncImage
+                        AsyncImage(
+                            model = imageRequest,
+                            contentDescription = "Image Description",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .background(colorResource(R.color.transparente))
+                        )
+                    }
+                    //fin mierda para que se muestre bien el avatar actualizado
                 }
-                //fin mierda para que se muestre bien el avatar actualizado
             }
 
             Spacer(modifier = Modifier.weight(0.05f))
@@ -390,11 +411,13 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                                         InputFile.fromFile(tempFile) // Use fromFile method
                                                     }
                                                     withContext(Dispatchers.IO) {
+                                                        //borra la foto vieja
                                                         storage.deleteFile(
                                                             bucketId = "6738855e0002d76f1141",
                                                             fileId = identificadorAppWrite
                                                         )
                                                         delay(500)
+                                                        //crea la nueva foto con el mismo nombre
                                                         storage.createFile(
                                                             bucketId = "6738855e0002d76f1141",
                                                             fileId = identificadorAppWrite,

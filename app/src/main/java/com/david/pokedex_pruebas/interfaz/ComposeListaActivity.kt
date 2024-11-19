@@ -278,7 +278,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                     //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
                     Surface(modifier = Modifier.fillMaxSize()) {
                         //val context = LocalContext.current
-                        val placeholder = R.drawable.acero
+                        val placeholder = R.drawable.placeholder
                         val imageUrl = sesion.avatar
 
                         // Build an ImageRequest with Coil
