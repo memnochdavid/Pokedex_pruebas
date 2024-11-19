@@ -430,6 +430,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                             val intent =
                                                 Intent(context, ComposeVistaActivity::class.java)
                                             intent.putParcelableArrayListExtra("lista", arrayPoke)
+                                            intent.putParcelableArrayListExtra("sesion", arrayListOf(sesion))
                                             intent.putExtra("indice", index)
                                             context.startActivity(intent)
                                             //oculta campo de búsqueda

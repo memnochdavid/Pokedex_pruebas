@@ -1,6 +1,7 @@
 
 package com.david.pokedex_pruebas.interfaz
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -55,16 +56,28 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import com.david.pokedex_pruebas.modelo.UserFb
+import kotlinx.coroutines.Dispatchers
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -87,10 +100,11 @@ class ComposeVistaActivity : AppCompatActivity() {
         //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
         val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
         val indice = intent.getIntExtra("indice", 0)
+        val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
         //enableEdgeToEdge()
         setContent{
             //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
-            VerListaPokemon(lista, indice)
+            VerListaPokemon(lista, indice, sesion[0])
             //VerPokemon(lista[45])
         }
     }
@@ -99,7 +113,7 @@ class ComposeVistaActivity : AppCompatActivity() {
 
 
 @Composable
-fun VerPokemon(pokemon: PokemonFB) {
+fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
     val num=pokemon.num
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
@@ -108,12 +122,86 @@ fun VerPokemon(pokemon: PokemonFB) {
     val scrollState = rememberScrollState()
     //var contenidoHeight by remember { mutableStateOf(0) }
 
+    val context = LocalContext.current
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones, lazyC_inside) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones, botonUserActivity) = createRefs()
+
+        IconButton(
+            onClick = {//para abrir el activity perfil de usuario
+
+                val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
+                intent.putParcelableArrayListExtra("sesion", arrayListOf(usuario))
+                context.startActivity(intent)
+
+            },
+            modifier = Modifier
+                .size(90.dp)
+                .padding(20.dp)
+                //.wrapContentHeight()
+                .constrainAs(botonUserActivity) {
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                }
+                .zIndex(2f)
+
+        ) {/*
+                    AsyncImage(
+                        model = sesion.avatar,
+                        contentDescription = "avatar de usuario",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(colorResource(R.color.fuego))
+                    )*/
+
+            //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
+            Surface(modifier = Modifier.fillMaxSize()) {
+                //val context = LocalContext.current
+                val placeholder = R.drawable.placeholder
+                val imageUrl = usuario.avatar
+
+                // Build an ImageRequest with Coil
+                val listener = object : ImageRequest.Listener {
+                    override fun onError(request: ImageRequest, result: ErrorResult) {
+                        super.onError(request, result)
+                    }
+
+                    override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                        super.onSuccess(request, result)
+                    }
+                }
+                val imageRequest = ImageRequest.Builder(context)
+                    .data(imageUrl)
+                    .listener(listener)
+                    .dispatcher(Dispatchers.IO)
+                    .memoryCacheKey(imageUrl)
+                    .diskCacheKey(imageUrl)
+                    .placeholder(placeholder)
+                    .error(placeholder)
+                    .fallback(placeholder)
+                    .diskCachePolicy(CachePolicy.DISABLED)
+                    .memoryCachePolicy(CachePolicy.DISABLED)
+                    .build()
+
+                // Load and display the image with AsyncImage
+                AsyncImage(
+                    model = imageRequest,
+                    contentDescription = "Image Description",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape)
+                        .background(colorResource(R.color.fuego))
+                )
+            }
+            //fin mierda para que se muestre bien el avatar actualizado
+        }
         /*
         Image(
             painter = painterResource(id = pokemon.foto),
@@ -253,6 +341,8 @@ fun VerPokemon(pokemon: PokemonFB) {
 
                     altura=(altura+5)*16
 
+
+
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -345,7 +435,7 @@ fun VerPokemon(pokemon: PokemonFB) {
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
+fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb) {
 
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = indice
@@ -385,7 +475,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
                         .background(color1)
                         .fillMaxHeight(0.2f)
                 )
-                VerPokemon(pokemon)
+                VerPokemon(pokemon, usuario)
             }
         }
     }
@@ -396,7 +486,9 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int) {
 fun DefaultPreview() {
     var pokemon = PokemonFB(249,"",R.drawable.lugia, "Lugia","Dicen que es el guardián de los mares. Hay rumores de que fue visto en una noche de tormenta.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.VOLADOR))
     var listaAux = mutableListOf<PokemonFB>()
+    var userAux = UserFb("nick","email","asfsdhgdfjhd","link")
+
     listaAux.add(pokemon)
-    VerListaPokemon(listaAux, 0)
+    VerListaPokemon(listaAux, 0, userAux)
     //VerPokemon(listaAux[0])
 }
