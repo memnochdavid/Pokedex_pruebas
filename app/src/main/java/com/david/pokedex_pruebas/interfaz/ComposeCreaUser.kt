@@ -221,7 +221,7 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                                     )
                                 }
                                 newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
-                                newUser = UserFb(username,email,password,newUserAvatar)
+                                newUser = UserFb(username,email,password,newUserAvatar,identificador)
                                 refBBDD.child("usuarios").child(identificador).setValue(newUser)
 
                             }catch (e: Exception){

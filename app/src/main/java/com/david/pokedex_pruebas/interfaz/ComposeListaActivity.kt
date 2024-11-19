@@ -19,6 +19,7 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +46,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,6 +77,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
@@ -87,6 +93,7 @@ import com.google.firebase.database.FirebaseDatabase
 import io.appwrite.Client
 import io.appwrite.services.Storage
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.internal.wait
@@ -257,7 +264,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         }
                         .zIndex(2f)
 
-                ) {
+                ) {/*
                     AsyncImage(
                         model = sesion.avatar,
                         contentDescription = "avatar de usuario",
@@ -266,7 +273,49 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                             .fillMaxSize()
                             .clip(CircleShape)
                             .background(colorResource(R.color.fuego))
-                    )
+                    )*/
+
+                    //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        //val context = LocalContext.current
+                        val placeholder = R.drawable.acero
+                        val imageUrl = sesion.avatar
+
+                        // Build an ImageRequest with Coil
+                        val listener = object : ImageRequest.Listener {
+                            override fun onError(request: ImageRequest, result: ErrorResult) {
+                                super.onError(request, result)
+                            }
+
+                            override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                                super.onSuccess(request, result)
+                            }
+                        }
+                        val imageRequest = ImageRequest.Builder(context)
+                            .data(imageUrl)
+                            .listener(listener)
+                            .dispatcher(Dispatchers.IO)
+                            .memoryCacheKey(imageUrl)
+                            .diskCacheKey(imageUrl)
+                            .placeholder(placeholder)
+                            .error(placeholder)
+                            .fallback(placeholder)
+                            .diskCachePolicy(CachePolicy.DISABLED)
+                            .memoryCachePolicy(CachePolicy.DISABLED)
+                            .build()
+
+                        // Load and display the image with AsyncImage
+                        AsyncImage(
+                            model = imageRequest,
+                            contentDescription = "Image Description",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                                .background(colorResource(R.color.fuego))
+                        )
+                    }
+                    //fin mierda para que se muestre bien el avatar actualizado
                 }
 
                 LazyColumn(

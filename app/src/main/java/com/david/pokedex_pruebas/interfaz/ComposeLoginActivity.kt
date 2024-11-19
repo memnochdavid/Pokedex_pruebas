@@ -66,7 +66,7 @@ class ComposeLoginActivity : ComponentActivity() {
             sesionUser = arrayListOf()
         }
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             Login()
         }

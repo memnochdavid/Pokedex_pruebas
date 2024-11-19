@@ -10,9 +10,10 @@ data class UserFb(
     var email: String="",
     var pass: String="",
     var avatar: String? = null,
+    var key: String? = null,
     var admin: Boolean=false,
     var denunciado: Boolean=false,
-    var detallesDenuncia: String? = null
+    var detallesDenuncia: String? = null,
 ): Serializable, Parcelable{
 
     override fun toString(): String {
