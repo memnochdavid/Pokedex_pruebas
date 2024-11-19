@@ -94,6 +94,7 @@ class ComposePerfilUsuarioActivity : ComponentActivity() {
         }else{
             sesionUser = arrayListOf()
         }
+        val usuarioCambios:UserFb
         refBBDD = FirebaseDatabase.getInstance().reference
         super.onCreate(savedInstanceState)
         setContent {
@@ -106,14 +107,13 @@ class ComposePerfilUsuarioActivity : ComponentActivity() {
 @SuppressLint("ResourceAsColor")
 @Composable
 fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
-
-    var edicion by remember { mutableStateOf(false) }
+    //var edicion by remember { mutableStateOf(false) }
     var mostrar by remember { mutableStateOf((""))}
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    var nick by remember { mutableStateOf(if (sesionUser.isNullOrEmpty() && !edicion) "" else sesionUser[0].nick) }
-    var email by remember { mutableStateOf(if (sesionUser.isNullOrEmpty() && !edicion) "" else sesionUser[0].email) }
-    var password by remember { mutableStateOf(if (sesionUser.isNullOrEmpty() && !edicion) "" else sesionUser[0].pass) }
-    var avatarLink by remember { mutableStateOf(if (sesionUser.isNullOrEmpty() && !edicion) "" else sesionUser[0].avatar) }
+    var nick by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].nick) }
+    var email by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].email) }
+    var password by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].pass) }
+    var avatarLink by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].avatar) }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -255,7 +255,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             .padding(start = 10.dp)
                             .weight(0.3f)
                             .wrapContentWidth(),
-                            text = usuario.nick,
+                            text = nick,
                             color = Color.Black,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold)
@@ -263,7 +263,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             .padding(start = 10.dp)
                             .weight(0.7f)
                             .wrapContentWidth(),
-                            text = usuario.email,
+                            text = email,
                             color = Color.Black,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold)
@@ -430,12 +430,10 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                                 }
                                                 finally {
                                                     Toast.makeText(context, "Usuario $nick actualizado con éxito", Toast.LENGTH_SHORT).show()
-                                                    //relanzamos la activity
-                                                    edicion=true
-                                                    recreate(context as Activity)
                                                 }
                                             }
                                         }
+
                                 })
                             {
                                 Text("Confirma")
@@ -471,6 +469,9 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
     }
 
 }
+
+
+
 /*
 @Preview(showBackground = true)
 @Composable
