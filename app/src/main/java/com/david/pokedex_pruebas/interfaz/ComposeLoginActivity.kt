@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +54,8 @@ import com.google.firebase.database.ValueEventListener
 import io.appwrite.models.InputFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 
 private lateinit var refBBDD: DatabaseReference
 private lateinit var sesionUser: ArrayList<UserFb>
@@ -87,7 +89,7 @@ fun Login() {
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 0.dp)
-            .background(colorResource(R.color.fuego))
+            .background(colorResource(R.color.rojo_primario))
 
     ) {
         val (col1, col2)=createRefs()
@@ -95,7 +97,7 @@ fun Login() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .constrainAs(col1){
+                .constrainAs(col1) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
@@ -107,7 +109,7 @@ fun Login() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .constrainAs(col2){
+                .constrainAs(col2) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     top.linkTo(col1.bottom)
@@ -118,27 +120,48 @@ fun Login() {
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(colorResource(id = R.color.transparente))
                     .fillMaxWidth(),
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correo electrónico") }
+                label = { Text(
+                    color= colorResource(R.color.acero),
+                    text="Correo electrónico") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.white),
+                    unfocusedBorderColor = colorResource(R.color.acero),
+                    cursorColor = colorResource(R.color.white),
+                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                    focusedTextColor= colorResource(R.color.white),
+                    unfocusedTextColor= colorResource(R.color.acero),
+                )
             )
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(colorResource(id = R.color.transparente))
                     .fillMaxWidth(),
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Contraseña") },
-                visualTransformation = PasswordVisualTransformation()
+                label = { Text(
+                    color= colorResource(R.color.acero),
+                    text="Contraseña")},
+                visualTransformation = PasswordVisualTransformation(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.white),
+                    unfocusedBorderColor = colorResource(R.color.acero),
+                    cursorColor = colorResource(R.color.white),
+                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                    focusedTextColor= colorResource(R.color.white),
+                    unfocusedTextColor= colorResource(R.color.acero),
+                ),
+
             )
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.hielo),
+                    containerColor = colorResource(R.color.rojo_muy_claro),
                     contentColor = colorResource(R.color.white)
                 ),
                 shape = RoundedCornerShape(10.dp),
@@ -185,7 +208,7 @@ fun Login() {
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.hielo),
+                    containerColor = colorResource(R.color.rojo_muy_claro),
                     contentColor = colorResource(R.color.white)
                 ),
                 shape = RoundedCornerShape(10.dp),
@@ -208,3 +231,52 @@ fun Login() {
 fun GreetingPreview2() {
     Login()
 }
+/*
+
+Represents the colors of the input text, container, and content (including label, placeholder, leading and trailing icons) used in a text field in different states.
+Params:
+focusedTextColor - the color used for the input text of this text field when focused
+unfocusedTextColor - the color used for the input text of this text field when not focused
+disabledTextColor - the color used for the input text of this text field when disabled
+errorTextColor - the color used for the input text of this text field when in error state
+focusedContainerColor - the container color for this text field when focused
+unfocusedContainerColor - the container color for this text field when not focused
+disabledContainerColor - the container color for this text field when disabled
+errorContainerColor - the container color for this text field when in error state
+cursorColor - the cursor color for this text field
+errorCursorColor - the cursor color for this text field when in error state
+textSelectionColors - the colors used when the input text of this text field is selected
+focusedIndicatorColor - the indicator color for this text field when focused
+unfocusedIndicatorColor - the indicator color for this text field when not focused
+disabledIndicatorColor - the indicator color for this text field when disabled
+errorIndicatorColor - the indicator color for this text field when in error state
+focusedLeadingIconColor - the leading icon color for this text field when focused
+unfocusedLeadingIconColor - the leading icon color for this text field when not focused
+disabledLeadingIconColor - the leading icon color for this text field when disabled
+errorLeadingIconColor - the leading icon color for this text field when in error state
+focusedTrailingIconColor - the trailing icon color for this text field when focused
+unfocusedTrailingIconColor - the trailing icon color for this text field when not focused
+disabledTrailingIconColor - the trailing icon color for this text field when disabled
+errorTrailingIconColor - the trailing icon color for this text field when in error state
+focusedLabelColor - the label color for this text field when focused
+unfocusedLabelColor - the label color for this text field when not focused
+disabledLabelColor - the label color for this text field when disabled
+errorLabelColor - the label color for this text field when in error state
+focusedPlaceholderColor - the placeholder color for this text field when focused
+unfocusedPlaceholderColor - the placeholder color for this text field when not focused
+disabledPlaceholderColor - the placeholder color for this text field when disabled
+errorPlaceholderColor - the placeholder color for this text field when in error state
+focusedSupportingTextColor - the supporting text color for this text field when focused
+unfocusedSupportingTextColor - the supporting text color for this text field when not focused
+disabledSupportingTextColor - the supporting text color for this text field when disabled
+errorSupportingTextColor - the supporting text color for this text field when in error state
+focusedPrefixColor - the prefix color for this text field when focused
+unfocusedPrefixColor - the prefix color for this text field when not focused
+disabledPrefixColor - the prefix color for this text field when disabled
+errorPrefixColor - the prefix color for this text field when in error state
+focusedSuffixColor - the suffix color for this text field when focused
+unfocusedSuffixColor - the suffix color for this text field when not focused
+disabledSuffixColor - the suffix color for this text field when disabled
+errorSuffixColor - the suffix color for this text field when in error state
+
+*/

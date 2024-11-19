@@ -11,6 +11,7 @@ data class UserFb(
     var pass: String="",
     var avatar: String? = null,
     var key: String? = null,
+    var equipo: MutableList<PokemonFB>?=null,
     var admin: Boolean=false,
     var denunciado: Boolean=false,
     var detallesDenuncia: String? = null,

@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -77,7 +79,7 @@ lateinit var scopeUser: CoroutineScope
 class ComposeCreaUser : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             scopeUser = rememberCoroutineScope()
             FormNewUser(scopeUser)
@@ -96,7 +98,7 @@ fun FormNewUser(scopeUser: CoroutineScope) {
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 0.dp)
-            .background(colorResource(R.color.fuego))
+            .background(colorResource(R.color.fuego)),
     ) {
         var objetoCreado by remember { mutableStateOf(false) }
         var username by remember { mutableStateOf("") }
@@ -111,61 +113,78 @@ fun FormNewUser(scopeUser: CoroutineScope) {
             }
         )
         var arraySesion=ArrayList<UserFb>()
-        val (col1, col2)=createRefs()
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .constrainAs(col1){
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(col2.top)
-                }
-                .fillMaxHeight(0.5f)
-        ){
-            Spacer(modifier = Modifier.fillMaxHeight())
-        }
+        val (col1)=createRefs()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .constrainAs(col2){
+                .constrainAs(col1){
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     top.linkTo(col1.bottom)
                     bottom.linkTo(parent.bottom)
                 }
                 .fillMaxHeight(1f),
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
 
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(colorResource(id = R.color.transparente))
                     .fillMaxWidth(),
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Nombre de usuario") }
+                label = { Text(
+                    color= colorResource(R.color.acero),
+                    text="nick")},
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.white),
+                    unfocusedBorderColor = colorResource(R.color.acero),
+                    cursorColor = colorResource(R.color.white),
+                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                    focusedTextColor= colorResource(R.color.white),
+                    unfocusedTextColor= colorResource(R.color.acero),
+                )
             )
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(colorResource(id = R.color.transparente))
                     .fillMaxWidth(),
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Correo electrónico") }
+                label = { Text(
+                    color= colorResource(R.color.acero),
+                    text="email")},
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.white),
+                    unfocusedBorderColor = colorResource(R.color.acero),
+                    cursorColor = colorResource(R.color.white),
+                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                    focusedTextColor= colorResource(R.color.white),
+                    unfocusedTextColor= colorResource(R.color.acero),
+                )
             )
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 value = password,
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(colorResource(id = R.color.transparente))
                     .fillMaxWidth(),
                 onValueChange = { password = it },
-                label = { Text("Contraseña") },
-                visualTransformation = PasswordVisualTransformation()
+                label = { Text(
+                    color= colorResource(R.color.acero),
+                    text="contraseña")},
+                visualTransformation = PasswordVisualTransformation(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colorResource(R.color.white),
+                    unfocusedBorderColor = colorResource(R.color.acero),
+                    cursorColor = colorResource(R.color.white),
+                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                    focusedTextColor= colorResource(R.color.white),
+                    unfocusedTextColor= colorResource(R.color.acero),
+                )
             )
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -174,10 +193,11 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 .padding(vertical = 8.dp),
                 onClick = { launcher.launch("image/*") },
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.hielo),
+                    containerColor = colorResource(R.color.rojo_muy_claro),
                     contentColor = colorResource(R.color.white)
                 ),
                 shape = RoundedCornerShape(10.dp),
+
                 ) {
                 Text("Seleccionar foto de perfil")
             }
@@ -192,7 +212,7 @@ fun FormNewUser(scopeUser: CoroutineScope) {
             Button(modifier = Modifier
                 .padding(vertical = 8.dp),
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.hielo),
+                    containerColor = colorResource(R.color.rojo_muy_claro),
                     contentColor = colorResource(R.color.white)
                 ),
                 shape = RoundedCornerShape(10.dp),

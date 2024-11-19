@@ -33,6 +33,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -121,7 +122,6 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
         }
     )
     val context = LocalContext.current
-
 
     ConstraintLayout(//parent
         modifier = Modifier
@@ -233,7 +233,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                 modifier = Modifier
                     .fillMaxHeight()
                     .background(
-                        colorResource(R.color.white),
+                        colorResource(R.color.rojo_claro),
                         RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                     )
                     .weight(0.65f)
@@ -256,15 +256,14 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             .weight(0.3f)
                             .wrapContentWidth(),
                             text = nick,
-                            color = Color.Black,
-                            fontSize = 18.sp,
+                            color = Color.White,
                             fontWeight = FontWeight.Bold)
                         Text(modifier = Modifier
                             .padding(start = 10.dp)
                             .weight(0.7f)
                             .wrapContentWidth(),
                             text = email,
-                            color = Color.Black,
+                            color = Color.White,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold)
                     }
@@ -274,7 +273,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                         .weight(0.3f)
                         .padding(10.dp),
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.hielo),
+                            containerColor = colorResource(R.color.rojo_muy_claro),
                             contentColor = colorResource(R.color.white)
                         ),
                         shape = RoundedCornerShape(10.dp),
@@ -293,7 +292,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    colorResource(R.color.white),
+                    colorResource(R.color.rojo_claro),
                     RoundedCornerShape(topStart = 8.dp)
                 )
                 .constrainAs(opciones) {
@@ -310,7 +309,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                     ConstraintLayout(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(colorResource(R.color.white))
+                            .background(colorResource(R.color.rojo_claro))
                             .fillMaxSize()
                     ) {
 
@@ -330,29 +329,59 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                         ) {
                             OutlinedTextField(
                                 modifier = Modifier
-                                    .background(Color.White)
+                                    .background(colorResource(id = R.color.transparente))
                                     .fillMaxWidth(),
                                 value = nick,
                                 onValueChange = { nick = it },
-                                label = { Text("Nombre de usuario") }
+                                label = { Text(
+                                    color= colorResource(R.color.acero),
+                                    text="nick")},
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = colorResource(R.color.white),
+                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    cursorColor = colorResource(R.color.white),
+                                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                                    focusedTextColor= colorResource(R.color.white),
+                                    unfocusedTextColor= colorResource(R.color.acero),
+                                )
                             )
                             Spacer(modifier = Modifier.height(20.dp))
                             OutlinedTextField(
                                 modifier = Modifier
-                                    .background(Color.White)
+                                    .background(colorResource(id = R.color.transparente))
                                     .fillMaxWidth(),
                                 value = email,
                                 onValueChange = { email = it },
-                                label = { Text("Correo electrónico") }
+                                label = { Text(
+                                    color= colorResource(R.color.acero),
+                                    text="email")},
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = colorResource(R.color.white),
+                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    cursorColor = colorResource(R.color.white),
+                                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                                    focusedTextColor= colorResource(R.color.white),
+                                    unfocusedTextColor= colorResource(R.color.acero),
+                                )
                             )
                             Spacer(modifier = Modifier.height(20.dp))
                             OutlinedTextField(
                                 value = password,
                                 modifier = Modifier
-                                    .background(Color.White)
+                                    .background(colorResource(id = R.color.transparente))
                                     .fillMaxWidth(),
                                 onValueChange = { password = it },
-                                label = { Text("Contraseña") },
+                                label = { Text(
+                                    color= colorResource(R.color.acero),
+                                    text="contraseña")},
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = colorResource(R.color.white),
+                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    cursorColor = colorResource(R.color.white),
+                                    focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                                    focusedTextColor= colorResource(R.color.white),
+                                    unfocusedTextColor= colorResource(R.color.acero),
+                                ),
                                 visualTransformation = PasswordVisualTransformation()
                             )
                             Spacer(modifier = Modifier.height(20.dp))
@@ -363,7 +392,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                     .padding(vertical = 8.dp),
                                 onClick = { launcher.launch("image/*") },
                                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                    containerColor = colorResource(R.color.hielo),
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
                                     contentColor = colorResource(R.color.white)
                                 ),
                                 shape = RoundedCornerShape(10.dp),
@@ -383,7 +412,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             Button(modifier = Modifier
                                 .padding(vertical = 8.dp),
                                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                    containerColor = colorResource(R.color.hielo),
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
                                     contentColor = colorResource(R.color.white)
                                 ),
                                 shape = RoundedCornerShape(10.dp),
@@ -441,7 +470,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             Button(modifier = Modifier
                                 .padding(vertical = 8.dp),
                                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                    containerColor = colorResource(R.color.hielo),
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
                                     contentColor = colorResource(R.color.white)
                                 ),
                                 shape = RoundedCornerShape(10.dp),
@@ -476,6 +505,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview3() {
+    scopeUpdate = rememberCoroutineScope()
     val usuario = UserFb("Nick","email@ejemplo.com","******","https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/OC-RhiaNiRTlU0Qc7tr/view?project=6738854a0011e2bc643f&project=6738854a0011e2bc643f&mode=admin")
-    PerfilUser(usuario)
+    PerfilUser(usuario, scopeUpdate)
 }*/

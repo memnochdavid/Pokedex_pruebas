@@ -24,4 +24,12 @@
     <color name="lista_con_foco">#661111</color>
     <color name="objeto_lista">#F2D985</color>
     <color name="transparente">#00D5D5D5</color>
+    <color name="rojo_primario">#8F2626</color>
+    <color name="rojo_claro">#8C2B2B</color>
+    <color name="rojo_muy_claro">#AF4C4C</color>
+    <color name="rojo_oscuro">#420101</color>
+
+
 </resources>
+
+<!--https://paletton.com/#uid=1000u0kqFcOialWmahCvx8hI14i -->
