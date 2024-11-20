@@ -18,6 +18,15 @@ data class UserFb(
 ): Serializable, Parcelable{
 
     override fun toString(): String {
-        return "UserFb(nick='$nick', email='$email', pass='$pass', avatar='$avatar', admin=$admin, denunciado=$denunciado, detallesDenuncia='$detallesDenuncia')"
+        return "UserFb(nick='$nick'\n, email='$email'\n, pass='$pass'\n, avatar='$avatar'\n,equipo='$equipo'\n, admin=$admin\n, denunciado=$denunciado\n, detallesDenuncia='$detallesDenuncia'\n)"
     }
+}
+
+fun addPokemon(user: UserFb, pokemon: PokemonFB): UserFb{
+    if(user.equipo==null){
+        user.equipo?.plusAssign(pokemon)
+    }else if(user.equipo!!.size<6){
+        user.equipo?.plusAssign(pokemon)
+    }
+    return user
 }

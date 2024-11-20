@@ -17,6 +17,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -244,78 +245,17 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
             ) {
                 val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda, botonUserActivity) = createRefs()
 
-                /////////////////////////////////////////////////
-                //abre activity para crear un usuario - borrar cuando menu
-                IconButton(
-                    onClick = {//para abrir el activity perfil de usuario
-
-                        val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
-                        intent.putParcelableArrayListExtra("sesion", arrayListOf(sesion))
-                        context.startActivity(intent)
-
-                    },
+                Row(
                     modifier = Modifier
-                        .size(90.dp)
-                        .padding(20.dp)
-                        //.wrapContentHeight()
-                        .constrainAs(botonUserActivity) {
-                            end.linkTo(parent.end)
-                            top.linkTo(parent.top)
-                        }
+                        .fillMaxWidth()
                         .zIndex(2f)
-
-                ) {/*
-                    AsyncImage(
-                        model = sesion.avatar,
-                        contentDescription = "avatar de usuario",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .background(colorResource(R.color.fuego))
-                    )*/
-
-                    //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
-                    Surface(modifier = Modifier.fillMaxSize()) {
-                        //val context = LocalContext.current
-                        val placeholder = R.drawable.placeholder
-                        val imageUrl = sesion.avatar
-
-                        // Build an ImageRequest with Coil
-                        val listener = object : ImageRequest.Listener {
-                            override fun onError(request: ImageRequest, result: ErrorResult) {
-                                super.onError(request, result)
-                            }
-
-                            override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                                super.onSuccess(request, result)
-                            }
-                        }
-                        val imageRequest = ImageRequest.Builder(context)
-                            .data(imageUrl)
-                            .listener(listener)
-                            .dispatcher(Dispatchers.IO)
-                            .memoryCacheKey(imageUrl)
-                            .diskCacheKey(imageUrl)
-                            .placeholder(placeholder)
-                            .error(placeholder)
-                            .fallback(placeholder)
-                            .diskCachePolicy(CachePolicy.DISABLED)
-                            .memoryCachePolicy(CachePolicy.DISABLED)
-                            .build()
-
-                        // Load and display the image with AsyncImage
-                        AsyncImage(
-                            model = imageRequest,
-                            contentDescription = "Image Description",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                                .background(colorResource(R.color.fuego))
-                        )
-                    }
-                    //fin mierda para que se muestre bien el avatar actualizado
+                        .constrainAs(botonUserActivity) {
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                        },
+                    horizontalArrangement = Arrangement.End
+                ){
+                    UserButton(context, sesion)
                 }
 
                 LazyColumn(
@@ -340,7 +280,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                 stiffness = Spring.StiffnessMedium // Moderate stiffness
                             )
                         )
-                        //val context = LocalContext.current
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -636,7 +575,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                     bottom.linkTo(busquedaTipo.top)
                                 }
                                 .padding(horizontal = 10.dp)
-                                //.wrapContentWidth()
+                            //.wrapContentWidth()
                         )
                         Switch(
                             modifier = Modifier

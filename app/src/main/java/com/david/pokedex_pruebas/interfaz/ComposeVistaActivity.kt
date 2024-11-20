@@ -1,13 +1,10 @@
 
 package com.david.pokedex_pruebas.interfaz
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.copy
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,16 +16,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -51,33 +45,12 @@ import com.david.pokedex_pruebas.modelo.enumToColorFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
-import coil.request.CachePolicy
-import coil.request.ErrorResult
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.david.pokedex_pruebas.modelo.UserFb
-import kotlinx.coroutines.Dispatchers
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -104,7 +77,7 @@ class ComposeVistaActivity : AppCompatActivity() {
         //enableEdgeToEdge()
         setContent{
             //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
-            VerListaPokemon(lista, indice, sesion[0])
+            VerListaPokemon(lista, indice, sesion[0], this)
             //VerPokemon(lista[45])
         }
     }
@@ -129,95 +102,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones, botonUserActivity) = createRefs()
-
-        IconButton(
-            onClick = {//para abrir el activity perfil de usuario
-
-                val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
-                intent.putParcelableArrayListExtra("sesion", arrayListOf(usuario))
-                context.startActivity(intent)
-
-            },
-            modifier = Modifier
-                .size(90.dp)
-                .padding(20.dp)
-                //.wrapContentHeight()
-                .constrainAs(botonUserActivity) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                }
-                .zIndex(2f)
-
-        ) {/*
-                    AsyncImage(
-                        model = sesion.avatar,
-                        contentDescription = "avatar de usuario",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .background(colorResource(R.color.fuego))
-                    )*/
-
-            //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
-            Surface(modifier = Modifier.fillMaxSize()) {
-                //val context = LocalContext.current
-                val placeholder = R.drawable.placeholder
-                val imageUrl = usuario.avatar
-
-                // Build an ImageRequest with Coil
-                val listener = object : ImageRequest.Listener {
-                    override fun onError(request: ImageRequest, result: ErrorResult) {
-                        super.onError(request, result)
-                    }
-
-                    override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                        super.onSuccess(request, result)
-                    }
-                }
-                val imageRequest = ImageRequest.Builder(context)
-                    .data(imageUrl)
-                    .listener(listener)
-                    .dispatcher(Dispatchers.IO)
-                    .memoryCacheKey(imageUrl)
-                    .diskCacheKey(imageUrl)
-                    .placeholder(placeholder)
-                    .error(placeholder)
-                    .fallback(placeholder)
-                    .diskCachePolicy(CachePolicy.DISABLED)
-                    .memoryCachePolicy(CachePolicy.DISABLED)
-                    .build()
-
-                // Load and display the image with AsyncImage
-                AsyncImage(
-                    model = imageRequest,
-                    contentDescription = "Image Description",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .background(colorResource(R.color.fuego))
-                )
-            }
-            //fin mierda para que se muestre bien el avatar actualizado
-        }
-        /*
-        Image(
-            painter = painterResource(id = pokemon.foto),
-            contentDescription = null,
-            modifier = Modifier
-                //.fillMaxHeight(0.5f)
-                //.fillMaxWidth()
-                .size(350.dp)
-                .constrainAs(foto) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(datos.top)
-                },
-            contentScale = ContentScale.Fit
-        )*/
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones) = createRefs()
         AsyncImage(
             model = pokemon.imagenFB,
             contentDescription = null,
@@ -435,13 +320,18 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb) {
-
+fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb, context: Context) {
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = indice
     )
-
-
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .zIndex(2f),
+        horizontalArrangement = Arrangement.End
+    ) {
+        UserButton(context, usuario)
+    }
     LazyRow(
         state = listState,
         modifier = Modifier
@@ -489,6 +379,6 @@ fun DefaultPreview() {
     var userAux = UserFb("nick","email","asfsdhgdfjhd","link")
 
     listaAux.add(pokemon)
-    VerListaPokemon(listaAux, 0, userAux)
+    VerListaPokemon(listaAux, 0, userAux, LocalContext.current)
     //VerPokemon(listaAux[0])
 }
