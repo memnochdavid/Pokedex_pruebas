@@ -2,6 +2,9 @@
 package com.david.pokedex_pruebas.interfaz
 
 import android.content.Context
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.Toast
@@ -10,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -87,6 +91,7 @@ class ComposeVistaActivity : AppCompatActivity() {
             usuario_key = ""
         }
 
+
         //se rescatan los datos del intent
         //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
         //val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
@@ -137,6 +142,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                 }
 
         )*/
+
         Image(
             painter = painterResource(id = pokemon.foto),
             contentDescription = "Pokeball",
@@ -148,6 +154,11 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(datos.top)
+                }
+                .clickable {
+                    val soundPool = SoundPool.Builder().build()
+                    val soundId = soundPool.load(context, R.raw.abra, 1)
+                    soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
                 }
         )
         LazyColumn(
@@ -212,7 +223,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(0.8f)
-                            .constrainAs(add){
+                            .constrainAs(add) {
                                 top.linkTo(number.bottom)
                                 start.linkTo(nombre.end)
                                 end.linkTo(parent.end)
