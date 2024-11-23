@@ -3,6 +3,8 @@ package com.david.pokedex_pruebas.interfaz
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -47,21 +49,29 @@ import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.modelo.UserFb
+import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.david.pokedex_pruebas.modelo.addPokemon
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
 
 //firebase
-/*
-    private lateinit var refBBDD: DatabaseReference
+
+private lateinit var refBBDD: DatabaseReference
+private lateinit var usuario_key: String
+    /*
     private lateinit var refStorage: StorageReference
     private lateinit var urlImagen: Uri
-    private lateinit var identificador: String
-*/
+    private lateinit var identificador: String*/
+
 
 
 
@@ -69,15 +79,23 @@ class ComposeVistaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        refBBDD = FirebaseDatabase.getInstance().reference
+
+        if (intent.hasExtra("sesion")) {
+            usuario_key = intent.getStringExtra("sesion").toString()
+        }else{
+            usuario_key = ""
+        }
+
         //se rescatan los datos del intent
         //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
-        val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
+        //val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
         val indice = intent.getIntExtra("indice", 0)
-        val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
+        //val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
         //enableEdgeToEdge()
         setContent{
             //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
-            VerListaPokemon(lista, indice, sesion[0], this)
+            VerListaPokemon(listaPokeFireBase, indice, usuario_key, this, refBBDD)
             //VerPokemon(lista[45])
         }
     }
@@ -86,7 +104,7 @@ class ComposeVistaActivity : AppCompatActivity() {
 
 
 @Composable
-fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
+fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
     val num=pokemon.num
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
@@ -102,7 +120,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add) = createRefs()
+        /*
         AsyncImage(
             model = pokemon.imagenFB,
             contentDescription = null,
@@ -117,6 +136,19 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
                     bottom.linkTo(datos.top)
                 }
 
+        )*/
+        Image(
+            painter = painterResource(id = pokemon.foto),
+            contentDescription = "Pokeball",
+            modifier = Modifier
+                .size(350.dp)
+                .fillMaxSize()
+                .constrainAs(foto) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(datos.top)
+                }
         )
         LazyColumn(
             modifier = Modifier
@@ -158,6 +190,40 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
                         fontWeight = FontWeight.Bold,
                         text = pokemon.name,
                         fontSize = 30.sp)
+
+                    IconButton(
+                        onClick = {
+                            if (usuario.equipo.size < 6) {
+                                val updatedEquipo = usuario.equipo + pokemon // Assuming 'equipo' is a List
+                                val updates = hashMapOf<String, Any>(
+                                    "usuarios/${usuario.key}/equipo" to updatedEquipo
+                                )
+                                refBBDD.updateChildren(updates)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(context, "${pokemon.name} se ha añadido a tu equipo", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener {
+                                        // Handle error
+                                    }
+                            } else {
+                                Toast.makeText(context, "Ya hay 6 Pokemon en tu equipo", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f)
+                            .constrainAs(add){
+                                top.linkTo(number.bottom)
+                                start.linkTo(nombre.end)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(tipo1.top)
+                            }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = com.android.car.ui.R.drawable.car_ui_icon_add),
+                            contentDescription = "Descripción del icono" // Agrega una descripción de contenido
+                        )
+                    }
 
                     if (pokemon.tipo.size == 1) {
                         Image(
@@ -320,7 +386,10 @@ fun VerPokemon(pokemon: PokemonFB, usuario: UserFb) {
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb, context: Context) {
+fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, context: Context, refBBDD: DatabaseReference) {
+
+    val usuario=UsuarioFromKey(usuario_key, refBBDD)
+
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = indice
     )
@@ -330,7 +399,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb, context
             .zIndex(2f),
         horizontalArrangement = Arrangement.End
     ) {
-        UserButton(context, usuario)
+        usuario.key?.let { UserButton(context, it) }
     }
     LazyRow(
         state = listState,
@@ -370,7 +439,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario: UserFb, context
         }
     }
 }
-
+/*
 @Preview(showBackground = true,widthDp = 350, heightDp = 600)
 @Composable
 fun DefaultPreview() {
@@ -382,3 +451,4 @@ fun DefaultPreview() {
     VerListaPokemon(listaAux, 0, userAux, LocalContext.current)
     //VerPokemon(listaAux[0])
 }
+*/

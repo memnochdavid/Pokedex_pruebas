@@ -268,13 +268,13 @@ fun FormNewUser(scopeUser: CoroutineScope) {
             }
 
             if (objetoCreado) {
-                Text("El usuario se ha creado: ${newUser.nick}")
+                //Text("El usuario se ha creado: ${newUser.nick}")
 
-                arraySesion.add(newUser)//debe ser un array para el intent
+                //arraySesion.add(newUser)//debe ser un array para el intent
                 //pasar a la siguiente pantalla con los datos de la sesión
 
                 val intent = Intent(context, ComposeLoginActivity::class.java)
-                intent.putParcelableArrayListExtra("sesion", arraySesion)
+                intent.putExtra("sesion", newUser.key)
                 context.startActivity(intent)
             }
         }

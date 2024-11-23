@@ -56,17 +56,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 
 private lateinit var refBBDD: DatabaseReference
-private lateinit var sesionUser: ArrayList<UserFb>
+private lateinit var usuario_key: String
 
 class ComposeLoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         if (intent.hasExtra("sesion")) {
-            sesionUser = intent.getParcelableArrayListExtra("sesion")!!
+            usuario_key = intent.getStringExtra("sesion").toString()
         }else{
-            sesionUser = arrayListOf()
+            usuario_key = ""
         }
+
+        refBBDD = FirebaseDatabase.getInstance().reference
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContent {
@@ -77,14 +80,21 @@ class ComposeLoginActivity : ComponentActivity() {
 
 @Composable
 fun Login() {
-    var email by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].email) }
-    var password by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].pass) }
+
+    var sesionUser = UsuarioFromKey(usuario_key, refBBDD)
+
+    //var nick by remember { mutableStateOf(sesionUser.nick) }
+    var email by remember { mutableStateOf(sesionUser.email) }
+    var password by remember { mutableStateOf(sesionUser.pass) }
 //    var mailVacio by remember { mutableStateOf(true) }
 //    var passVacio by remember { mutableStateOf(true) }
     var loginExiste by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    var arraySesion=ArrayList<UserFb>()
 
+    if(usuario_key!="") {
+        email = sesionUser.email
+        password = sesionUser.pass
+    }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -176,10 +186,10 @@ fun Login() {
                                     val checkUser = pojo.getValue(UserFb::class.java)
                                     if (email == checkUser?.email && password == checkUser?.pass) {
                                         loginExiste = true
-                                        arraySesion.add(checkUser)
+                                        //arraySesion.add(checkUser)
                                         Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(context, ComposeListaActivity::class.java)
-                                        intent.putParcelableArrayListExtra("sesion", arraySesion)
+                                        intent.putExtra("sesion", checkUser.key)
                                         context.startActivity(intent)
                                         break
                                     }

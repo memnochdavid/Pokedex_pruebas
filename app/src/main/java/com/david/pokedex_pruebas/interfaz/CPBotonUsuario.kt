@@ -23,16 +23,23 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.UserFb
+import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 
+private lateinit var refBBDD: DatabaseReference
 @Composable
-fun UserButton(context: Context, sesion: UserFb){
+fun UserButton(context: Context, usuario_key: String){
+    refBBDD = FirebaseDatabase.getInstance().reference
+
+    val sesion= UsuarioFromKey( usuario_key, refBBDD)
 
     IconButton(
         onClick = {//para abrir el activity perfil de usuario
 
             val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
-            intent.putParcelableArrayListExtra("sesion", arrayListOf(sesion))
+            intent.putExtra("sesion", sesion.key)
             context.startActivity(intent)
 
         },

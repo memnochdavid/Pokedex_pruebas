@@ -25,7 +25,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -81,46 +84,59 @@ import kotlinx.coroutines.withContext
 import coil.request.CachePolicy
 import coil.request.ErrorResult
 import coil.request.SuccessResult
+import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.david.pokedex_pruebas.modelo.listaPokeFB
 import okhttp3.Dispatcher
+import java.io.File
 
-private lateinit var sesionUser: ArrayList<UserFb>
+//private lateinit var sesionUser: ArrayList<UserFb>
 private lateinit var refBBDD: DatabaseReference
 lateinit var scopeUpdate: CoroutineScope
+private lateinit var usuario_key: String
 
 class ComposePerfilUsuarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
         if (intent.hasExtra("sesion")) {
-            sesionUser = intent.getParcelableArrayListExtra("sesion")!!
+            usuario_key = intent.getStringExtra("sesion").toString()
         }else{
-            sesionUser = arrayListOf()
+            usuario_key = ""
         }
-        val usuarioCambios:UserFb
         refBBDD = FirebaseDatabase.getInstance().reference
         super.onCreate(savedInstanceState)
+
         setContent {
             scopeUpdate = rememberCoroutineScope()
-            PerfilUser(sesion[0], scopeUpdate)
+            PerfilUser(usuario_key, scopeUpdate, refBBDD)
         }
     }
 }
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
+fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: DatabaseReference) {
     //var edicion by remember { mutableStateOf(false) }
+
+    val usuario= UsuarioFromKey(usuario_key, refBBDD)
+    Log.d("usuario", usuario.toString())
+
     var mostrar by remember { mutableStateOf((""))}
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    var nick by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].nick) }
-    var email by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].email) }
-    var password by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].pass) }
-    var avatarLink by remember { mutableStateOf(if (sesionUser.isNullOrEmpty()) "" else sesionUser[0].avatar) }
+    var nick by remember { mutableStateOf((""))}
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var avatarLink by remember { mutableStateOf("") }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             selectedImageUri = uri
         }
     )
+    nick=usuario.nick
+    email=usuario.email
+    password=usuario.pass
+    //avatarLink=usuario.avatar!!
+
+
     val context = LocalContext.current
 
     ConstraintLayout(//parent
@@ -150,20 +166,6 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                     .background(colorResource(R.color.lista_con_foco)),
                 verticalArrangement = Arrangement.Center
             ){
-                /*
-                AsyncImage(
-                    model = usuario.avatar,
-                    contentDescription = "avatar de usuario",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                        .clip(CircleShape)
-                        .background(colorResource(R.color.fuego))
-                        .clip(CircleShape)
-                )
-            }*/
-
                 //abre activity para crear un usuario - borrar cuando menu
                 IconButton(
                     onClick = {
@@ -187,7 +189,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                     //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
                     Surface(modifier = Modifier.fillMaxSize()) {
                         //val context = LocalContext.current
-                        val placeholder = R.drawable.placeholder
+                        //val placeholder = R.drawable.charizard
                         val imageUrl = usuario.avatar
 
                         // Build an ImageRequest with Coil
@@ -206,9 +208,9 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             .dispatcher(Dispatchers.IO)
                             .memoryCacheKey(imageUrl)
                             .diskCacheKey(imageUrl)
-                            .placeholder(placeholder)
-                            .error(placeholder)
-                            .fallback(placeholder)
+//                            .placeholder(placeholder)
+//                            .error(placeholder)
+//                            .fallback(placeholder)
                             .diskCachePolicy(CachePolicy.DISABLED)
                             .memoryCachePolicy(CachePolicy.DISABLED)
                             .build()
@@ -244,6 +246,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                 Column(
                     modifier = Modifier
                         .weight(0.5f)
+                        .wrapContentHeight()
                 ){
                     Row(modifier = Modifier
                         .fillMaxHeight(0.5f)
@@ -267,22 +270,49 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold)
                     }
-                    Button(modifier = Modifier
+                    Row(modifier = Modifier
                         //.fillMaxHeight(0.5f)
-                        .wrapContentWidth()
+                        .fillMaxWidth()
                         .weight(0.3f)
-                        .padding(10.dp),
-                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.rojo_muy_claro),
-                            contentColor = colorResource(R.color.white)
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = {
-                            mostrar = "Editar"
+                        .padding(10.dp)
+                        )
+                    {
+                        Button(modifier = Modifier
+                            //.fillMaxHeight(0.5f)
+                            .wrapContentHeight()
+                            .weight(0.3f)
+                            .padding(horizontal = 5.dp),
+                            //.padding(10.dp),
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar = "Editar"
+                            }
+                        ) {
+                            Text("Editar")
                         }
-                    ) {
-                        Text("Editar")
+                        Button(modifier = Modifier
+                            //.fillMaxHeight(0.5f)
+                            .wrapContentHeight()
+                            .weight(0.3f)
+                            .padding(horizontal = 5.dp),
+                            //.padding(10.dp),
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                (context as? Activity)?.finish()
+                            })
+                        {
+                            Text("Salir")
+                        }
                     }
+
                 }
 
 
@@ -417,17 +447,19 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                 ),
                                 shape = RoundedCornerShape(10.dp),
                                 onClick = {
+                                        val identificadorAppWrite = usuario.key.toString().substring(1, 20) ?: "" // coge el identificador
+                                        avatarLink="https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+                                        val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
                                         val usuarioCambios = UserFb(//objeto aux con los cambios
                                             nick,
                                             email,
                                             password,
                                             avatarLink,
-                                            usuario.key.toString()
+                                            usuario.key.toString(),
+                                            usuario.equipo
                                         )
                                         //referencia a Firebase
                                         //appwrite para el avater
-                                        val identificadorAppWrite = usuario.key.toString().substring(1, 20) ?: "" // coge el identificador
-                                        val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
                                         refBBDD.child("usuarios").child(usuario.key.toString()).setValue(usuarioCambios)
                                         if (inputStream != null) {
                                             scopeUpdate.launch {
@@ -442,13 +474,13 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                                     withContext(Dispatchers.IO) {
                                                         //borra la foto vieja
                                                         storage.deleteFile(
-                                                            bucketId = "6738855e0002d76f1141",
+                                                            bucketId = appwrite_bucket,
                                                             fileId = identificadorAppWrite
                                                         )
                                                         delay(500)
                                                         //crea la nueva foto con el mismo nombre
                                                         storage.createFile(
-                                                            bucketId = "6738855e0002d76f1141",
+                                                            bucketId = appwrite_bucket,
                                                             fileId = identificadorAppWrite,
                                                             file = file
                                                         )
@@ -459,6 +491,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                                 }
                                                 finally {
                                                     Toast.makeText(context, "Usuario $nick actualizado con éxito", Toast.LENGTH_SHORT).show()
+                                                    (context as? Activity)?.recreate()
                                                 }
                                             }
                                         }
@@ -478,14 +511,144 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope) {
                                     mostrar=""
                                 })
                             {
-                                Text("Cancela")
+                                Text("Cancelar")
                             }
                         }
                     }
 
                 }
+                "Equipo"->{
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ){
+                        val(equipo,boton)=createRefs()
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .constrainAs(equipo){
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(boton.top)
+                                }
+                        ){
+                            items(usuario.equipo) { pokemon ->
+                                usuario.key?.let { PokemonCard(pokemon, it, 2) }
+                            }
+                        }
+                        Button(modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .constrainAs(boton){
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.bottom)
+                            },
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar=""
+                            })
+                        {
+                            Text("Cancelar")
+                        }
+
+                    }
+                }
                 ""->{
-                    Text(text = "DUMMY")
+                    Button(modifier = Modifier
+                        .padding(vertical = 8.dp),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.rojo_muy_claro),
+                            contentColor = colorResource(R.color.white)
+                        ),
+                        shape = RoundedCornerShape(10.dp),
+                        onClick = {
+                            mostrar="Equipo"
+                        })
+                    {
+                        Text("Equipo")
+                    }
+
+
+                    /////////////////////////////////////////////////////////////
+                    Button(modifier = Modifier
+                        .padding(vertical = 8.dp),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.rojo_muy_claro),
+                            contentColor = colorResource(R.color.white)
+                        ),
+                        shape = RoundedCornerShape(10.dp),
+                        onClick = {
+
+                            ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
+                            //sube a Firebase y AppWrite
+                            //refStorage = FirebaseStorage.getInstance().reference
+                            for (i in listaPokeFB) {
+                                try {
+                                    val resources = context.resources
+                                    resources
+                                        .openRawResource(i.foto)
+                                        .use { inputStream ->
+                                            val identificador = refBBDD
+                                                .child("pokemones")
+                                                .push().key!!
+                                            refBBDD
+                                                .child("pokemones")
+                                                .child(identificador)
+                                                .setValue(i)/*
+
+                                            val tempFile = File.createTempFile(
+                                                identificador.drop(1),
+                                                ".png",
+                                                context.cacheDir
+                                            )
+                                            inputStream.use { input ->
+                                                tempFile
+                                                    .outputStream()
+                                                    .use { output ->
+                                                        input.copyTo(output)
+                                                    }
+                                            }
+                                            scope.launch {
+                                                withContext(
+                                                    Dispatchers.IO
+                                                ) {
+
+                                                    storage.createFile(
+                                                        bucketId = "6738855e0002d76f1141",
+                                                        fileId = identificador.drop(1),//elimina "_"
+                                                        file = InputFile.fromPath(
+                                                            tempFile.absolutePath
+                                                        )
+                                                    )
+                                                    tempFile.delete() // Delete after upload
+                                                }
+                                            }*/
+                                        }
+                                } catch (e: Exception) {
+                                    // Handle exceptions appropriately
+
+                                }
+                            }
+                            /////////////////////////////////////////////////////////////////////////
+
+
+
+                        })
+                    {
+                        Text("FB")
+                    }
+
+
+
+
+
+
                 }
             }
 

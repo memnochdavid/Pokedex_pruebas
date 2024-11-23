@@ -86,6 +86,7 @@ import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UserFb
+import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
 import com.david.pokedex_pruebas.modelo.listaPokeFB
@@ -102,15 +103,19 @@ import okhttp3.internal.wait
 
 //para firebase
 private lateinit var refBBDD: DatabaseReference
-private lateinit var identificador: String
+private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
+val appwrite_project = "6738854a0011e2bc643f"
+val appwrite_bucket = "6738855e0002d76f1141"
+
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject("6738854a0011e2bc643f")
+    .setProject(appwrite_project)
 val storage = Storage(client)//habilitar para subir archivos
 
 lateinit var scope: CoroutineScope
+var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
 
 //appwrite bucket
 //https://cloud.appwrite.io/console/project-6738854a0011e2bc643f/storage
@@ -121,12 +126,16 @@ lateinit var scope: CoroutineScope
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
-
         refBBDD = FirebaseDatabase.getInstance().reference
 
-        var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
+        if (intent.hasExtra("sesion")) {
+            usuario_key = intent.getStringExtra("sesion").toString()
+        }else{
+            usuario_key = ""
+        }
+
+
+        //var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
         var isLoading by mutableStateOf(true)
         refBBDD.child("pokemones").get().addOnSuccessListener { dataSnapshot ->
             val pokemonList = mutableListOf<PokemonFB>()
@@ -139,7 +148,7 @@ class ComposeListaActivity : ComponentActivity() {
                 //pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/preview?project=[PROJECT_ID]"//--plantilla
                 if (pokemon != null) {
                     //guarda la URL de la imagen en el objeto PokemonFB como string en pokemon.imagenFB
-                    pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
+                    pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
                 }
 
             }
@@ -157,7 +166,7 @@ class ComposeListaActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaPokeFireBase, isLoading,sesion[0])//FireBase,AppWrite -- false
+            VerListaPoke(listaPokeFireBase, isLoading,UsuarioFromKey(usuario_key, refBBDD))//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
 
@@ -255,7 +264,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         },
                     horizontalArrangement = Arrangement.End
                 ){
-                    UserButton(context, sesion)
+                    sesion.key?.let { UserButton(context, it) }
                 }
 
                 LazyColumn(
@@ -280,228 +289,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                 stiffness = Spring.StiffnessMedium // Moderate stiffness
                             )
                         )
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp)
-                                .scale(scale.value)
-                                .clickable(
-                                    interactionSource = interactionSource,
-                                    indication = null, // Remove default ripple effect
-
-                                    onClick = {/*
-                                        val index = pokemonList.indexOf(pokemon)
-                                        selectedItemIndex = index
-                                        val intent =
-                                            Intent(context, ComposeVistaActivity::class.java)
-                                        intent.putParcelableArrayListExtra("lista", arrayPoke)
-                                        intent.putExtra("indice", index)
-                                        context.startActivity(intent)*/
-                                        /*
-                                        ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
-                                        //sube a Firebase y AppWrite
-                                        //refStorage = FirebaseStorage.getInstance().reference
-                                        for (i in pokemonList) {
-                                            try {
-                                                val resources = context.resources
-                                                resources
-                                                    .openRawResource(i.foto)
-                                                    .use { inputStream ->
-                                                        val identificador = refBBDD
-                                                            .child("pokemones")
-                                                            .push().key!!
-                                                        refBBDD
-                                                            .child("pokemones")
-                                                            .child(identificador)
-                                                            .setValue(i)
-
-                                                        val tempFile = File.createTempFile(
-                                                            identificador.drop(1),
-                                                            ".png",
-                                                            context.cacheDir
-                                                        )
-                                                        inputStream.use { input ->
-                                                            tempFile
-                                                                .outputStream()
-                                                                .use { output ->
-                                                                    input.copyTo(output)
-                                                                }
-                                                        }
-                                                        scope.launch {
-                                                            withContext(
-                                                                Dispatchers.IO
-                                                            ) {
-                                                                storage.createFile(
-                                                                    bucketId = "6738855e0002d76f1141",
-                                                                    fileId = identificador.drop(1),//elimina "_"
-                                                                    file = InputFile.fromPath(
-                                                                        tempFile.absolutePath
-                                                                    )
-                                                                )
-                                                                tempFile.delete() // Delete after upload
-                                                            }
-                                                        }
-                                                    }
-                                            } catch (e: Exception) {
-                                                // Handle exceptions appropriately
-
-                                            }
-                                        }
-                                        /////////////////////////////////////////////////////////////////////////
-                                        */
-
-                                    }
-                                )
-                                .indication(
-                                    interactionSource = interactionSource,
-                                    indication = null
-                                )
-                                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
-                                    detectTapGestures(
-                                        onPress = {
-                                            //efectos
-                                            isPressed = true
-                                            awaitRelease()
-                                            isPressed = false
-                                            //intent a ComposeVistaActivity
-                                            val index = pokemonList.indexOf(pokemon)
-                                            selectedItemIndex = index
-                                            val intent =
-                                                Intent(context, ComposeVistaActivity::class.java)
-                                            intent.putParcelableArrayListExtra("lista", arrayPoke)
-                                            intent.putParcelableArrayListExtra("sesion", arrayListOf(sesion))
-                                            intent.putExtra("indice", index)
-                                            context.startActivity(intent)
-                                            //oculta campo de búsqueda
-                                            campoBusqueda = false
-                                        }
-                                    )
-                                }
-                        ) {
-
-                            var num = "${(pokemon.num)}"
-                            if (num.length == 1) num = "00${(pokemon.num)}"
-                            else if (num.length == 2) num = "0${(pokemon.num)}"
-
-                            ConstraintLayout(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(colorResource(R.color.objeto_lista))
-                                    .padding(end = 30.dp)
-                            ) {
-
-                                Image(
-                                    painter = painterResource(id = R.drawable.pokeball_icon),
-                                    contentDescription = "Pokeball",
-                                    modifier = Modifier
-                                        .size(60.dp)
-                                        .padding(5.dp)
-                                        .constrainAs(pokeball) {
-                                            start.linkTo(parent.start)
-                                            top.linkTo(parent.top)
-                                        }
-                                )
-                                /*
-                                Image(
-                                    painter = painterResource(id = pokemon.foto),
-                                    contentDescription = "Pokemon Image",
-                                    modifier = Modifier
-                                        .size(100.dp)
-                                        .fillMaxSize()
-                                        .constrainAs(pokemonImage) {
-                                            start.linkTo(parent.start)
-                                            top.linkTo(parent.top)
-                                            bottom.linkTo(parent.bottom)
-                                        }
-                                )*/
-                                AsyncImage(
-                                    model = pokemon.imagenFB,
-                                    contentDescription = "Pokemon Image",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .size(100.dp)
-                                        .fillMaxSize()
-                                        .constrainAs(pokemonImage) {
-                                            start.linkTo(parent.start)
-                                            top.linkTo(parent.top)
-                                            bottom.linkTo(parent.bottom)
-                                        }
-                                )
-                                Text(
-                                    text = "#$num",
-                                    color = Color.Black,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier
-                                        .padding(start = 15.dp)
-                                        .constrainAs(numero) {
-                                            start.linkTo(pokemonImage.end)
-                                            top.linkTo(parent.top)
-                                            bottom.linkTo(tipo1.top)
-                                            end.linkTo(pokemonName.start)
-                                        }
-                                )
-                                Text(
-                                    text = pokemon.name,
-                                    color = Color.Black,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier
-                                        .padding(start = 20.dp)
-                                        .constrainAs(pokemonName) {
-                                            start.linkTo(numero.end)
-                                            top.linkTo(parent.top)
-                                            bottom.linkTo(tipo1.top)
-                                            end.linkTo(parent.end)
-                                        }
-                                )
-                                if (pokemon.tipo.size == 1) {
-                                    Image(
-                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                                        contentDescription = "Tipo 1",
-                                        contentScale = ContentScale.Fit,
-                                        modifier = Modifier
-                                            .width(60.dp)
-                                            .height(25.dp)
-                                            .constrainAs(tipo1) {
-                                                start.linkTo(numero.start)
-                                                bottom.linkTo(parent.bottom)
-                                                top.linkTo(pokemonName.bottom)
-                                                end.linkTo(pokemonName.end)
-                                            }
-                                    )
-                                } else {
-                                    Image(
-                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                                        contentDescription = "Tipo 1",
-                                        contentScale = ContentScale.Fit,
-                                        modifier = Modifier
-                                            .width(60.dp)
-                                            .height(25.dp)
-                                            .constrainAs(tipo1) {
-                                                start.linkTo(numero.start)
-                                                bottom.linkTo(parent.bottom)
-                                                top.linkTo(pokemonName.bottom)
-                                                end.linkTo(tipo2.start)
-                                            }
-                                    )
-                                    Image(
-                                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
-                                        contentDescription = "Tipo 2",
-                                        contentScale = ContentScale.Fit,
-                                        modifier = Modifier
-                                            .width(60.dp)
-                                            .height(25.dp)
-                                            .constrainAs(tipo2) {
-                                                start.linkTo(tipo1.end)
-                                                bottom.linkTo(parent.bottom)
-                                                top.linkTo(pokemonName.bottom)
-                                                end.linkTo(pokemonName.end)
-                                            }
-                                    )
-                                }
-                            }
-                        }
+                        PokemonCard(pokemon, usuario_key,1)
 
                     }
                 }
@@ -516,7 +304,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         .padding(20.dp)
                         //.wrapContentHeight()
                         .constrainAs(boton) {
-                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
                             if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
                             else bottom.linkTo(parent.bottom)
                         },
@@ -693,7 +481,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
 @Preview(showBackground = true)
 @Composable
 fun PokemonCardPreview() {
-    var userAux=UserFb("","","","https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/OC-7tUbUj0_3AIjTMOy/preview?project=6738854a0011e2bc643f")
+    var userAux=UserFb("","","","https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/OC-7tUbUj0_3AIjTMOy/preview?project=$appwrite_project")
     VerListaPoke(listaPokeFB, false, userAux)
 }
 
