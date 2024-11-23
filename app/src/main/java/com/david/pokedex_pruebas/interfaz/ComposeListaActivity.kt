@@ -1,8 +1,10 @@
+
 package com.david.pokedex_pruebas.interfaz
 
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +21,7 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,16 +46,19 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -190,9 +196,17 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
     var textobusqueda by remember { mutableStateOf("") }
     var tipoBuscado by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
+    val generations = listOf("1", "2", "3", "4", "5")
+    val selectedGenerations = remember { mutableStateMapOf<String, Boolean>() }
+    LaunchedEffect(Unit) {
+        generations.forEach { generation ->
+            selectedGenerations[generation] = false
+        }
+    }
+
     //efectos
     val alturaCampoBusqueda by animateFloatAsState(
-        targetValue = if (campoBusqueda) 150f else 0f,
+        targetValue = if (campoBusqueda) 200f else 0f,
         animationSpec = tween(durationMillis = 300) // duración
     )
     val context = LocalContext.current
@@ -218,31 +232,24 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
         }
     } else {//cuando ha cargado, comienza a mostrar cosas
 
-        LaunchedEffect(key1 = textobusqueda) {//filtramos la lista con la búsqueda de textobusqueda
+        LaunchedEffect(key1 = selectedGenerations, key2 = textobusqueda, key3 = tipoBuscado) {
             delay(200)
-            listaFiltrada = if (textobusqueda.isEmpty()) {
-                pokemonList //reestablece la lsta cuando no hay búsqueda
-            } else {
-                pokemonList.filter { pokemon ->
-                    pokemon.name.contains(textobusqueda, ignoreCase = true)
-                }
-            }
-        }
-        LaunchedEffect(key1=tipoBuscado) {//filtramos la lista con la búsqueda de tipoBuscado
-            delay(200)
-            listaFiltrada = if (tipoBuscado.isEmpty()) {
-                pokemonList //reestablece la lsta cuando no hay búsqueda
-            } else {
-                pokemonList.filter { pokemon ->
-                    pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true)}
-                }
+            listaFiltrada = pokemonList.filter { pokemon ->
+                // generación
+                (selectedGenerations.all { !it.value } ||  // si no hay ninguna marcada, muestra todos
+                        selectedGenerations[pokemon.gen] == true) && // si no, muestra las seleccionadas
+                        // nombre
+                        (textobusqueda.isEmpty() ||
+                                pokemon.name.contains(textobusqueda, ignoreCase = true)) &&
+                        // tipo
+                        (tipoBuscado.isEmpty() ||
+                                pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true) })
             }
         }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                //.padding(vertical = 15.dp)
                 .background(colorResource(R.color.lista_con_foco))
         ) {
             ConstraintLayout(
@@ -252,7 +259,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                     .systemBarsPadding()
                     .imePadding()
             ) {
-                val (pokeball, pokemonImage, numero, pokemonName, tipo1, tipo2, lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda, botonUserActivity) = createRefs()
+                val (generaciones,lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda, botonUserActivity) = createRefs()
 
                 Row(
                     modifier = Modifier
@@ -280,15 +287,15 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         }
                 ) {
                     items(listaFiltrada) { pokemon ->
-                        var isPressed by remember { mutableStateOf(false) }
-                        val interactionSource = remember { MutableInteractionSource() }
-                        val scale = animateFloatAsState(
-                            targetValue = if (isPressed) 0.90f else 1f,
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
-                                stiffness = Spring.StiffnessMedium // Moderate stiffness
-                            )
-                        )
+//                        var isPressed by remember { mutableStateOf(false) }
+//                        val interactionSource = remember { MutableInteractionSource() }
+//                        val scale = animateFloatAsState(
+//                            targetValue = if (isPressed) 0.90f else 1f,
+//                            animationSpec = spring(
+//                                dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+//                                stiffness = Spring.StiffnessMedium // Moderate stiffness
+//                            )
+//                        )
                         PokemonCard(pokemon, usuario_key,1)
 
                     }
@@ -302,7 +309,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                     modifier = Modifier
                         .size(120.dp)
                         .padding(20.dp)
-                        //.wrapContentHeight()
                         .constrainAs(boton) {
                             end.linkTo(parent.end)
                             if (campoBusqueda) bottom.linkTo(layoutBusqueda.top)
@@ -325,10 +331,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                     Text(text = "Menu")
                 }
 
-                //////////////////////////////////////
-                //campoBusqueda=true//borrar - sólo preview
-                /////////////////////////////////////
-
                 if (campoBusqueda || alturaCampoBusqueda > 0f) {
                     ConstraintLayout(
                         modifier = Modifier
@@ -337,14 +339,9 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
-                                linkTo(layoutBusqueda.bottom,parent.bottom,bias = 1f)
+                                linkTo(layoutBusqueda.bottom, parent.bottom, bias = 1f)
                             }
                             .background(colorResource(R.color.fuego))
-                            //.fillMaxSize()//
-                            //.wrapContentHeight()
-                            //.padding(vertical = 30.dp)
-                            //.background(color = colorResource(id = R.color.lista_sin_foco))
-                            //.height(300.dp)
                             .height(alturaCampoBusqueda.dp)
                     ) {
                         var tipoBus=""
@@ -363,7 +360,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                     bottom.linkTo(busquedaTipo.top)
                                 }
                                 .padding(horizontal = 10.dp)
-                            //.wrapContentWidth()
                         )
                         Switch(
                             modifier = Modifier
@@ -381,11 +377,13 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         if(!busquedaTipos)OutlinedTextField(
                             value = textobusqueda,
                             onValueChange = { textobusqueda = it },
-                            label = { Text("Buscar") },
+                            label = { Text(
+                                color= colorResource(R.color.acero),
+                                text="Buscar") },
                             modifier = Modifier
                                 .padding(all = 25.dp)
                                 .width(300.dp)
-                                .background(color = colorResource(id = R.color.white))
+                                .background(colorResource(id = R.color.transparente))
                                 .constrainAs(busquedaTipo) {
                                     top.linkTo(switchBusqueda.bottom)
                                     start.linkTo(parent.start)
@@ -400,7 +398,16 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                 )
                             },
                             placeholder = { Text("nombre del Pokémon") },
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(16.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = colorResource(R.color.white),
+                                unfocusedBorderColor = colorResource(R.color.acero),
+                                cursorColor = colorResource(R.color.white),
+                                focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                                focusedTextColor= colorResource(R.color.white),
+                                unfocusedTextColor= colorResource(R.color.acero),
+                            )
+
                         )
                         else{
                             LazyRow (
@@ -412,7 +419,6 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                         top.linkTo(switchBusqueda.bottom)
                                         start.linkTo(parent.start)
                                         end.linkTo(parent.end)
-                                        //bottom.linkTo(parent.bottom)
                                     },
                             ){
                                 items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
@@ -430,6 +436,58 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                                 }
                                             )
                                     )
+                                }
+                            }
+                        }
+
+                        Row(modifier = Modifier
+                            .constrainAs(generaciones) {
+                                top.linkTo(busquedaTipo.bottom)
+                                bottom.linkTo(parent.bottom)
+                            }
+                            .fillMaxWidth()
+                            .padding(horizontal = 25.dp)
+                        ){
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.2f)
+                                    .wrapContentHeight(),
+                                verticalArrangement =  Arrangement.Center
+                            ){
+                                Text(text = "GENS",
+                                    fontSize = 18.sp,
+                                    color = colorResource(R.color.white),
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        .padding(horizontal = 10.dp)
+                                )
+                            }
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.8f)
+                                    .wrapContentHeight()
+                            ){
+                                Row(modifier = Modifier
+                                    .wrapContentHeight(),
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ){
+                                    generations.forEach { generation ->
+                                        Text(
+                                            text = generation,
+                                            fontSize = 18.sp,
+                                            color = colorResource(R.color.white),
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier
+                                        )
+                                        Checkbox(
+                                            checked = selectedGenerations[generation] ?: false,
+                                            onCheckedChange = { isChecked ->
+                                                selectedGenerations[generation] = isChecked
+                                            }
+                                        )
+
+                                    }
                                 }
                             }
                         }
@@ -476,7 +534,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
 
 
 
-
+/*
 
 @Preview(showBackground = true)
 @Composable
@@ -494,7 +552,7 @@ fun PokemonCardPreview2() {
 
 }
 
-/*
+
 private lateinit var refBBDD: DatabaseReference
 private lateinit var refStorage: StorageReference
 private lateinit var identificador: String
