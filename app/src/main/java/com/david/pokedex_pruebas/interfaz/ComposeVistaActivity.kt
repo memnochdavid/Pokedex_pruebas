@@ -2,18 +2,13 @@
 package com.david.pokedex_pruebas.interfaz
 
 import android.content.Context
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.SoundPool
 import android.os.Bundle
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,14 +33,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
-import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.debsFB
 import com.david.pokedex_pruebas.modelo.enumToColorFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
@@ -57,10 +50,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
-import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.modelo.UserFb
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
-import com.david.pokedex_pruebas.modelo.addPokemon
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -120,6 +111,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
 
     val context = LocalContext.current
 
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -154,11 +146,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(datos.top)
-                }
-                .clickable {
-                    val soundPool = SoundPool.Builder().build()
-                    val soundId = soundPool.load(context, R.raw.abra, 1)
-                    soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
                 }
         )
         LazyColumn(
