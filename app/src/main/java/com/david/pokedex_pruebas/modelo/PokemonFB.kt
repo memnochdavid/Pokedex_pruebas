@@ -1083,8 +1083,8 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(717,"6",R.drawable.yveltal, "Yveltal","Pokémon legendario que, al extender sus alas y las plumas de la cola, emite un brillo carmesí que absorbe la energía vital de su enemigo.",listOf(PokemonTipoFB.SINIESTRO,PokemonTipoFB.VOLADOR)),
     PokemonFB(718,"6",R.drawable.zygarde, "Zygarde","Cuando el ecosistema de Kalos se encuentra en peligro, aparece y revela su poder secreto.",listOf(PokemonTipoFB.DRAGON,PokemonTipoFB.TIERRA)),
     PokemonFB(719,"6",R.drawable.diancie, "Diancie","Es una transformación súbita de Carbink. Se dice que su cuerpo, que irradia destellos rosados, es lo más bonito de este mundo.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HADA)),
-    PokemonFB(720,"6",R.drawable.xerneas, "Xerneas","Cuando los cuernos de su cabeza brillan en siete colores, se dice que comparte el don de la vida eterna.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.FANTASMA)),
-    PokemonFB(721,"6",R.drawable.xerneas, "Xerneas","Cuando los cuernos de su cabeza brillan en siete colores, se dice que comparte el don de la vida eterna.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.AGUA)),
+    PokemonFB(720,"6",R.drawable.hoopa, "Hoopa","Reúne los objetos que le atraen para esconderlos en una guarida secreta, teletransportándolos a través de sus anillos.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.FANTASMA)),
+    PokemonFB(721,"6",R.drawable.volcanion, "Volcanion","Expulsa vapor y desaparece entre la densa niebla. Dicen que habita en montañas solitarias.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.AGUA)),
 
 
 
