@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,16 @@ import com.david.pokedex_pruebas.modelo.UserFb
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import android.media.MediaPlayer
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import coil.compose.AsyncImage
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -106,6 +117,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
 
+    var mediaPlayer: MediaPlayer? = null
+
     val context = LocalContext.current
 
 
@@ -115,7 +128,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
             .padding(top = 0.dp)
     ) {
         val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add) = createRefs()
-        /*
+        //imagen remote
         AsyncImage(
             model = pokemon.imagenFB,
             contentDescription = null,
@@ -129,9 +142,26 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     end.linkTo(parent.end)
                     bottom.linkTo(datos.top)
                 }
-
-        )*/
-
+                .clickable {//reproduce su grito
+                    val resourceId = context.resources.getIdentifier(
+                        pokemon.name.lowercase(),
+                        "raw",
+                        context.packageName
+                    )
+                    // Initialize MediaPlayer if it's null
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer.create(context, resourceId)
+                    }
+                    // Start or resume playback
+                    if (mediaPlayer?.isPlaying == true) {
+                        mediaPlayer?.pause()
+                    } else {
+                        mediaPlayer?.start()
+                    }
+                },
+        )
+/*
+        //imagen local
         Image(
             painter = painterResource(id = pokemon.foto),
             contentDescription = "Pokeball",
@@ -144,7 +174,25 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     end.linkTo(parent.end)
                     bottom.linkTo(datos.top)
                 }
-        )
+                .clickable {//reproduce su grito
+                    val resourceId = context.resources.getIdentifier(
+                        pokemon.name.lowercase(),
+                        "raw",
+                        context.packageName
+                    )
+                    // Initialize MediaPlayer if it's null
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer.create(context, resourceId)
+                    }
+                    // Start or resume playback
+                    if (mediaPlayer?.isPlaying == true) {
+                        mediaPlayer?.pause()
+                    } else {
+                        mediaPlayer?.start()
+                    }
+                },
+
+        )*/
         LazyColumn(
             modifier = Modifier
                 .constrainAs(datos) {

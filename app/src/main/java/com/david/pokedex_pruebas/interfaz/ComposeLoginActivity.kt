@@ -106,7 +106,6 @@ fun Login() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
                 .constrainAs(col1) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -118,7 +117,8 @@ fun Login() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 16.dp, horizontal = 35.dp)
+                //.padding(16.dp)
                 .constrainAs(col2) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -135,15 +135,15 @@ fun Login() {
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(
-                    color= colorResource(R.color.acero),
+                    color= colorResource(R.color.white),
                     text="Correo electrónico") },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.white),
-                    unfocusedBorderColor = colorResource(R.color.acero),
+                    unfocusedBorderColor = colorResource(R.color.white),
                     cursorColor = colorResource(R.color.white),
                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                     focusedTextColor= colorResource(R.color.white),
-                    unfocusedTextColor= colorResource(R.color.acero),
+                    unfocusedTextColor= colorResource(R.color.white),
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -154,16 +154,16 @@ fun Login() {
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(
-                    color= colorResource(R.color.acero),
+                    color= colorResource(R.color.white),
                     text="Contraseña")},
                 visualTransformation = PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.white),
-                    unfocusedBorderColor = colorResource(R.color.acero),
+                    unfocusedBorderColor = colorResource(R.color.white),
                     cursorColor = colorResource(R.color.white),
                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                     focusedTextColor= colorResource(R.color.white),
-                    unfocusedTextColor= colorResource(R.color.acero),
+                    unfocusedTextColor= colorResource(R.color.white),
                 ),
 
             )

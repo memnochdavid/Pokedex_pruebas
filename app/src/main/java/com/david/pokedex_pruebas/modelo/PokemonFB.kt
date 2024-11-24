@@ -1012,7 +1012,6 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(647,"5",R.drawable.keldeo, "Keldeo","Desprende agua por sus pezuñas para poder deslizarse. Es especialista en atacar usando sus patas.",listOf(PokemonTipoFB.AGUA,PokemonTipoFB.LUCHA)),
     PokemonFB(648,"5",R.drawable.meloetta, "Meloetta","Se han creado innumerables canciones inspiradas en las melodías que emite Meloetta.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.PSIQUICO)),
     PokemonFB(649,"5",R.drawable.genesect, "Benesect","Pokémon de tipo bicho de la antigüedad, modificado por el Equipo Plasma. El cañón de su lomo ha sido mejorado.",listOf(PokemonTipoFB.BICHO,PokemonTipoFB.ACERO)),
-
     PokemonFB(650,"6",R.drawable.chespin, "Chespin","Cuando acumula energía, las suaves púas de su cabeza se vuelven tan duras y afiladas que hasta pueden atravesar rocas.",listOf(PokemonTipoFB.PLANTA)),
     PokemonFB(651,"6",R.drawable.quilladin, "Quilladin","Chocan contra sus congéneres para fortalecer sus piernas. Debido a su carácter afable, nunca son los que provocan un combate.",listOf(PokemonTipoFB.PLANTA)),
     PokemonFB(652,"6",R.drawable.chesnaught, "Chesnaught","Su fuerza es tal que, de un empellón, puede hacer volcar un tanque de 50 toneladas. Protege a sus aliados cuando hace de escudo.",listOf(PokemonTipoFB.PLANTA,PokemonTipoFB.LUCHA)),

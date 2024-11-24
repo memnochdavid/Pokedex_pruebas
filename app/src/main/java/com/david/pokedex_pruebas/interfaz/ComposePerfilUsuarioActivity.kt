@@ -94,6 +94,7 @@ private lateinit var refBBDD: DatabaseReference
 lateinit var scopeUpdate: CoroutineScope
 private lateinit var usuario_key: String
 
+
 class ComposePerfilUsuarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         if (intent.hasExtra("sesion")) {
@@ -595,7 +596,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         ),
                         shape = RoundedCornerShape(10.dp),
                         onClick = {
-
+/*
                             ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                             //sube a Firebase y AppWrite
                             //refStorage = FirebaseStorage.getInstance().reference
@@ -611,7 +612,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                             refBBDD
                                                 .child("pokemones")
                                                 .child(identificador)
-                                                .setValue(i)/*
+                                                .setValue(i)
 
                                             val tempFile = File.createTempFile(
                                                 identificador.drop(1),
@@ -631,7 +632,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                                 ) {
 
                                                     storage.createFile(
-                                                        bucketId = "6738855e0002d76f1141",
+                                                        bucketId = appwrite_bucket,
                                                         fileId = identificador.drop(1),//elimina "_"
                                                         file = InputFile.fromPath(
                                                             tempFile.absolutePath
@@ -639,7 +640,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                                     )
                                                     tempFile.delete() // Delete after upload
                                                 }
-                                            }*/
+                                            }
                                         }
                                 } catch (e: Exception) {
                                     // Handle exceptions appropriately
@@ -647,7 +648,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 }
                             }
                             /////////////////////////////////////////////////////////////////////////
-
+*/
 
 
                         })

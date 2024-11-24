@@ -73,7 +73,7 @@ import kotlinx.coroutines.flow.collect
 //para firebase
 private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
-private lateinit var urlImagen: Uri
+//private lateinit var urlImagen: Uri
 lateinit var scopeUser: CoroutineScope
 
 class ComposeCreaUser : ComponentActivity() {
@@ -97,7 +97,6 @@ fun FormNewUser(scopeUser: CoroutineScope) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 0.dp)
             .background(colorResource(R.color.fuego)),
     ) {
         var objetoCreado by remember { mutableStateOf(false) }
@@ -117,7 +116,8 @@ fun FormNewUser(scopeUser: CoroutineScope) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                //.padding(16.dp)
+                .padding(vertical = 16.dp, horizontal = 35.dp)
                 .constrainAs(col1){
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -136,15 +136,15 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 value = username,
                 onValueChange = { username = it },
                 label = { Text(
-                    color= colorResource(R.color.acero),
+                    color= colorResource(R.color.white),
                     text="nick")},
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.white),
-                    unfocusedBorderColor = colorResource(R.color.acero),
+                    unfocusedBorderColor = colorResource(R.color.white),
                     cursorColor = colorResource(R.color.white),
                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                     focusedTextColor= colorResource(R.color.white),
-                    unfocusedTextColor= colorResource(R.color.acero),
+                    unfocusedTextColor= colorResource(R.color.white),
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -155,15 +155,15 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 value = email,
                 onValueChange = { email = it },
                 label = { Text(
-                    color= colorResource(R.color.acero),
+                    color= colorResource(R.color.white),
                     text="email")},
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.white),
-                    unfocusedBorderColor = colorResource(R.color.acero),
+                    unfocusedBorderColor = colorResource(R.color.white),
                     cursorColor = colorResource(R.color.white),
                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                     focusedTextColor= colorResource(R.color.white),
-                    unfocusedTextColor= colorResource(R.color.acero),
+                    unfocusedTextColor= colorResource(R.color.white),
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -174,16 +174,16 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                     .fillMaxWidth(),
                 onValueChange = { password = it },
                 label = { Text(
-                    color= colorResource(R.color.acero),
+                    color= colorResource(R.color.white),
                     text="contraseña")},
                 visualTransformation = PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colorResource(R.color.white),
-                    unfocusedBorderColor = colorResource(R.color.acero),
+                    unfocusedBorderColor = colorResource(R.color.white),
                     cursorColor = colorResource(R.color.white),
                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                     focusedTextColor= colorResource(R.color.white),
-                    unfocusedTextColor= colorResource(R.color.acero),
+                    unfocusedTextColor= colorResource(R.color.white),
                 )
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -235,12 +235,12 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                                 }
                                 withContext(Dispatchers.IO) {
                                     storage.createFile(
-                                        bucketId = "6738855e0002d76f1141",
+                                        bucketId = appwrite_bucket,
                                         fileId = identificadorAppWrite,
                                         file = file
                                     )
                                 }
-                                newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/$identificadorAppWrite/preview?project=6738854a0011e2bc643f"
+                                newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
                                 newUser = UserFb(username,email,password,newUserAvatar,identificador)
                                 refBBDD.child("usuarios").child(identificador).setValue(newUser)
 

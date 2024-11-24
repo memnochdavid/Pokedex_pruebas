@@ -92,7 +92,7 @@ private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "6738855e0002d76f1141"
+val appwrite_bucket = "6743510b003b0ef1e359"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -397,12 +397,12 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                     shape = RoundedCornerShape(16.dp),
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = colorResource(R.color.white),
-                                        unfocusedBorderColor = colorResource(R.color.acero),
+                                        unfocusedBorderColor = colorResource(R.color.white),
                                         cursorColor = colorResource(R.color.white),
-                                        focusedContainerColor= colorResource(R.color.rojo_claro),
-                                        unfocusedContainerColor=colorResource(R.color.rojo_muy_claro),
+                                        focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+                                        unfocusedContainerColor=colorResource(R.color.rojo_claro),
                                         focusedTextColor= colorResource(R.color.white),
-                                        unfocusedTextColor= colorResource(R.color.acero),
+                                        unfocusedTextColor= colorResource(R.color.white),
                                     )
                                 )
                             }

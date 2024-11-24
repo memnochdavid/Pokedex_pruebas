@@ -100,9 +100,12 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                 .pointerInput(Unit) {//lo que hace al pulsar en el Card()
                     detectTapGestures(
                         onPress = {
-                            //efectos
                             isPressed = true
-                            awaitRelease()
+                            try {
+                                awaitRelease()
+                            } finally {
+                                isPressed = false // Reset isPressed in finally block
+                            }
                             //isPressed = false
                             //intent a ComposeVistaActivity
                             val index = pokemon.num - 1
@@ -140,6 +143,9 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                             top.linkTo(parent.top)
                         }
                 )
+
+                //imagen local
+                /*
                 Image(
                     painter = painterResource(id = pokemon.foto),
                     contentDescription = "Pokeball",
@@ -151,7 +157,9 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                )/*
+                )*/
+
+                //imagen remota
                 AsyncImage(
                     model = pokemon.imagenFB,
                     contentDescription = "Pokemon Image",
@@ -164,7 +172,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                )*/
+                )
                 Text(
                     text = "#$num",
                     color = Color.Black,
