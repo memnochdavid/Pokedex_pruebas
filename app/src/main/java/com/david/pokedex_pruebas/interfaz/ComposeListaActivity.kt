@@ -92,7 +92,7 @@ private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "6743510b003b0ef1e359"
+val appwrite_bucket = "6743985200379309d3d2"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -177,7 +177,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
     var textobusqueda by remember { mutableStateOf("") }
     var tipoBuscado by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
-    val generations = listOf("1", "2", "3", "4", "5","6")
+    val generations = listOf("1", "2", "3", "4", "5","6","7")
     val selectedGenerations = remember { mutableStateMapOf<String, Boolean>() }
     val selectedGenerationsList = remember { mutableStateListOf<String>() }
     val selectedGenerationsKey by derivedStateOf { selectedGenerations.filter { it.value }.keys }
