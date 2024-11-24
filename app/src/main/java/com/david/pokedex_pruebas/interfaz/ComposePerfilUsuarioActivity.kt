@@ -586,7 +586,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         Text("Equipo")
                     }
 
-
+/*
                     /////////////////////////////////////////////////////////////
                     Button(modifier = Modifier
                         .padding(vertical = 8.dp),
@@ -596,7 +596,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         ),
                         shape = RoundedCornerShape(10.dp),
                         onClick = {
-/*
+
                             ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                             //sube a Firebase y AppWrite
                             //refStorage = FirebaseStorage.getInstance().reference
@@ -647,8 +647,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
                                 }
                             }
-                            /////////////////////////////////////////////////////////////////////////
-*/
+
 
 
                         })
@@ -658,6 +657,8 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
 
 
+                            /////////////////////////////////////////////////////////////////////////
+                    */
 
 
 
