@@ -108,57 +108,11 @@ fun Splash(tiempo: Int, draw1: Int, draw2:Int, context: Context) {
     }
 }
 
+
 /*
-@Composable
-fun SplashPrev(tiempo: Int, draw1: Int, draw2:Int) {
-    Box(
-        modifier = androidx.compose.ui.Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.black))
-    ) {
-
-        ConstraintLayout(
-            modifier = androidx.compose.ui.Modifier
-                .fillMaxSize()
-                .padding(top = 0.dp)
-        ) {
-            val(logo, pokeball)= createRefs()
-            val gifLogo = painterResource(id = R.drawable.logo)
-            val gifPokeball = painterResource(id = R.drawable.pokeball_splash)
-
-            Image(
-                painter = gifLogo,
-                contentDescription = null,
-                modifier = androidx.compose.ui. Modifier
-                    .size(350.dp)
-                    .fillMaxWidth()
-                    .constrainAs(logo) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(pokeball.top)
-                    }
-            )
-            Image(
-                painter = gifPokeball,
-                contentDescription = null,
-                modifier = androidx.compose.ui. Modifier
-                    .size(350.dp)
-                    .fillMaxWidth()
-                    .constrainAs(pokeball) {
-                        top.linkTo(logo.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.top)
-                    }
-            )
-        }
-    }
-}
-
 
 @Preview(showBackground = true,widthDp = 350, heightDp = 600)
 @Composable
-fun GreetingPreview() {
-    SplashPrev(3,R.drawable.pokeball_splash,R.drawable.logo)
+fun GreetingPreview9() {
+    Splash(3,R.drawable.pokeball_splash,R.drawable.logo)
 }*/
