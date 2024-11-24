@@ -1011,7 +1011,102 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(646,"5",R.drawable.kyurem, "Kyurem","Pokémon legendario que aguarda al héroe que compense el vacío de su cuerpo de hielo con verdad e ideales.",listOf(PokemonTipoFB.DRAGON,PokemonTipoFB.HIELO)),
     PokemonFB(647,"5",R.drawable.keldeo, "Keldeo","Desprende agua por sus pezuñas para poder deslizarse. Es especialista en atacar usando sus patas.",listOf(PokemonTipoFB.AGUA,PokemonTipoFB.LUCHA)),
     PokemonFB(648,"5",R.drawable.meloetta, "Meloetta","Se han creado innumerables canciones inspiradas en las melodías que emite Meloetta.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.PSIQUICO)),
-    PokemonFB(649,"5",R.drawable.genesect, "Benesect","Pokémon de tipo bicho de la antigüedad, modificado por el Equipo Plasma. El cañón de su lomo ha sido mejorado.",listOf(PokemonTipoFB.BICHO,PokemonTipoFB.ACERO))
+    PokemonFB(649,"5",R.drawable.genesect, "Benesect","Pokémon de tipo bicho de la antigüedad, modificado por el Equipo Plasma. El cañón de su lomo ha sido mejorado.",listOf(PokemonTipoFB.BICHO,PokemonTipoFB.ACERO)),
+
+    PokemonFB(650,"6",R.drawable.chespin, "Chespin","Cuando acumula energía, las suaves púas de su cabeza se vuelven tan duras y afiladas que hasta pueden atravesar rocas.",listOf(PokemonTipoFB.PLANTA)),
+    PokemonFB(651,"6",R.drawable.quilladin, "Quilladin","Chocan contra sus congéneres para fortalecer sus piernas. Debido a su carácter afable, nunca son los que provocan un combate.",listOf(PokemonTipoFB.PLANTA)),
+    PokemonFB(652,"6",R.drawable.chesnaught, "Chesnaught","Su fuerza es tal que, de un empellón, puede hacer volcar un tanque de 50 toneladas. Protege a sus aliados cuando hace de escudo.",listOf(PokemonTipoFB.PLANTA,PokemonTipoFB.LUCHA)),
+    PokemonFB(653,"6",R.drawable.fennekin, "Fennekin","Tras masticar e ingerir pequeñas ramas se siente pletórico y expulsa aire caliente por sus grandes orejas a temperaturas superiores a los 200 °C.",listOf(PokemonTipoFB.FUEGO)),
+    PokemonFB(654,"6",R.drawable.braixen, "Braixen","Al extraer la rama que tiene en la cola, esta prende debido a la fricción. Usa esa rama candente para enviar señales a sus compañeros.",listOf(PokemonTipoFB.FUEGO)),
+    PokemonFB(655,"6",R.drawable.delphox, "Delphox","Fija la mirada en la llama que arde en la punta de su bastón para concentrarse y prever sucesos que tienen lugar en el futuro.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.LUCHA)),
+    PokemonFB(656,"6",R.drawable.froakie, "Froakie","Protege su piel cubriendo el cuerpo con una fina capa de burbujas. Aunque parezca despreocupado, no deja de vigilar con astucia lo que le rodea.",listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(657,"6",R.drawable.frogadier, "Frogadier","Su agilidad no tiene parangón. De hecho, es capaz de escalar una torre de más de 600 metros en tan solo un minuto.",listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(658,"6",R.drawable.greninja, "Greninja","Aparece y desaparece de improvisto, cual ninja. Marea al oponente con su soberbia agilidad y lo hace trizas con sus Shuriken de Agua.",listOf(PokemonTipoFB.AGUA,PokemonTipoFB.SINIESTRO)),
+    PokemonFB(659,"6",R.drawable.bunnelby, "Bunnelby","Tiene unas orejas tan grandes que parecen palas. Las ha fortalecido tanto usándolas para excavar que son capaces de arrancar raíces bien gruesas.",listOf(PokemonTipoFB.NORMAL)),
+    PokemonFB(660,"6",R.drawable.diggersby, "Diggersby","Sus grandes orejas tienen tal fuerza que con ellas puede levantar con facilidad rocas de más de una tonelada. Es de una ayuda inestimable en las obras.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.TIERRA)),
+    PokemonFB(661,"6",R.drawable.fletchling, "Fletchling","Su melodioso gorjeo lo dota de una gran belleza, pero adopta una actitud agresiva y despiadada hacia cualquiera que ose invadir su territorio.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.VOLADOR)),
+    PokemonFB(662,"6",R.drawable.fletchinder, "Fletchinder","Cuanto más intenso sea el calor que se genera en la saca de fuego de su vientre, más rápido es capaz de volar. Sin embargo, la llama tarda en prender.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.VOLADOR)),
+    PokemonFB(663,"6",R.drawable.talonflame, "Talonflame","Llega a alcanzar los 500 km/h al perseguir a su presa, a quien le asesta el golpe de gracia con una patada muy potente.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.VOLADOR)),
+    PokemonFB(664,"6",R.drawable.scatterbug, "Scatterbug","Cuando recibe el ataque de un Pokémon pájaro, expulsa unas escamas negras que provocan parálisis si se entra en contacto con ellas.",listOf(PokemonTipoFB.BICHO)),
+    PokemonFB(665,"6",R.drawable.spewpa, "Spewpa","Habita en la sombra de la espesura. Si percibe alguna amenaza, su pelaje se eriza y se vuelve muy afilado para así intimidar al enemigo.",listOf(PokemonTipoFB.BICHO)),
+    PokemonFB(666,"6",R.drawable.vivillon, "Vivillon","En el mundo existen Vivillon con diferentes motivos en sus alas. El clima de cada región influye en sus rasgos.",listOf(PokemonTipoFB.BICHO,PokemonTipoFB.VOLADOR)),
+    PokemonFB(667,"6",R.drawable.litleo, "Litleo","Cuanto más poderoso es el enemigo al que se enfrenta, más calor desprende su mechón y más energía recorre todo su cuerpo.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.NORMAL)),
+    PokemonFB(668,"6",R.drawable.pyroar, "Pyroar","El macho con la melena de fuego más grande de toda la manada es el líder de sus compañeros.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.NORMAL)),
+    PokemonFB(669,"6",R.drawable.flabebe, "Flabebe","Puede controlar el poder oculto de las flores. La flor que lleva consigo es como si formara parte de su cuerpo.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(670,"6",R.drawable.floette, "Floette","Revolotea alrededor de campos de flores y cuida de aquellas que empiezan a marchitarse. Usa en combate el poder oculto de las flores.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(671,"6",R.drawable.florges, "Florges","Habita en preciosos jardines floridos. Absorbe la energía que emiten las plantas y la convierte en su fuente de poder.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(672,"6",R.drawable.skiddo, "Skiddo","Se dice que fue la primera especie de Pokémon que se acostumbró a vivir con los seres humanos. Tiene una naturaleza muy afable.",listOf(PokemonTipoFB.PLANTA)),
+    PokemonFB(673,"6",R.drawable.gogoat, "Gogoat","Percibe los sentimientos del Entrenador por la forma en la que agarra sus cuernos, aunque sean variaciones sutiles, y así avanzan como si fueran un solo ente.",listOf(PokemonTipoFB.PLANTA)),
+    PokemonFB(674,"6",R.drawable.pancham, "Pancham","Se desvive tratando de fulminar a su rival con una mirada aterradora, pero en cuanto le acarician la cabeza, no puede evitar sonreír de oreja a oreja.",listOf(PokemonTipoFB.LUCHA)),
+    PokemonFB(675,"6",R.drawable.pangoro, "Pangoro","Es muy temperamental, pero no permite que nadie se meta con los débiles. Mediante su hoja, predice los movimientos del enemigo.",listOf(PokemonTipoFB.LUCHA,PokemonTipoFB.SINIESTRO)),
+    PokemonFB(676,"6",R.drawable.furfrou, "Flabebe","Cuando le esquilan su mullido pelaje, no solo mejora su apariencia, sino que aumenta su agilidad.",listOf(PokemonTipoFB.NORMAL)),
+    PokemonFB(677,"6",R.drawable.espurr, "Espurr","Protege con las orejas el órgano con el que irradia su intenso poder psíquico para evitar que este escape al exterior.",listOf(PokemonTipoFB.PSIQUICO)),
+    PokemonFB(678,"6",R.drawable.meowstic, "Meowstic","Cuando percibe peligro, yergue sus orejas y desata un poder psíquico capaz de levantar un camión de unas 10 toneladas.",listOf(PokemonTipoFB.PSIQUICO)),
+    PokemonFB(679,"6",R.drawable.honedge, "Honedge","Si alguien osa empuñarlo, se enrolla en el brazo del desafortunado con su paño azul y le absorbe toda la energía hasta que pierde el sentido.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.FANTASMA)),
+    PokemonFB(680,"6",R.drawable.doublade, "Doublade","Ni siquiera el espadachín más ducho conseguiría esquivar los complejos ataques que encadenan ambas espadas a la vez.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.FANTASMA)),
+    PokemonFB(681,"6",R.drawable.aegislash, "Aegislash","Han permanecido junto a estirpes de reyes durante generaciones. Mediante su poder espectral pueden controlar a humanos y a Pokémon.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.FANTASMA)),
+    PokemonFB(682,"6",R.drawable.spritzee, "Spritzee","Su cuerpo emana una fragancia que embelesa a quien la huele. La fragancia es diferente según los alimentos que ingiere.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(683,"6",R.drawable.aromatisse, "Aromatisse","Puede producir multitud de olores diferentes y, en combate, secreta los que le resultan molestos al enemigo para así contar con cierta ventaja.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(684,"6",R.drawable.swirlix, "Swirlix","Como se alimenta exclusivamente de dulces, su pelaje es tan pegajoso y dulzón como el algodón de azúcar.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(685,"6",R.drawable.slurpuff, "Slurpuff","Puede rastrear hasta el más débil de los olores. Hace uso de su fino olfato para ayudar a los pasteleros más exquisitos.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(686,"6",R.drawable.inkay, "Inkay","La luz intermitente que emite aplaca el ánimo de lucha del enemigo. Aprovecha la ocasión para esconderse.",listOf(PokemonTipoFB.SINIESTRO,PokemonTipoFB.PSIQUICO)),
+    PokemonFB(687,"6",R.drawable.malamar, "Malamar","Tiene a su disposición los poderes hipnóticos más poderosos de entre todos los Pokémon. Controla al enemigo a su voluntad.",listOf(PokemonTipoFB.SINIESTRO,PokemonTipoFB.PSIQUICO)),
+    PokemonFB(688,"6",R.drawable.binacle, "Binacle","Dos Binacle conviven en la misma roca, pero cuando se produce un altercado entre ambos, uno de ellos se muda a otra.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.AGUA)),
+    PokemonFB(689,"6",R.drawable.barbaracle, "Barbaracle","Si bien todas las extremidades de Barbaracle tienen cerebro propio y se mueven a su antojo, suelen seguir órdenes que imparte la cabeza.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.AGUA)),
+    PokemonFB(690,"6",R.drawable.skrelp, "Skrelp","Adopta la apariencia de algas podridas y lanza un líquido venenoso a las presas desprevenidas que pasan cerca.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.AGUA)),
+    PokemonFB(691,"6",R.drawable.dragalge, "Dragalge","Según se dice, los barcos que se aventuran en aguas donde habitan Dragalge desaparecen del mapa y no regresan a puerto.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.DRAGON)),
+    PokemonFB(692,"6",R.drawable.clauncher, "Clauncher","Abate a enemigos voladores disparando agua a presión con su enorme pinza como si de una pistola se tratara.",listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(693,"6",R.drawable.clawitzer, "Clawitzer","Posee una enorme pinza que dispara bolas de agua que podrían atravesar incluso el casco de un petrolero.",listOf(PokemonTipoFB.AGUA)),
+    PokemonFB(694,"6",R.drawable.heliolisk, "Heliolisk","Habita en los desiertos y, cuando toma el sol, acumula energía, lo que le permite vivir sin la necesidad de ingerir alimentos.",listOf(PokemonTipoFB.ELECTRICO,PokemonTipoFB.NORMAL)),
+    PokemonFB(695,"6",R.drawable.helioptile, "Helioptile","Extiende su gorguera y genera energía eléctrica suficiente para cubrir el consumo de electricidad de un rascacielos entero.",listOf(PokemonTipoFB.ELECTRICO,PokemonTipoFB.NORMAL)),
+    PokemonFB(696,"6",R.drawable.tyrunt, "Tyrunt","Pokémon recreado a partir de fósiles. Cuando sucede algo que no es de su agrado, se enfurece y se vuelve violento.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.DRAGON)),
+    PokemonFB(697,"6",R.drawable.tyrantrum, "Tyrantrum","Hace 100 millones de años, este Pokémon se comportaba como un rey, sin nadie que osase hacerle frente.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.DRAGON)),
+    PokemonFB(698,"6",R.drawable.amaura, "Amaura","Pokémon que ha sido regenerado a partir de un trozo de su antiguo cuerpo, que quedó congelado hace unos 100 millones de años.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HIELO)),
+    PokemonFB(699,"6",R.drawable.aurorus, "Aurorus","Expulsa un gas gélido a temperaturas inferiores a los -150 °C a través de sus cristales romboides y congela así a su enemigo.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HIELO)),
+    PokemonFB(700,"6",R.drawable.sylveon, "Sylveon","A través de sus apéndices sensitivos con forma de cinta, emite unas ondas tranquilizadoras mediante las cuales detiene los combates.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(701,"6",R.drawable.hawlucha, "Hawlucha","Controla su posición en el aire con las alas. Lanza ataques desde gran altura que resultan difíciles de evitar.",listOf(PokemonTipoFB.LUCHA,PokemonTipoFB.VOLADOR)),
+    PokemonFB(702,"6",R.drawable.dedenne, "Dedenne","Con su cola absorbe la electricidad procedente de las centrales de energía o los enchufes de las casas, para liberarla en forma de ataque por los bigotes.",listOf(PokemonTipoFB.ELECTRICO,PokemonTipoFB.HADA)),
+    PokemonFB(703,"6",R.drawable.carbink, "Carbink","Nace en las profundidades subterráneas, a altas temperaturas y a gran presión. Irradia energía por la roca que tiene en la cabeza.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HADA)),
+    PokemonFB(704,"6",R.drawable.goomy, "Goomy","Es el Pokémon de tipo Dragón más débil. Habita en zonas oscuras y húmedas para evitar que su viscoso cuerpo se seque.",listOf(PokemonTipoFB.DRAGON)),
+    PokemonFB(705,"6",R.drawable.sliggoo, "Sliggoo","Segrega una mucosidad que corroe todo lo que toca y consigue así ahuyentar al enemigo. Sus ojos han involucionado, por lo que no puede ver.",listOf(PokemonTipoFB.DRAGON)),
+    PokemonFB(706,"6",R.drawable.goodra, "Goodra","Ataca con sus antenas retráctiles, desplegando una fuerza comparable a los puñetazos de 100 boxeadores profesionales.",listOf(PokemonTipoFB.DRAGON)),
+    PokemonFB(707,"6",R.drawable.klefki, "Klefki","Tiene el hábito de coleccionar llaves. Cuando un enemigo lo ataca, las hace tintinear como método de intimidación.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.HADA)),
+    PokemonFB(708,"6",R.drawable.phantump, "Phantump","Nace cuando el alma de un niño perdido habita un tocón. Su grito se asemeja a un escalofriante chillido.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA)),
+    PokemonFB(709,"6",R.drawable.trevenant, "Trevenant","Es amable con los seres que habitan los bosques, pero se cuenta que devora a quienes los mancillan.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA)),
+    PokemonFB(710,"6",R.drawable.pumpkaboo, "Pumpkaboo","En el interior de la calabaza reside un espíritu que ha permanecido atrapado en este mundo. Entra en acción al caer la noche.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA)),
+    PokemonFB(711,"6",R.drawable.gourgeist, "Gourgeist","En las noches de luna nueva deambula por las calles de las ciudades y emite espeluznantes alaridos que maldicen a quienes los oyen.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA)),
+    PokemonFB(712,"6",R.drawable.bergmite, "Bergmite","Envuelve su cuerpo en una capa de hielo que le permite evitar los ataques del enemigo. Si se resquebraja, la recompone con aire gélido.",listOf(PokemonTipoFB.HIELO)),
+    PokemonFB(713,"6",R.drawable.avalugg, "Avalugg","Parece un portaaviones de hielo, por el aspecto que presenta al llevar varios Bergmite en su espalda.",listOf(PokemonTipoFB.HIELO)),
+    PokemonFB(714,"6",R.drawable.noibat, "Noibat","Habita en cuevas donde reina la más absoluta oscuridad y emite ondas ultrasónicas de 200 000 Hz a través de sus enormes orejas.",listOf(PokemonTipoFB.VOLADOR,PokemonTipoFB.DRAGON)),
+    PokemonFB(715,"6",R.drawable.noivern, "Noivern","Surca el cielo nocturno cuando ni siquiera la luna brilla y ataca a presas incautas. Es imbatible en combates que tienen lugar a oscuras.",listOf(PokemonTipoFB.VOLADOR,PokemonTipoFB.DRAGON)),
+    PokemonFB(716,"6",R.drawable.xerneas, "Xerneas","Cuando los cuernos de su cabeza brillan en siete colores, se dice que comparte el don de la vida eterna.",listOf(PokemonTipoFB.HADA)),
+    PokemonFB(717,"6",R.drawable.yveltal, "Yveltal","Pokémon legendario que, al extender sus alas y las plumas de la cola, emite un brillo carmesí que absorbe la energía vital de su enemigo.",listOf(PokemonTipoFB.SINIESTRO,PokemonTipoFB.VOLADOR)),
+    PokemonFB(718,"6",R.drawable.zygarde, "Zygarde","Cuando el ecosistema de Kalos se encuentra en peligro, aparece y revela su poder secreto.",listOf(PokemonTipoFB.DRAGON,PokemonTipoFB.TIERRA)),
+    PokemonFB(719,"6",R.drawable.diancie, "Diancie","Es una transformación súbita de Carbink. Se dice que su cuerpo, que irradia destellos rosados, es lo más bonito de este mundo.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HADA)),
+    PokemonFB(720,"6",R.drawable.xerneas, "Xerneas","Cuando los cuernos de su cabeza brillan en siete colores, se dice que comparte el don de la vida eterna.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.FANTASMA)),
+    PokemonFB(721,"6",R.drawable.xerneas, "Xerneas","Cuando los cuernos de su cabeza brillan en siete colores, se dice que comparte el don de la vida eterna.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.AGUA)),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

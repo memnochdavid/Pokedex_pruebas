@@ -520,16 +520,27 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                 "Equipo"->{
                     ConstraintLayout(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .wrapContentHeight()
                     ){
-                        val(equipo,boton)=createRefs()
+                        val(equipo,boton,titulo)=createRefs()
+                        Text(modifier = Modifier
+                                .constrainAs(titulo){
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(equipo.top)
+                            },
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            text = "EQUIPO")
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .constrainAs(equipo){
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
-                                    top.linkTo(parent.top)
+                                    top.linkTo(titulo.bottom)
                                     bottom.linkTo(boton.top)
                                 }
                         ){
@@ -663,12 +674,12 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 }
 
 
-
 /*
+
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview3() {
+fun Vista() {
     scopeUpdate = rememberCoroutineScope()
-    val usuario = UserFb("Nick","email@ejemplo.com","******","https://cloud.appwrite.io/v1/storage/buckets/6738855e0002d76f1141/files/OC-RhiaNiRTlU0Qc7tr/view?project=6738854a0011e2bc643f&project=6738854a0011e2bc643f&mode=admin")
-    PerfilUser(usuario, scopeUpdate)
+    refBBDD = FirebaseDatabase.getInstance().reference
+    PerfilUser("-OCQRBQkse69AQZPnrUH", scopeUpdate,refBBDD)
 }*/

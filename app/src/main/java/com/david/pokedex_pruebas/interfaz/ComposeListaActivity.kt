@@ -2,19 +2,25 @@
 package com.david.pokedex_pruebas.interfaz
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,15 +30,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -41,7 +50,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +66,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -155,6 +167,8 @@ class ComposeListaActivity : ComponentActivity() {
 
 }
 
+
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb) {
     var selectedItemIndex by remember { mutableStateOf(0) }
@@ -163,26 +177,25 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
     var textobusqueda by remember { mutableStateOf("") }
     var tipoBuscado by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
-    val generations = listOf("1", "2", "3", "4", "5")
+    val generations = listOf("1", "2", "3", "4", "5","6")
     val selectedGenerations = remember { mutableStateMapOf<String, Boolean>() }
+    val selectedGenerationsList = remember { mutableStateListOf<String>() }
+    val selectedGenerationsKey by derivedStateOf { selectedGenerations.filter { it.value }.keys }
     LaunchedEffect(Unit) {
         generations.forEach { generation ->
             selectedGenerations[generation] = false
         }
     }
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = 0
+    )
 
     //efectos
     val alturaCampoBusqueda by animateFloatAsState(
-        targetValue = if (campoBusqueda) 200f else 0f,
+        targetValue = if (campoBusqueda) 250f else 0f,
         animationSpec = tween(durationMillis = 300) // duración
     )
     val context = LocalContext.current
-
-    //
-    //intents
-    /*
-    var arrayPoke=ArrayList<PokemonFB>()
-    arrayPoke.addAll(pokemonList)*/
 
 
     if (isLoading) { //se asegura de haber cargado los datos de la nube antes de empezar a mostrar nada
@@ -200,18 +213,19 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
         }
     } else {//cuando ha cargado, comienza a mostrar cosas
 
-        LaunchedEffect(key1 = selectedGenerations, key2 = textobusqueda, key3 = tipoBuscado) {
-            delay(200)
+        LaunchedEffect(key1 = selectedGenerationsKey, key2 = textobusqueda, key3 = tipoBuscado) {
+            selectedGenerationsList.clear()
+            selectedGenerationsKey.forEach { generation ->
+                selectedGenerationsList.add(generation)
+            }
+
+            delay(200) // You might not need this delay
+
             listaFiltrada = pokemonList.filter { pokemon ->
-                // generación
-                (selectedGenerations.all { !it.value } ||  // si no hay ninguna marcada, muestra todos
-                        selectedGenerations[pokemon.gen] == true) && // si no, muestra las seleccionadas
-                        // nombre
-                        (textobusqueda.isEmpty() ||
-                                pokemon.name.contains(textobusqueda, ignoreCase = true)) &&
-                        // tipo
-                        (tipoBuscado.isEmpty() ||
-                                pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true) })
+                (textobusqueda.isEmpty() || pokemon.name.contains(textobusqueda, ignoreCase = true)) &&
+                        (tipoBuscado.isEmpty() || pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true) }) &&
+                        // Generation filter
+                        (selectedGenerationsList.isEmpty() || selectedGenerationsList.contains(pokemon.gen))
             }
         }
 
@@ -299,8 +313,11 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                     Text(text = "Menu")
                 }
 
+
+                //BUSQUEDA
+
                 if (campoBusqueda || alturaCampoBusqueda > 0f) {
-                    ConstraintLayout(
+                    Row (
                         modifier = Modifier
                             .constrainAs(layoutBusqueda) {
                                 //top.linkTo(parent.top)
@@ -311,93 +328,30 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                             }
                             .background(colorResource(R.color.fuego))
                             .height(alturaCampoBusqueda.dp)
-                    ) {
-                        var tipoBus=""
-                        if(!busquedaTipos)tipoBus="NOMBRE"
-                        else tipoBus="TIPO"
-                        Text(
-                            text = "$tipoBus",
-                            fontSize = 18.sp,
-                            color = colorResource(R.color.white),
-                            fontWeight = FontWeight.Bold,
+                            .padding(horizontal = 10.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {},
+                    ){
+                        Column(
                             modifier = Modifier
-                                .constrainAs(descBusqueda) {
-                                    top.linkTo(parent.top)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(switchBusqueda.start)
-                                    bottom.linkTo(busquedaTipo.top)
-                                }
-                                .padding(horizontal = 10.dp)
-                        )
-                        Switch(
-                            modifier = Modifier
-                                .constrainAs(switchBusqueda){
-                                    top.linkTo(parent.top)
-                                    //start.linkTo(descBusqueda.end)
-                                    bottom.linkTo(busquedaTipo.top)
-                                    end.linkTo(parent.end)
-                                },
-                            checked = busquedaTipos,
-                            onCheckedChange = {
-                                busquedaTipos = it
-                            }
-                        )
-                        if(!busquedaTipos)OutlinedTextField(
-                            value = textobusqueda,
-                            onValueChange = { textobusqueda = it },
-                            label = { Text(
-                                color= colorResource(R.color.acero),
-                                text="Buscar") },
-                            modifier = Modifier
-                                .padding(all = 25.dp)
-                                .width(300.dp)
-                                .background(colorResource(id = R.color.transparente))
-                                .constrainAs(busquedaTipo) {
-                                    top.linkTo(switchBusqueda.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                    //bottom.linkTo(parent.bottom)
-                                }
-                                .clip(RoundedCornerShape(10.dp)),
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Search,
-                                    contentDescription = "Buscar"
-                                )
-                            },
-                            placeholder = { Text("nombre del Pokémon") },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = colorResource(R.color.white),
-                                unfocusedBorderColor = colorResource(R.color.acero),
-                                cursorColor = colorResource(R.color.white),
-                                focusedContainerColor= colorResource(R.color.rojo_muy_claro),
-                                focusedTextColor= colorResource(R.color.white),
-                                unfocusedTextColor= colorResource(R.color.acero),
-                            )
+                                .wrapContentHeight()
+                                .weight(0.2f)//weight horizontal
+                                .padding(vertical = 20.dp)
 
-                        )
-                        else{
-                            LazyRow (
-                                modifier = Modifier
-                                    .padding(all = 25.dp)
-                                    //.wrapContentHeight()
-                                    .width(300.dp)
-                                    .constrainAs(busquedaTipo) {
-                                        top.linkTo(switchBusqueda.bottom)
-                                        start.linkTo(parent.start)
-                                        end.linkTo(parent.end)
-                                    },
-                            ){
+                        ) {
+                            //tipos
+                            LazyColumn(state=listState,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)){
                                 items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
                                     Image(
                                         painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
                                         contentDescription = "Tipo",
                                         contentScale = ContentScale.Fit,
                                         modifier = Modifier
-                                            .padding(horizontal = 5.dp)
-                                            .width(50.dp)
-                                            .height(50.dp)
+                                            .padding(all = 5.dp)
+                                            .width(60.dp)
+                                            .wrapContentHeight()
                                             .clickable(
                                                 onClick = {
                                                     tipoBuscado = tipo.tag
@@ -407,60 +361,265 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                                 }
                             }
                         }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .weight(0.8f)//weight horizontal
+                                .padding(horizontal = 30.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
 
-                        Row(modifier = Modifier
-                            .constrainAs(generaciones) {
-                                top.linkTo(busquedaTipo.bottom)
-                                bottom.linkTo(parent.bottom)
-                            }
-                            .fillMaxWidth()
-                            .padding(horizontal = 25.dp)
-                        ){
-                            Column(
+                            //por nombre
+                            Row(
                                 modifier = Modifier
-                                    .weight(0.2f)
-                                    .wrapContentHeight(),
-                                verticalArrangement =  Arrangement.Center
+                                    .fillMaxWidth()
+                                    .weight(0.5f),//weight vertical
                             ){
-                                Text(text = "GENS",
-                                    fontSize = 18.sp,
-                                    color = colorResource(R.color.white),
-                                    fontWeight = FontWeight.Bold,
+                                OutlinedTextField(
+                                    value = textobusqueda,
+                                    onValueChange = { textobusqueda = it },
+                                    label = { Text(
+                                        color= colorResource(R.color.white),
+                                        text="Buscar") },
                                     modifier = Modifier
-                                        .padding(horizontal = 10.dp)
+                                        .padding(vertical = 20.dp)
+                                        .fillMaxWidth()
+                                        .background(colorResource(id = R.color.transparente))
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.Search,
+                                            tint = colorResource(id = R.color.white),
+                                            contentDescription = "Buscar"
+                                        )
+                                    },
+                                    placeholder = { Text("nombre del Pokémon",style = TextStyle(color = colorResource(id = R.color.white)))},
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = colorResource(R.color.white),
+                                        unfocusedBorderColor = colorResource(R.color.acero),
+                                        cursorColor = colorResource(R.color.white),
+                                        focusedContainerColor= colorResource(R.color.rojo_claro),
+                                        unfocusedContainerColor=colorResource(R.color.rojo_muy_claro),
+                                        focusedTextColor= colorResource(R.color.white),
+                                        unfocusedTextColor= colorResource(R.color.acero),
+                                    )
                                 )
                             }
-                            Column(
+                            //Por generación
+                            Row(
                                 modifier = Modifier
-                                    .weight(0.8f)
-                                    .wrapContentHeight()
+                                    .fillMaxWidth()
+                                    .weight(0.5f),//weight vertical
                             ){
-                                Row(modifier = Modifier
-                                    .wrapContentHeight(),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ){
-                                    generations.forEach { generation ->
-                                        Text(
-                                            text = generation,
-                                            fontSize = 18.sp,
-                                            color = colorResource(R.color.white),
-                                            fontWeight = FontWeight.Bold,
-                                            modifier = Modifier
-                                        )
-                                        Checkbox(
-                                            checked = selectedGenerations[generation] ?: false,
-                                            onCheckedChange = { isChecked ->
-                                                selectedGenerations[generation] = isChecked
-                                            }
-                                        )
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth(),flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+                                    //horizontalArrangement = Arrangement.spacedBy(8.dp) // Add spacing between items
+                                ) {
+                                    items(generations) { generation ->
+                                        Row(verticalAlignment = Alignment.CenterVertically) { // Align Text and Checkbox vertically
+                                            Checkbox(
+                                                checked = selectedGenerations[generation] ?: false,
+                                                onCheckedChange = { isChecked ->
+                                                    selectedGenerations[generation] = isChecked
+                                                },
+                                                colors = CheckboxDefaults.colors(
+                                                    checkedColor = colorResource(R.color.planta),  // Color when checked
+                                                    uncheckedColor = Color.White, // Color when unchecked
+                                                    checkmarkColor = Color.White, // Color of the checkmark
 
+                                                ),
+                                            )
+                                            Text(
+                                                text = generation,
+                                                fontSize = 25.sp,
+                                                color = colorResource(R.color.white),
+                                                fontWeight = FontWeight.Bold,
+                                                modifier = Modifier.padding(end = 4.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
 
+
                     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                    ConstraintLayout(
+//                        modifier = Modifier
+//                            .constrainAs(layoutBusqueda) {
+//                                //top.linkTo(parent.top)
+//                                start.linkTo(parent.start)
+//                                end.linkTo(parent.end)
+//                                bottom.linkTo(parent.bottom)
+//                                linkTo(layoutBusqueda.bottom, parent.bottom, bias = 1f)
+//                            }
+//                            .background(colorResource(R.color.fuego))
+//                            .height(alturaCampoBusqueda.dp)
+//                            .padding(horizontal = 20.dp)
+//                    ) {
+//                        var tipoBus=""
+//                        if(!busquedaTipos)tipoBus="NOMBRE"
+//                        else tipoBus="TIPO"
+//                        Text(
+//                            text = "$tipoBus",
+//                            fontSize = 18.sp,
+//                            color = colorResource(R.color.white),
+//                            fontWeight = FontWeight.Bold,
+//                            modifier = Modifier
+//                                .constrainAs(descBusqueda) {
+//                                    top.linkTo(parent.top)
+//                                    start.linkTo(parent.start)
+//                                    end.linkTo(switchBusqueda.start)
+//                                    bottom.linkTo(busquedaTipo.top)
+//                                }
+//                                .padding(horizontal = 10.dp)
+//                        )
+//                        Switch(
+//                            modifier = Modifier
+//                                .constrainAs(switchBusqueda){
+//                                    top.linkTo(parent.top)
+//                                    //start.linkTo(descBusqueda.end)
+//                                    bottom.linkTo(busquedaTipo.top)
+//                                    end.linkTo(parent.end)
+//                                },
+//                            checked = busquedaTipos,
+//                            onCheckedChange = {
+//                                busquedaTipos = it
+//                            }
+//                        )
+//                        if(!busquedaTipos)OutlinedTextField(
+//                            value = textobusqueda,
+//                            onValueChange = { textobusqueda = it },
+//                            label = { Text(
+//                                color= colorResource(R.color.white),
+//                                text="Buscar") },
+//                            modifier = Modifier
+//                                .padding(vertical = 20.dp)
+//                                .fillMaxWidth()
+//                                .background(colorResource(id = R.color.transparente))
+//                                .constrainAs(busquedaTipo) {
+//                                    top.linkTo(switchBusqueda.bottom)
+//                                    //start.linkTo(parent.start)
+//                                    //end.linkTo(parent.end)
+//                                    bottom.linkTo(generaciones.top)
+//                                }
+//                                .clip(RoundedCornerShape(10.dp)),
+//                            leadingIcon = {
+//                                Icon(
+//                                    imageVector = Icons.Filled.Search,
+//                                    contentDescription = "Buscar"
+//                                )
+//                            },
+//                            placeholder = { Text("nombre del Pokémon") },
+//                            shape = RoundedCornerShape(16.dp),
+//                            colors = OutlinedTextFieldDefaults.colors(
+//                                focusedBorderColor = colorResource(R.color.white),
+//                                unfocusedBorderColor = colorResource(R.color.acero),
+//                                cursorColor = colorResource(R.color.white),
+//                                focusedContainerColor= colorResource(R.color.rojo_muy_claro),
+//                                focusedTextColor= colorResource(R.color.white),
+//                                unfocusedTextColor= colorResource(R.color.acero),
+//                            )
+//
+//                        )
+//                        else{
+//                            LazyRow (
+//                                modifier = Modifier
+//                                    .padding(vertical = 20.dp)
+//                                    //.wrapContentHeight()
+//                                    .fillMaxWidth()
+//                                    .constrainAs(busquedaTipo) {
+//                                        top.linkTo(switchBusqueda.bottom)
+//                                        //start.linkTo(parent.start)
+//                                        //end.linkTo(parent.end)
+//                                        bottom.linkTo(generaciones.top)
+//                                    },
+//                            ){
+//                                items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
+//                                    Image(
+//                                        painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
+//                                        contentDescription = "Tipo",
+//                                        contentScale = ContentScale.Fit,
+//                                        modifier = Modifier
+//                                            .padding(horizontal = 5.dp)
+//                                            .width(60.dp)
+//                                            .wrapContentHeight()
+//                                            .clickable(
+//                                                onClick = {
+//                                                    tipoBuscado = tipo.tag
+//                                                }
+//                                            )
+//                                    )
+//                                }
+//                            }
+//                        }
+//
+//                        Row(modifier = Modifier
+//                            .constrainAs(generaciones) {
+//                                top.linkTo(busquedaTipo.bottom)
+//                                bottom.linkTo(parent.bottom)
+//                            }
+//                            .fillMaxWidth()
+//                        ){
+//                            Row(
+//                                modifier = Modifier
+//                                    .wrapContentHeight()
+//                                    .weight(0.5f),
+//                                horizontalArrangement =  Arrangement.Center,
+//                            ){
+//                                Text(text = "GEN",
+//                                    fontSize = 15.sp,
+//                                    color = colorResource(R.color.white),
+//                                    fontWeight = FontWeight.Bold,
+//                                    modifier = Modifier
+//                                        .wrapContentSize()
+//                                )
+//                            }
+//                            Row(modifier = Modifier
+//                                .wrapContentHeight()
+//                                .weight(0.5f),
+//                                horizontalArrangement = Arrangement.Center,
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ){
+//                                generations.forEach { generation ->
+//                                    Text(
+//                                        text = generation,
+//                                        fontSize = 15.sp,
+//                                        color = colorResource(R.color.white),
+//                                        fontWeight = FontWeight.Bold,
+//                                        modifier = Modifier
+//                                    )
+//                                    Checkbox(
+//                                        checked = selectedGenerations[generation] ?: false,
+//                                        onCheckedChange = { isChecked ->
+//                                            selectedGenerations[generation] = isChecked
+//                                        }
+//                                    )
+//
+//                                }
+//                            }
+//                        }
+//
+//                    }
                 }
             }
         }
@@ -519,56 +678,4 @@ fun PokemonCardPreview() {
 fun PokemonCardPreview2() {
 
 }
-
-
-private lateinit var refBBDD: DatabaseReference
-private lateinit var refStorage: StorageReference
-private lateinit var identificador: String
-
-
-class ComposeListaActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-        refBBDD = FirebaseDatabase.getInstance().reference
-        refStorage = FirebaseStorage.getInstance().reference
-
-        //var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
-        var pokemonList = mutableListOf<PokemonFB>()
-        var isLoading by mutableStateOf(true)
-        refBBDD.child("pokemones").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                pokemonList = mutableListOf<PokemonFB>()
-                for (pokemonSnapshot in snapshot.children) {
-                    val pokemon = pokemonSnapshot.getValue(PokemonFB::class.java)
-                    pokemon?.let {
-                        val identificador = pokemonSnapshot.key // Get the identificador
-                        val imagePath = "pokemones/$identificador" // Construct image path
-                        refStorage.child(imagePath).getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
-                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                            pokemon.imagenFB = bitmap // Associate image with Pokemon
-                            pokemonList.add(pokemon)
-
-                            //listaPokeFireBase=pokemonList
-
-
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
-
-        //enableEdgeToEdge()
-        setContent {
-            //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(pokemonList, isLoading)//FireBase -- false
-        }
-    }
-}
-
 */

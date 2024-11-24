@@ -106,9 +106,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
 
-    val scrollState = rememberScrollState()
-    //var contenidoHeight by remember { mutableStateOf(0) }
-
     val context = LocalContext.current
 
 
@@ -158,8 +155,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxHeight()
-                //.verticalScroll(state=scrollState)
-            //.padding(top = 20.dp)
         ){
             item {
                 ConstraintLayout{
@@ -184,7 +179,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                             bottom.linkTo(tipo1.top)
                         }
                         .padding(vertical = 10.dp),
-                        //.padding(top = 40.dp),
                         fontWeight = FontWeight.Bold,
                         text = pokemon.name,
                         fontSize = 30.sp)
@@ -192,16 +186,13 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     IconButton(
                         onClick = {
                             if (usuario.equipo.size < 6) {
-                                val updatedEquipo = usuario.equipo + pokemon // Assuming 'equipo' is a List
+                                val updatedEquipo = usuario.equipo + pokemon
                                 val updates = hashMapOf<String, Any>(
                                     "usuarios/${usuario.key}/equipo" to updatedEquipo
                                 )
                                 refBBDD.updateChildren(updates)
                                     .addOnSuccessListener {
                                         Toast.makeText(context, "${pokemon.name} se ha añadido a tu equipo", Toast.LENGTH_SHORT).show()
-                                    }
-                                    .addOnFailureListener {
-                                        // Handle error
                                     }
                             } else {
                                 Toast.makeText(context, "Ya hay 6 Pokemon en tu equipo", Toast.LENGTH_SHORT).show()
