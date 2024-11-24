@@ -47,12 +47,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".interfaz.ListaActivity"
             android:exported="false"
             android:theme="@style/TemaLight" />
         <activity android:name=".interfaz.VistaActivity" />
         <activity android:name=".interfaz.ComposeVistaActivity" />
+
+
+
     </application>
 
 </manifest>
