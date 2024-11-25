@@ -1207,5 +1207,4 @@ var listaPokeFB : List<PokemonFB> = listOf(
 
 
 
-)
-
+    )
