@@ -56,6 +56,7 @@ import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.media.MediaPlayer
+import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -243,6 +244,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                                 refBBDD.updateChildren(updates)
                                     .addOnSuccessListener {
                                         Toast.makeText(context, "${pokemon.name} se ha añadido a tu equipo", Toast.LENGTH_SHORT).show()
+                                        Log.v("AÑADEEEEEEEEE", pokemon.name)
                                     }
                             } else {
                                 Toast.makeText(context, "Ya hay 6 Pokemon en tu equipo", Toast.LENGTH_SHORT).show()

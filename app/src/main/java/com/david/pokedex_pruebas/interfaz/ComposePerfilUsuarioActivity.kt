@@ -238,7 +238,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                 modifier = Modifier
                     .fillMaxHeight()
                     .background(
-                        colorResource(R.color.rojo_claro),
+                        colorResource(R.color.transparente),
                         RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                     )
                     .weight(0.65f)
@@ -325,7 +325,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    colorResource(R.color.rojo_claro),
+                    colorResource(R.color.transparente),
                     RoundedCornerShape(topStart = 8.dp)
                 )
                 .constrainAs(opciones) {
@@ -342,7 +342,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     ConstraintLayout(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(colorResource(R.color.rojo_claro))
+                            .background(colorResource(R.color.transparente))
                             .fillMaxSize()
                     ) {
 
@@ -367,15 +367,15 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 value = nick,
                                 onValueChange = { nick = it },
                                 label = { Text(
-                                    color= colorResource(R.color.acero),
+                                    color= colorResource(R.color.white),
                                     text="nick")},
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = colorResource(R.color.white),
-                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    unfocusedBorderColor = colorResource(R.color.white),
                                     cursorColor = colorResource(R.color.white),
                                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                                     focusedTextColor= colorResource(R.color.white),
-                                    unfocusedTextColor= colorResource(R.color.acero),
+                                    unfocusedTextColor= colorResource(R.color.white),
                                 )
                             )
                             Spacer(modifier = Modifier.height(20.dp))
@@ -386,15 +386,15 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 value = email,
                                 onValueChange = { email = it },
                                 label = { Text(
-                                    color= colorResource(R.color.acero),
+                                    color= colorResource(R.color.white),
                                     text="email")},
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = colorResource(R.color.white),
-                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    unfocusedBorderColor = colorResource(R.color.white),
                                     cursorColor = colorResource(R.color.white),
                                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                                     focusedTextColor= colorResource(R.color.white),
-                                    unfocusedTextColor= colorResource(R.color.acero),
+                                    unfocusedTextColor= colorResource(R.color.white),
                                 )
                             )
                             Spacer(modifier = Modifier.height(20.dp))
@@ -405,15 +405,15 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                     .fillMaxWidth(),
                                 onValueChange = { password = it },
                                 label = { Text(
-                                    color= colorResource(R.color.acero),
+                                    color= colorResource(R.color.white),
                                     text="contraseña")},
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = colorResource(R.color.white),
-                                    unfocusedBorderColor = colorResource(R.color.acero),
+                                    unfocusedBorderColor = colorResource(R.color.white),
                                     cursorColor = colorResource(R.color.white),
                                     focusedContainerColor= colorResource(R.color.rojo_muy_claro),
                                     focusedTextColor= colorResource(R.color.white),
-                                    unfocusedTextColor= colorResource(R.color.acero),
+                                    unfocusedTextColor= colorResource(R.color.white),
                                 ),
                                 visualTransformation = PasswordVisualTransformation()
                             )
@@ -539,7 +539,8 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             text = "EQUIPO")
                         LazyColumn(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.8f)
                                 .constrainAs(equipo){
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
@@ -562,13 +563,16 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo)
                         Row(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.2f)
                                 .padding(vertical = 10.dp)
                                 //.wrapContentHeight()//-------------------
                                 //.height(columnHeight.dp)
                                 .constrainAs(interacciones) {
-                                    top.linkTo(equipo.bottom)
-                                    bottom.linkTo(parent.bottom)
+                                    //top.linkTo(equipo.bottom)
+//                                    start.linkTo(parent.start)
+//                                    end.linkTo(parent.end)
+                                    top.linkTo(parent.bottom)
                                 }
                         ){
                             Interacciones(auxPoke,2)// opción 2 para un equipo

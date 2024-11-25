@@ -17,7 +17,8 @@ data class PokemonFB(
     var imagenFB: String? = null,//soporte en la nube
     var name: String="",
     var desc: String="",
-    var tipo: List<PokemonTipoFB> = listOf()
+    var tipo: List<PokemonTipoFB> = listOf(),
+    var stability:Int=0
 ):Serializable, Parcelable{
     constructor(
         num: Int,

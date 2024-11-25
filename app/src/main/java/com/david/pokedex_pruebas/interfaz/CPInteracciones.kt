@@ -37,9 +37,6 @@ fun Interacciones(pokemon: PokemonFB, opc:Int){
             else altura=altura_forts
 
             altura=(altura+5)*16
-
-
-
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -117,10 +114,69 @@ fun Interacciones(pokemon: PokemonFB, opc:Int){
                     }
                 }
             }
-        }
+        }/*
         2->{
+            var altura=0
+            var altura_forts=fortsFB(pokemon).size
+            var altura_debs=debsFB(pokemon).size
 
-        }
+            if(altura_debs>altura_forts)
+                altura=altura_debs
+            else altura=altura_forts
+
+            altura=(altura+5)*16
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 10.dp)
+            ){
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 10.dp)
+                        .background(colorResource(id = R.color.planta))
+                        .height(altura.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(text = "Eficaz contra", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                    //fortalezas equipo
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 10.dp)
+                        //.fillMaxHeight()
+                        .background(colorResource(id = R.color.fuego))
+                        .height(altura.dp),
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(text = "Débil ante", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                    //debilidades equipo
+                }
+
+                var inmus=inmuneFB(pokemon)
+                if(inmus.size>0){
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(vertical = 10.dp)
+                            //.fillMaxHeight()
+                            .height(altura.dp)
+                            .background(colorResource(id = R.color.objeto_lista)),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Text(text = "Inmune a", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
+                        //inmunidades  equipo
+                    }
+                }
+            }
+
+
+
+        }*/
     }
 
 }
