@@ -177,7 +177,6 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.8f)
-
                 ) {/*
                     AsyncImage(
                         model = sesion.avatar,
@@ -191,16 +190,11 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
                     //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
                     Surface(modifier = Modifier.fillMaxSize()) {
-                        //val context = LocalContext.current
-                        //val placeholder = R.drawable.charizard
                         val imageUrl = usuario.avatar
-
-                        // Build an ImageRequest with Coil
                         val listener = object : ImageRequest.Listener {
                             override fun onError(request: ImageRequest, result: ErrorResult) {
                                 super.onError(request, result)
                             }
-
                             override fun onSuccess(request: ImageRequest, result: SuccessResult) {
                                 super.onSuccess(request, result)
                             }
@@ -211,14 +205,10 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             .dispatcher(Dispatchers.IO)
                             .memoryCacheKey(imageUrl)
                             .diskCacheKey(imageUrl)
-//                            .placeholder(placeholder)
-//                            .error(placeholder)
-//                            .fallback(placeholder)
                             .diskCachePolicy(CachePolicy.DISABLED)
                             .memoryCachePolicy(CachePolicy.DISABLED)
                             .build()
 
-                        // Load and display the image with AsyncImage
                         AsyncImage(
                             model = imageRequest,
                             contentDescription = "Image Description",
@@ -229,7 +219,6 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 .background(colorResource(R.color.transparente))
                         )
                     }
-                    //fin mierda para que se muestre bien el avatar actualizado
                 }
             }
 
@@ -242,8 +231,8 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                     )
                     .weight(0.65f)
-                    .padding(vertical = 5.dp)
-                    .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                    .padding(vertical = 5.dp),
+                    //.clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
             ){
                 Column(
@@ -281,11 +270,9 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         )
                     {
                         Button(modifier = Modifier
-                            //.fillMaxHeight(0.5f)
                             .wrapContentHeight()
                             .weight(0.3f)
                             .padding(horizontal = 5.dp),
-                            //.padding(10.dp),
                             colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                                 containerColor = colorResource(R.color.rojo_muy_claro),
                                 contentColor = colorResource(R.color.white)
@@ -298,11 +285,9 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             Text("Editar")
                         }
                         Button(modifier = Modifier
-                            //.fillMaxHeight(0.5f)
                             .wrapContentHeight()
                             .weight(0.3f)
                             .padding(horizontal = 5.dp),
-                            //.padding(10.dp),
                             colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                                 containerColor = colorResource(R.color.rojo_muy_claro),
                                 contentColor = colorResource(R.color.white)
@@ -326,7 +311,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                 .fillMaxWidth()
                 .background(
                     colorResource(R.color.transparente),
-                    RoundedCornerShape(topStart = 8.dp)
+                    //RoundedCornerShape(topStart = 8.dp)
                 )
                 .constrainAs(opciones) {
                     top.linkTo(avatar.bottom)
@@ -335,7 +320,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     bottom.linkTo(parent.bottom)
                 }
                 .fillMaxSize(0.8f)
-                .padding(15.dp)
+                .padding(vertical = 15.dp, horizontal = 5.dp)//
         ){
             when(mostrar){//lo que muestra dependiendo de la opción
                 "Editar" -> {
@@ -343,7 +328,6 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         modifier = Modifier
                             .fillMaxSize()
                             .background(colorResource(R.color.transparente))
-                            .fillMaxSize()
                     ) {
 
                         Column(
@@ -524,8 +508,9 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     ConstraintLayout(
                         modifier = Modifier
                             .wrapContentHeight()
+                            .fillMaxWidth()
                     ){
-                        val(equipo,boton,titulo, interacciones)=createRefs()
+                        val(equipo,boton1,boton2,titulo)=createRefs()
                         Text(modifier = Modifier
                                 .constrainAs(titulo){
                                 start.linkTo(parent.start)
@@ -540,51 +525,42 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight(0.8f)
+                                .fillMaxHeight(0.9f)
                                 .constrainAs(equipo){
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                     top.linkTo(titulo.bottom)
-                                    bottom.linkTo(boton.top)
+                                    bottom.linkTo(boton1.top)
                                 }
                         ){
                             items(usuario.equipo) { pokemon ->
                                 usuario.key?.let { PokemonCard(pokemon, it, 2) }
                             }
                         }
-                        ///////////////////////////////// AQUIIIIIII
-                        var tipos_equipo= mutableListOf<PokemonTipoFB>()
-                        for (i in usuario.equipo){
-                            tipos_equipo.add(i.tipo[0])
-                            if(i.tipo.size>2){
-                                tipos_equipo.add(i.tipo[1])
-                            }
-                        }
-                        val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo)
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.2f)
-                                .padding(vertical = 10.dp)
-                                //.wrapContentHeight()//-------------------
-                                //.height(columnHeight.dp)
-                                .constrainAs(interacciones) {
-                                    //top.linkTo(equipo.bottom)
-//                                    start.linkTo(parent.start)
-//                                    end.linkTo(parent.end)
-                                    top.linkTo(parent.bottom)
-                                }
-                        ){
-                            Interacciones(auxPoke,2)// opción 2 para un equipo
-                        }
 
-
-
-                        /////////////////////////////////
                         Button(modifier = Modifier
                             .padding(vertical = 8.dp)
-                            .constrainAs(boton){
+                            .constrainAs(boton1) {
                                 start.linkTo(parent.start)
+                                end.linkTo(boton2.start)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.bottom)
+                            },
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar="Interacciones"
+                            })
+                        {
+                            Text("Interacciones")
+                        }
+                        Button(modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .constrainAs(boton2){
+                                start.linkTo(boton1.end)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
                                 top.linkTo(parent.bottom)
@@ -602,6 +578,43 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         }
 
                     }
+                }
+                "Interacciones"->{
+                    var tipos_equipo= mutableListOf<PokemonTipoFB>()
+                    for (i in usuario.equipo){
+                        tipos_equipo.add(i.tipo[0])
+                        if(i.tipo.size>2){
+                            tipos_equipo.add(i.tipo[1])
+                        }
+                    }
+                    val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo)
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                    ){
+                        var (boton1)=createRefs()
+                        Interacciones(auxPoke,usuario.equipo,2)// opción 2 para un equipo
+                        Button(modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .constrainAs(boton1){
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.bottom)
+                            },
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar="Equipo"
+                            })
+                        {
+                            Text("Cancelar")
+                        }
+                    }
+
                 }
                 ""->{
                     Button(modifier = Modifier

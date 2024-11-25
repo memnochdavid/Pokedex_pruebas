@@ -67,6 +67,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.modelo.adaptaNombre
+import com.david.pokedex_pruebas.modelo.listaPokeFB
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -335,7 +336,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                                 bottom.linkTo(parent.bottom)
                             }
                     ){
-                        Interacciones(pokemon,1)//opción 1 para un único pokemon
+                        val listaDummy= mutableListOf<PokemonFB>()//lista vacía para poder reutilizar la función. Una lista de equipo válida es necesaria si la opc==2
+                        Interacciones(pokemon, listaDummy,1)//opción 1 para un único pokemon
                     }
                 }
 
@@ -365,8 +367,6 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, con
         state = listState,
         modifier = Modifier
             .fillMaxSize(),
-            //.fillMaxHeight(0.6f),
-            //.wrapContentHeight(),
         flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
     ){
         items(lista) { pokemon ->
@@ -378,7 +378,6 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, con
             }
 
             Box(modifier = Modifier
-                //.fillParentMaxWidth()
                 .fillParentMaxSize()
                 .background(colorResource(id = R.color.white))
             ) {
