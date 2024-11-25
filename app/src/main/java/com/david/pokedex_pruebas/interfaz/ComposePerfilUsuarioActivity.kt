@@ -571,7 +571,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                     bottom.linkTo(parent.bottom)
                                 }
                         ){
-                            Interacciones(auxPoke)
+                            Interacciones(auxPoke,2)// opción 2 para un equipo
                         }
 
 

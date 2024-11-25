@@ -333,7 +333,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                                 bottom.linkTo(parent.bottom)
                             }
                     ){
-                        Interacciones(pokemon)
+                        Interacciones(pokemon,1)//opción 1 para un único pokemon
                     }
                 }
 
