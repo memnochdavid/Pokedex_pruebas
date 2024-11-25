@@ -6,6 +6,8 @@ import android.os.Parcelable
 import com.david.pokedex_pruebas.R
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
+import kotlin.text.replace
+import kotlin.text.trim
 
 @Parcelize
 data class PokemonFB(
@@ -332,6 +334,25 @@ fun inmuneFB(poke:PokemonFB):List<Int>{
         }
     }
     return inmu.distinct()
+}
+
+fun adaptaNombre(nombre:String):String{
+    val devuelve = nombre
+        .replace(Regex("[áéíóúü]"), {
+            when (it.value) {
+                "á" -> "a"
+                "é" -> "e"
+                "í" -> "i"
+                "ó" -> "o"
+                "ú" -> "u"
+                "ü" -> "u"
+                else -> it.value
+            }
+        })
+        .replace("[^a-zA-Z0-9]".toRegex(), "") // Elimina otros caracteres especiales
+        .replace("-", "") // Elimina guiones
+        .lowercase()
+    return devuelve
 }
 
 
@@ -945,7 +966,7 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(580,"5",R.drawable.ducklett, "Ducklett","Cuando se ve atacado, las plumas que lo recubren despiden ráfagas de agua que lo ayudan a escapar.",listOf(PokemonTipoFB.AGUA, PokemonTipoFB.VOLADOR)),
     PokemonFB(581,"5",R.drawable.swanna, "Swanna","La potencia de su pico es brutal. Arquea su largo cuello y picotea repetidamente al enemigo.",listOf(PokemonTipoFB.AGUA, PokemonTipoFB.VOLADOR)),
     PokemonFB(582,"5",R.drawable.vanillite, "Vanillite","Nació de un carámbano que absorbió la energía del sol al alba. Duerme arropado por la nieve.",listOf(PokemonTipoFB.HIELO)),
-    PokemonFB(583,"5",R.drawable.vanillite, "Vanillite","Enfrían el aire a su alrededor y crean partículas de hielo mediante las cuales congelan a sus oponentes.",listOf(PokemonTipoFB.HIELO)),
+    PokemonFB(583,"5",R.drawable.vanillish, "Vanillish","Enfrían el aire a su alrededor y crean partículas de hielo mediante las cuales congelan a sus oponentes.",listOf(PokemonTipoFB.HIELO)),
     PokemonFB(584,"5",R.drawable.vanilluxe, "Vanilluxe","Absorben grandes cantidades de agua y la transforman en ventisca en su cuerpo, expulsándola cuando se enojan.",listOf(PokemonTipoFB.HIELO)),
     PokemonFB(585,"5",R.drawable.deerling, "Deerling","El color de su cuerpo cambia no solo con las estaciones, sino también con los cambios de humedad y temperatura.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.PLANTA)),
     PokemonFB(586,"5",R.drawable.sawsbuck, "Sawsbuck","Migra con el cambio de estación, por lo que hay quien considera a Sawsbuck el heraldo de la primavera.",listOf(PokemonTipoFB.NORMAL,PokemonTipoFB.PLANTA)),
@@ -982,7 +1003,7 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(617,"5",R.drawable.accelgor, "Accelgor","Deja la huella de sus colmillos en los árboles para marcar su territorio. Si se le rompen, se regeneran muy rápido.",listOf(PokemonTipoFB.BICHO)),
     PokemonFB(618,"5",R.drawable.stunfisk, "Stunfisk","Sus colmillos no vuelven a crecer, por lo que, al término de cada combate, los afila cuidadosamente con cantos de río.",listOf(PokemonTipoFB.TIERRA,PokemonTipoFB.ELECTRICO)),
     PokemonFB(619,"5",R.drawable.mienfoo, "Mienfoo","Usa gráciles movimientos sucesivos. Si se concentra, aumenta su eficacia y rapidez.",listOf(PokemonTipoFB.LUCHA)),
-    PokemonFB(620,"5",R.drawable.mienfoo, "Mienfoo","Usa el pelaje de sus brazos a modo de látigos para encadenar ataques que nadie puede parar una vez iniciados.",listOf(PokemonTipoFB.LUCHA)),
+    PokemonFB(620,"5",R.drawable.mienshao, "Mienshao","Usa el pelaje de sus brazos a modo de látigos para encadenar ataques que nadie puede parar una vez iniciados.",listOf(PokemonTipoFB.LUCHA)),
     PokemonFB(621,"5",R.drawable.druddigon, "Druddigon","Corre por estrechas cavernas y atrapa a sus presas con sus afiladas garras. La piel de su cara es más dura que una roca.",listOf(PokemonTipoFB.DRAGON)),
     PokemonFB(622,"5",R.drawable.golett, "Golett","Los rumores apuntan a que fue un Pokémon creado por la ciencia de una antigua y misteriosa civilización.",listOf(PokemonTipoFB.TIERRA,PokemonTipoFB.FANTASMA)),
     PokemonFB(623,"5",R.drawable.golurk, "Golurk","Al parecer, aquel que antaño lo creó le ordenó proteger a los Pokémon y a los humanos.",listOf(PokemonTipoFB.TIERRA,PokemonTipoFB.FANTASMA)),

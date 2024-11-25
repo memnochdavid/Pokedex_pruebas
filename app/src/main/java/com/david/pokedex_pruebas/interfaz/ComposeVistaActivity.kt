@@ -65,6 +65,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import coil.compose.AsyncImage
+import com.david.pokedex_pruebas.modelo.adaptaNombre
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -144,7 +145,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                 }
                 .clickable {//reproduce su grito
                     val resourceId = context.resources.getIdentifier(
-                        pokemon.name.lowercase(),
+                        adaptaNombre(pokemon.name),
+                        //pokemon.name.trim().lowercase(),
                         "raw",
                         context.packageName
                     )
