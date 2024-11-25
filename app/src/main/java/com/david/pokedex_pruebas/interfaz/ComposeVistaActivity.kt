@@ -321,17 +321,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                         text = pokemon.desc,
                         fontSize = 18.sp)
-                    var altura=0
-                    var altura_forts=fortsFB(pokemon).size
-                    var altura_debs=debsFB(pokemon).size
-
-                    if(altura_debs>altura_forts)
-                        altura=altura_debs
-                    else altura=altura_forts
-
-                    altura=(altura+5)*16
-
-
 
                     Row(
                         modifier = Modifier
@@ -344,77 +333,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                                 bottom.linkTo(parent.bottom)
                             }
                     ){
-
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = 10.dp)
-                                .background(colorResource(id = R.color.planta))
-                                .height(altura.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ){
-                            Text(text = "Eficaz contra", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                            for (fortaleza in fortsFB(pokemon)){
-                                Image(
-                                    painter = painterResource(id = fortaleza),
-                                    contentDescription = "Debilidad",
-                                    contentScale = ContentScale.FillWidth,
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(vertical = 2.5.dp)
-                                )
-                            }
-                        }
-
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = 10.dp)
-                                //.fillMaxHeight()
-                                .background(colorResource(id = R.color.fuego))
-                                .height(altura.dp),
-
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ){
-                            Text(text = "Débil ante", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                            for (debilidad in debsFB(pokemon)){
-                                Image(
-                                    painter = painterResource(id = debilidad),
-                                    contentDescription = "Debilidad",
-                                    contentScale = ContentScale.FillWidth,
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .padding(vertical = 2.5.dp)
-
-
-                                )
-                            }
-                        }
-
-                        var inmus=inmuneFB(pokemon)
-                        if(inmus.size>0){
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(vertical = 10.dp)
-                                    //.fillMaxHeight()
-                                    .height(altura.dp)
-                                    .background(colorResource(id = R.color.objeto_lista)),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ){
-                                Text(text = "Inmune a", fontWeight = FontWeight.Bold, fontSize = 18.sp, modifier = Modifier.padding(vertical = 5.dp))
-                                for (inmu in inmuneFB(pokemon)){
-                                    Image(
-                                        painter = painterResource(id = inmu),
-                                        contentDescription = "Debilidad",
-                                        contentScale = ContentScale.FillWidth,
-                                        modifier = Modifier
-                                            .width(80.dp)
-                                            .padding(vertical = 2.5.dp)
-                                    )
-                                }
-                            }
-                        }
+                        Interacciones(pokemon)
                     }
                 }
 

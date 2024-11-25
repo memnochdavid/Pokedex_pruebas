@@ -84,6 +84,8 @@ import kotlinx.coroutines.withContext
 import coil.request.CachePolicy
 import coil.request.ErrorResult
 import coil.request.SuccessResult
+import com.david.pokedex_pruebas.modelo.PokemonFB
+import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 import okhttp3.Dispatcher
@@ -523,7 +525,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         modifier = Modifier
                             .wrapContentHeight()
                     ){
-                        val(equipo,boton,titulo)=createRefs()
+                        val(equipo,boton,titulo, interacciones)=createRefs()
                         Text(modifier = Modifier
                                 .constrainAs(titulo){
                                 start.linkTo(parent.start)
@@ -549,6 +551,32 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 usuario.key?.let { PokemonCard(pokemon, it, 2) }
                             }
                         }
+                        ///////////////////////////////// AQUIIIIIII
+                        var tipos_equipo= mutableListOf<PokemonTipoFB>()
+                        for (i in usuario.equipo){
+                            tipos_equipo.add(i.tipo[0])
+                            if(i.tipo.size>2){
+                                tipos_equipo.add(i.tipo[1])
+                            }
+                        }
+                        val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(vertical = 10.dp)
+                                //.wrapContentHeight()//-------------------
+                                //.height(columnHeight.dp)
+                                .constrainAs(interacciones) {
+                                    top.linkTo(equipo.bottom)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                        ){
+                            Interacciones(auxPoke)
+                        }
+
+
+
+                        /////////////////////////////////
                         Button(modifier = Modifier
                             .padding(vertical = 8.dp)
                             .constrainAs(boton){
