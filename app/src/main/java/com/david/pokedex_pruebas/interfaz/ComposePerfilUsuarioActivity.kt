@@ -585,8 +585,8 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     {
                         Text("Equipo")
                     }
-/*
 
+/*
                     /////////////////////////////////////////////////////////////
                     Button(modifier = Modifier
                         .padding(vertical = 8.dp),

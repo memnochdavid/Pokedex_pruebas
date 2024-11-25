@@ -92,7 +92,7 @@ private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "6743985200379309d3d2"
+val appwrite_bucket = "67444916001ef7e0cd01"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")

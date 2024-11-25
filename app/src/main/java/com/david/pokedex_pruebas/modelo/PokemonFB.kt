@@ -356,31 +356,27 @@ fun adaptaNombre(nombre:String):String{
 }
 
 
-/*
-fun drawableToEnumFB(drawable:Int):PokemonTipoFB{
-    return when(drawable){
-        R.drawable.planta -> PokemonTipoFB.PLANTA
-        R.drawable.agua -> PokemonTipoFB.AGUA
-        R.drawable.fuego -> PokemonTipoFB.FUEGO
-        R.drawable.lucha -> PokemonTipoFB.LUCHA
-        R.drawable.veneno -> PokemonTipoFB.VENENO
-        R.drawable.acero -> PokemonTipoFB.ACERO
-        R.drawable.bicho -> PokemonTipoFB.BICHO
-        R.drawable.dragon -> PokemonTipoFB.DRAGON
-        R.drawable.electrico -> PokemonTipoFB.ELECTRICO
-        R.drawable.hada -> PokemonTipoFB.HADA
-        R.drawable.hielo -> PokemonTipoFB.HIELO
-        R.drawable.psiquico -> PokemonTipoFB.PSIQUICO
-        R.drawable.roca -> PokemonTipoFB.ROCA
-        R.drawable.tierra -> PokemonTipoFB.TIERRA
-        R.drawable.siniestro -> PokemonTipoFB.SINIESTRO
-        R.drawable.normal -> PokemonTipoFB.NORMAL
-        R.drawable.volador -> PokemonTipoFB.VOLADOR
-        R.drawable.fantasma -> PokemonTipoFB.FANTASMA
-        else -> { PokemonTipoFB.NULL}
+fun debilidadesEquipo(lista:List<PokemonFB>):List<Int>{
+    val debilidades: MutableList<Int> = mutableListOf()
+    for(poke in lista){
+        debilidades.addAll(debsFB(poke))
     }
+    return debilidades.distinct()
 }
-*/
+fun fortalezasEquipo(lista:List<PokemonFB>):List<Int>{
+    val fortalezas: MutableList<Int> = mutableListOf()
+    for(poke in lista){
+        fortalezas.addAll(fortsFB(poke))
+    }
+    return fortalezas.distinct()
+}
+fun inmunidadesEquipo(lista:List<PokemonFB>):List<Int>{
+    val inmunidades: MutableList<Int> = mutableListOf()
+    for(poke in lista){
+        inmunidades.addAll(inmuneFB(poke))
+    }
+    return inmunidades.distinct()
+}
 
 
 var listaPokeFB : List<PokemonFB> = listOf(
@@ -1105,7 +1101,6 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(719,"6",R.drawable.diancie, "Diancie","Es una transformación súbita de Carbink. Se dice que su cuerpo, que irradia destellos rosados, es lo más bonito de este mundo.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.HADA)),
     PokemonFB(720,"6",R.drawable.hoopa, "Hoopa","Reúne los objetos que le atraen para esconderlos en una guarida secreta, teletransportándolos a través de sus anillos.",listOf(PokemonTipoFB.PSIQUICO,PokemonTipoFB.FANTASMA)),
     PokemonFB(721,"6",R.drawable.volcanion, "Volcanion","Expulsa vapor y desaparece entre la densa niebla. Dicen que habita en montañas solitarias.",listOf(PokemonTipoFB.FUEGO,PokemonTipoFB.AGUA)),
-
     PokemonFB(722,"7",R.drawable.rowlet, "Rowlet","Es cauteloso, desconfiado y de naturaleza nocturna. Durante el día acumula energía mediante la fotosíntesis.",listOf(PokemonTipoFB.PLANTA,PokemonTipoFB.VOLADOR)),
     PokemonFB(723,"7",R.drawable.dartrix, "Dartrix","Ataca a sus presas y enemigos lanzándoles plumas sorprendentemente afiladas. Acierta prácticamente siempre.",listOf(PokemonTipoFB.PLANTA,PokemonTipoFB.VOLADOR)),
     PokemonFB(724,"7",R.drawable.decidueye, "Decidueye","Las plumas de sus alas le sirven de flechas con las que puede acertar a un guijarro a 100 m.",listOf(PokemonTipoFB.PLANTA,PokemonTipoFB.FANTASMA)),
