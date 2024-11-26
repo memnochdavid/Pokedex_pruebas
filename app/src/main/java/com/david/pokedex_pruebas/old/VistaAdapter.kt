@@ -1,23 +1,15 @@
-package com.david.pokedex_pruebas.modelo
+package com.david.pokedex_pruebas.old
 
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.green
-import androidx.core.view.marginTop
 //import androidx.glance.visibility
 import androidx.recyclerview.widget.RecyclerView
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.interfaz.VistaActivity
-import com.david.pokedex_pruebas.modelo.PokemonOld
 
 
 class PokeVistaAdapter(private val pokemonList: List<PokemonOld>) :

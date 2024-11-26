@@ -1,4 +1,4 @@
-package com.david.pokedex_pruebas.interfaz
+package com.david.pokedex_pruebas.old
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.david.pokedex_pruebas.R
 import com.bumptech.glide.Glide
+import com.david.pokedex_pruebas.interfaz.ComposeLoginActivity
 
 
 @SuppressLint("CustomSplashScreen")

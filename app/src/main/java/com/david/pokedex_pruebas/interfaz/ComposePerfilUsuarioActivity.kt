@@ -142,6 +142,8 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
     val context = LocalContext.current
 
+    var muestra_perfil by remember { mutableStateOf(true) }
+
     ConstraintLayout(//parent
         modifier = Modifier
             .fillMaxSize()
@@ -149,35 +151,36 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
             .padding(15.dp)
     ) {
         val (avatar, opciones, inyecta, col1) = createRefs()
-        Row(//row Avatar
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(R.color.lista_con_foco))//para ver el contorno
-                .constrainAs(avatar) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(opciones.top)
-                }
-                .fillMaxSize(0.2f)
-        ){
-
-            Column(//Column Foto
+        if(muestra_perfil){//se oculta cuando se van a mostrar los chats
+            Row(//row Avatar
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(0.3f)
-                    .background(colorResource(R.color.lista_con_foco)),
-                verticalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.lista_con_foco))//para ver el contorno
+                    .constrainAs(avatar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(opciones.top)
+                    }
+                    .fillMaxSize(0.2f)
             ){
-                //abre activity para crear un usuario - borrar cuando menu
-                IconButton(
-                    onClick = {
-                        //
-                    },
+
+                Column(//Column Foto
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                ) {/*
+                        .fillMaxHeight()
+                        .weight(0.3f)
+                        .background(colorResource(R.color.lista_con_foco)),
+                    verticalArrangement = Arrangement.Center
+                ){
+                    //abre activity para crear un usuario - borrar cuando menu
+                    IconButton(
+                        onClick = {
+                            //
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.8f)
+                    ) {/*
                     AsyncImage(
                         model = sesion.avatar,
                         contentDescription = "avatar de usuario",
@@ -188,139 +191,167 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             .background(colorResource(R.color.fuego))
                     )*/
 
-                    //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
-                    Surface(modifier = Modifier.fillMaxSize()) {
-                        val imageUrl = usuario.avatar
-                        val listener = object : ImageRequest.Listener {
-                            override fun onError(request: ImageRequest, result: ErrorResult) {
-                                super.onError(request, result)
+                        //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
+                        Surface(modifier = Modifier.fillMaxSize()) {
+                            val imageUrl = usuario.avatar
+                            val listener = object : ImageRequest.Listener {
+                                override fun onError(request: ImageRequest, result: ErrorResult) {
+                                    super.onError(request, result)
+                                }
+                                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                                    super.onSuccess(request, result)
+                                }
                             }
-                            override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                                super.onSuccess(request, result)
-                            }
-                        }
-                        val imageRequest = ImageRequest.Builder(context)
-                            .data(imageUrl)
-                            .listener(listener)
-                            .dispatcher(Dispatchers.IO)
-                            .memoryCacheKey(imageUrl)
-                            .diskCacheKey(imageUrl)
-                            .diskCachePolicy(CachePolicy.DISABLED)
-                            .memoryCachePolicy(CachePolicy.DISABLED)
-                            .build()
+                            val imageRequest = ImageRequest.Builder(context)
+                                .data(imageUrl)
+                                .listener(listener)
+                                .dispatcher(Dispatchers.IO)
+                                .memoryCacheKey(imageUrl)
+                                .diskCacheKey(imageUrl)
+                                .diskCachePolicy(CachePolicy.DISABLED)
+                                .memoryCachePolicy(CachePolicy.DISABLED)
+                                .build()
 
-                        AsyncImage(
-                            model = imageRequest,
-                            contentDescription = "Image Description",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                                .background(colorResource(R.color.transparente))
-                        )
+                            AsyncImage(
+                                model = imageRequest,
+                                contentDescription = "Image Description",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape)
+                                    .background(colorResource(R.color.transparente))
+                            )
+                        }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.weight(0.05f))
-            Column(//Column Datos
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .background(
-                        colorResource(R.color.transparente),
-                        RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
-                    )
-                    .weight(0.65f)
-                    .padding(vertical = 5.dp),
-                    //.clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
-                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-            ){
-                Column(
+                Spacer(modifier = Modifier.weight(0.05f))
+                Column(//Column Datos
                     modifier = Modifier
-                        .weight(0.5f)
-                        .wrapContentHeight()
-                ){
-                    Row(modifier = Modifier
-                        .fillMaxHeight(0.5f)
-                        .padding(end = 5.dp),//??????????
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ){
-                        Text(modifier = Modifier
-                            .padding(start = 10.dp)
-                            .weight(0.3f)
-                            .wrapContentWidth(),
-                            text = nick,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold)
-                        Text(modifier = Modifier
-                            .padding(start = 10.dp)
-                            .weight(0.7f)
-                            .wrapContentWidth(),
-                            text = email,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold)
-                    }
-                    Row(modifier = Modifier
-                        //.fillMaxHeight(0.5f)
-                        .fillMaxWidth()
-                        .weight(0.3f)
-                        .padding(10.dp)
+                        .fillMaxHeight()
+                        .background(
+                            colorResource(R.color.transparente),
+                            RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                         )
-                    {
-                        Button(modifier = Modifier
+                        .weight(0.65f)
+                        .padding(vertical = 5.dp),
+                    //.clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                ){
+                    Column(
+                        modifier = Modifier
+                            .weight(0.5f)
                             .wrapContentHeight()
-                            .weight(0.3f)
-                            .padding(horizontal = 5.dp),
-                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.rojo_muy_claro),
-                                contentColor = colorResource(R.color.white)
-                            ),
-                            shape = RoundedCornerShape(10.dp),
-                            onClick = {
-                                mostrar = "Editar"
-                            }
-                        ) {
-                            Text("Editar")
+                    ){
+                        Row(modifier = Modifier
+                            .fillMaxHeight(0.5f)
+                            .padding(end = 5.dp),//??????????
+                            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ){
+                            Text(modifier = Modifier
+                                .padding(start = 10.dp)
+                                .weight(0.3f)
+                                .wrapContentWidth(),
+                                text = nick,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold)
+                            Text(modifier = Modifier
+                                .padding(start = 10.dp)
+                                .weight(0.7f)
+                                .wrapContentWidth(),
+                                text = email,
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold)
                         }
-                        Button(modifier = Modifier
-                            .wrapContentHeight()
+                        Row(modifier = Modifier
+                            //.fillMaxHeight(0.5f)
+                            .fillMaxWidth()
                             .weight(0.3f)
-                            .padding(horizontal = 5.dp),
-                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.rojo_muy_claro),
-                                contentColor = colorResource(R.color.white)
-                            ),
-                            shape = RoundedCornerShape(10.dp),
-                            onClick = {
-                                (context as? Activity)?.finish()
-                            })
+                            .padding(10.dp)
+                        )
                         {
-                            Text("Salir")
+                            Button(modifier = Modifier
+                                .wrapContentHeight()
+                                .weight(0.3f)
+                                .padding(horizontal = 5.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    mostrar = "Editar"
+                                }
+                            ) {
+                                Text("Editar")
+                            }
+                            Button(modifier = Modifier
+                                .wrapContentHeight()
+                                .weight(0.3f)
+                                .padding(horizontal = 5.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    (context as? Activity)?.finish()
+                                })
+                            {
+                                Text("Salir")
+                            }
                         }
+
                     }
 
+
                 }
-
-
             }
+
         }
-        Row(//Row de opciones
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    colorResource(R.color.transparente),
-                    //RoundedCornerShape(topStart = 8.dp)
-                )
-                .constrainAs(opciones) {
-                    top.linkTo(avatar.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
+
+        val modifier = Modifier
+            .then(
+                if (muestra_perfil) {
+                    Modifier
+                        .fillMaxWidth()
+                        .background(
+                            colorResource(R.color.transparente),
+                            //RoundedCornerShape(topStart = 8.dp)
+                        )
+                        .constrainAs(opciones) {
+                            if (muestra_perfil) top.linkTo(avatar.bottom)
+                            else top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .fillMaxSize(0.8f)
+                        .padding(vertical = 15.dp, horizontal = 5.dp)//
+                } else {
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            colorResource(R.color.transparente),
+                            //RoundedCornerShape(topStart = 8.dp)
+                        )
+                        .constrainAs(opciones) {
+                            if (muestra_perfil) top.linkTo(avatar.bottom)
+                            else top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .fillMaxSize(0.8f)
+                        .padding(vertical = 15.dp, horizontal = 5.dp)//
                 }
-                .fillMaxSize(0.8f)
-                .padding(vertical = 15.dp, horizontal = 5.dp)//
+            )
+
+        Row(//Row de opciones
+            modifier = modifier
+
         ){
             when(mostrar){//lo que muestra dependiendo de la opción
                 "Editar" -> {
@@ -526,7 +557,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .fillMaxHeight(0.9f)
-                                .constrainAs(equipo){
+                                .constrainAs(equipo) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                     top.linkTo(titulo.bottom)
@@ -559,7 +590,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         }
                         Button(modifier = Modifier
                             .padding(vertical = 8.dp)
-                            .constrainAs(boton2){
+                            .constrainAs(boton2) {
                                 start.linkTo(boton1.end)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
@@ -596,7 +627,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         Interacciones(auxPoke,usuario.equipo,2)// opción 2 para un equipo
                         Button(modifier = Modifier
                             .padding(vertical = 8.dp)
-                            .constrainAs(boton1){
+                            .constrainAs(boton1) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
@@ -616,19 +647,96 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                     }
 
                 }
-                ""->{
-                    Button(modifier = Modifier
-                        .padding(vertical = 8.dp),
-                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.rojo_muy_claro),
-                            contentColor = colorResource(R.color.white)
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = {
-                            mostrar="Equipo"
-                        })
-                    {
-                        Text("Equipo")
+                "Mensajes"->{
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ){
+                        var (cancela_mensajes)=createRefs()
+                        //contenido
+
+                        //dummy para pruebas
+                        val otro_key="-OCYd1tvcSLb5ypwD6oT"
+
+                        val otro=UsuarioFromKey(otro_key,refBBDD)
+                        //fin de dummy
+                        Chat(usuario, otro, usuario_key)
+
+
+                        Button(modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .constrainAs(cancela_mensajes) {
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.bottom)
+                            },
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar=""
+                                muestra_perfil=true
+                            })
+                        {
+                            Text("Cancelar")
+                        }
+                    }
+                }
+                ""->{//aquí cada botón para abrir cada una de las opciones e inyectar el contenido en el when de arriba
+                    ConstraintLayout() {
+                        val (equipo, mensajes)=createRefs()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(equipo) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(parent.top)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    mostrar="Equipo"
+                                })
+                            {
+                                Text("Equipo")
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(mensajes) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(equipo.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    mostrar="Mensajes"
+                                    muestra_perfil=false
+                                })
+                            {
+                                Text("Mensajes")
+                            }
+                        }
                     }
 
 /*

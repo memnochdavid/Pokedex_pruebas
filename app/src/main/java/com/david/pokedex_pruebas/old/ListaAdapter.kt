@@ -1,4 +1,4 @@
-package com.david.pokedex_pruebas.modelo
+package com.david.pokedex_pruebas.old
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,16 +9,11 @@ import android.widget.TextView
 //import androidx.compose.ui.semantics.text
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Intent
-import android.util.Log
 import android.view.MotionEvent
-import android.widget.HorizontalScrollView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.compose.ui.semantics.text
 //import androidx.glance.visibility
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.interfaz.VistaActivity
+
 //
-import kotlinx.coroutines.*
 
 //import androidx.compose.animation.with
 //import kotlin.io.path.name

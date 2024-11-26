@@ -38,7 +38,7 @@
             android:theme="@style/Theme.Pokedex_pruebas"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".interfaz.SplashActivity"
+            android:name=".old.SplashActivity"
             android:exported="true"
             android:theme="@style/TemaLight">
             <intent-filter>
@@ -50,10 +50,10 @@
 
 
         <activity
-            android:name=".interfaz.ListaActivity"
+            android:name=".old.ListaActivity"
             android:exported="false"
             android:theme="@style/TemaLight" />
-        <activity android:name=".interfaz.VistaActivity" />
+        <activity android:name=".old.VistaActivity" />
         <activity android:name=".interfaz.ComposeVistaActivity" />
 
 

@@ -1,6 +1,6 @@
 package com.david.pokedex_pruebas.modelo
 
-import android.os.Parcelable
+//import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf

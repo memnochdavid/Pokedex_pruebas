@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,20 +40,13 @@ import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
-import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.tooling.preview.Preview
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
-import com.david.pokedex_pruebas.modelo.addPokemon
-import com.david.pokedex_pruebas.modelo.listaPoke
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 
 private lateinit var refBBDD: DatabaseReference

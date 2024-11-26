@@ -1,4 +1,4 @@
-package com.david.pokedex_pruebas.interfaz
+package com.david.pokedex_pruebas.old
 
 import android.os.Bundle
 //import androidx.activity.enableEdgeToEdge
@@ -10,20 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.HorizontalScrollView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.drawerlayout.widget.DrawerLayout
 //import androidx.glance.visibility
-import com.david.pokedex_pruebas.modelo.PokemonAdapter
 import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.interfaz.ComposeListaActivity
 //import com.david.pokedex_pruebas.modelo.busca
-import com.david.pokedex_pruebas.modelo.listaPoke
 
 class ListaActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
