@@ -52,15 +52,15 @@ import androidx.compose.ui.unit.width
 import androidx.core.content.ContextCompat
 
 @Composable
-fun Mensaje(mensaje:MensajeFB){
+fun Mensaje(mensaje:MensajeFB, color:Color){
     val refBBDD = FirebaseDatabase.getInstance().reference
     val context=LocalContext.current
     Box(
         modifier = Modifier
             .wrapContentSize()
-            .background(colorResource(id = R.color.objeto_lista), RoundedCornerShape(4.dp))
+            .background(color, RoundedCornerShape(4.dp))
             .padding(8.dp)
     ) {
-        Text(text = mensaje.texto)
+        Text(text = mensaje.texto, color = Color.White)
     }
 }

@@ -28,6 +28,8 @@
     <color name="rojo_claro">#8C2B2B</color>
     <color name="rojo_muy_claro">#AF4C4C</color>
     <color name="rojo_oscuro">#420101</color>
+    <color name="mensajein">#1F2A30</color>
+    <color name="mensajeout">#05453F</color>
 
 
 </resources>

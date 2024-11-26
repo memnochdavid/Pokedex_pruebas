@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,7 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key:String){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.25f)
+                .fillMaxHeight(0.2f)
                 .constrainAs(fila_avatar){
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -74,7 +75,7 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key:String){
         }
         Row(//lazyrow cuando apañe FB
             modifier = Modifier
-                .fillMaxHeight(0.75f)
+                .fillMaxHeight(0.8f)
                 .fillMaxWidth()
                 .constrainAs(chat) {
                     top.linkTo(fila_avatar.bottom)
@@ -99,24 +100,28 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key:String){
             var conversacion= listOf(mensaje1,mensaje2,mensaje3,mensaje4,mensaje5,mensaje6)
             //fin mensaje dummy
 
+            var color= colorResource(R.color.white)
 
-            LazyColumn(){
-                items(conversacion){ mensaje->
+
+            LazyColumn {
+                items(conversacion) { mensaje ->
+                    color = if (mensaje.emisor.key == emisor.key) {
+                        colorResource(id=R.color.mensajeout)
+                    } else {
+                        colorResource(id=R.color.mensajein)
+                    }
                     Row(
-                        Modifier
-                            .wrapContentWidth()
-                            .background(
-                                colorResource(R.color.transparente)
-                            )
-                            .padding(vertical = 15.dp),
-                        horizontalArrangement = if (emisor.key == sesion_key){
-                            Arrangement.End
-                        }else{
-                            Arrangement.Start
-                        }
-                    ){
-                        //aqui
-                        Mensaje(mensaje)
+                        modifier = Modifier
+                            .fillMaxWidth() // Fill the width for better alignment
+                            .background(colorResource(R.color.transparente))
+                            .padding(vertical = 15.dp, horizontal = 15.dp),
+                        horizontalArrangement = if (mensaje.emisor.key == emisor.key) {
+                            Arrangement.End // Align messages from emisor to the right
+                        } else {
+                            Arrangement.Start // Align messages from receptor to the left
+                        },
+                    ) {
+                        Mensaje(mensaje, color)
                     }
                 }
             }
@@ -138,19 +143,4 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key:String){
         }
 
     }
-}
-
-@Composable
-fun Conversacion(emisor: UserFb, receptor: UserFb){
-    val context = LocalContext.current
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(R.color.rojo_claro))
-    ) {
-        val (fila_avatar,chat, escribe) = createRefs()
-
-    }
-
-
 }
