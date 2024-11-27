@@ -41,6 +41,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,9 +85,11 @@ import kotlinx.coroutines.withContext
 import coil.request.CachePolicy
 import coil.request.ErrorResult
 import coil.request.SuccessResult
+import com.david.pokedex_pruebas.modelo.ConversacionFB
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.david.pokedex_pruebas.modelo.cargaChats
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 import okhttp3.Dispatcher
 import java.io.File
@@ -309,7 +312,6 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
         Row(//Row de opciones
             modifier = modifier
-
         ){
             when(mostrar){//lo que muestra dependiendo de la opción
                 "Editar" -> {
@@ -614,12 +616,29 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         //contenido
 
                         //dummy para pruebas
-                        val otro_key="-OChJafMy4GQUEw-rbog"
+                        /*
 
-                        val otro=UsuarioFromKey(otro_key,refBBDD)
+                        */
                         //fin de dummy
+                        val idChat=refBBDD.child("chats").push().key!!
+                        var conversacion = ConversacionFB(idChat,usuario_key)
+                        //se cargan los chats del usuario
+                        val coroutineScope = rememberCoroutineScope()
+                        LaunchedEffect(Unit) {
+                            coroutineScope.launch {
+                                cargaChats(refBBDD, usuario_key, { resultado ->
+                                    if(resultado != null){
+                                        conversacion = resultado
+                                        println(conversacion.idUser)
+                                    }
+                                })
+                                Log.d("conversacion", conversacion.idUser)
+                            }
+                        }
+                        val otro_key="-OChJafMy4GQUEw-rbog"
+                        val otro=UsuarioFromKey(otro_key,refBBDD)
 
-                        Chat(usuario, otro, usuario_key, mostrar, onMostrarChange = { newMostrar ->
+                        Chat(otro, usuario_key, mostrar, conversacion,onMostrarChange = { newMostrar ->
                             mostrar = newMostrar
                             muestra_perfil=true
                         })
