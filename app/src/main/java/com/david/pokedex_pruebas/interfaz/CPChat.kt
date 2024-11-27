@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,12 +53,30 @@ import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.cargaChats
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
+import kotlin.collections.addAll
 
 @Composable
-fun Chat(receptor: UserFb, sesion_key: String, mostrar: String, conversacion: ConversacionFB,onMostrarChange: (String) -> Unit){
+fun Chat(receptor_key: String, sesion_key: String, mostrar: String,onMostrarChange: (String) -> Unit){
     val context = LocalContext.current
     val refBBDD = FirebaseDatabase.getInstance().getReference()
     var emisor= UsuarioFromKey(sesion_key,refBBDD)
+    var receptor= UsuarioFromKey(receptor_key,refBBDD)
+    //var idChat=refBBDD.child("chats").push().key!!
+    var conversacion by remember { mutableStateOf<ConversacionFB?>(ConversacionFB("",sesion_key, receptor_key, mutableListOf<MensajeFB>())) }
+    val lifecycleScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = refBBDD, key2 = sesion_key) {
+        lifecycleScope.launch {
+            conversacion = cargaChats(refBBDD, sesion_key, id_receptor)
+        }
+    }
+    var mensajes = remember { mutableStateListOf<MensajeFB>() }
+
+
+// Initialize mensajes with your initial data
+    LaunchedEffect(key1 = conversacion!!.mensajes) {
+        mensajes.addAll(conversacion!!.mensajes)
+    }
 
 
     var color= colorResource(R.color.white)
@@ -144,9 +163,11 @@ fun Chat(receptor: UserFb, sesion_key: String, mostrar: String, conversacion: Co
             verticalAlignment = Alignment.Top
         ){
             LazyColumn(
-                state = listState
+                state = listState,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
             ) {
-                items(conversacion.mensajes) { mensaje ->
+                items(mensajes, key = { it }) { mensaje ->
                     Log.d("mensaje",mensaje.texto)
                     color = if (mensaje.idUser == emisor.key) {
                         colorResource(id=R.color.mensajeout)
@@ -188,7 +209,7 @@ fun Chat(receptor: UserFb, sesion_key: String, mostrar: String, conversacion: Co
             var scrollMensajeInput=rememberScrollState()
             var text by remember { mutableStateOf("escribe tu mensaje") }
             var isFocused by remember { mutableStateOf(false) }
-            var mensajeAux= MensajeFB(sesion_key,"dd/MM/yyyy HH:mm:ss", text)
+            var mensajeAux= MensajeFB(sesion_key,"","dd/MM/yyyy HH:mm:ss", text)//no funcionará, arregla el idReceptor
             BasicTextField(
                 value = text,
                 modifier = Modifier
@@ -221,9 +242,14 @@ fun Chat(receptor: UserFb, sesion_key: String, mostrar: String, conversacion: Co
                             onClick = {
                                 // Handle send button click
                                 mensajeAux.texto=text
-                                conversacion.mensajes.add(mensajeAux)
+                                mensajeAux.idUser=sesion_key
+                                mensajeAux.idReceptor=receptor.key!!
+                                mensajes+=mensajeAux
+                                conversacion!!.mensajes.add(mensajeAux)
+                                conversacion!!.idUser=sesion_key
+                                conversacion!!.idReceptor=receptor.key!!
                                 text = ""
-                                refBBDD.child("chats").child(conversacion.idChat).setValue(conversacion)
+                                refBBDD.child("chats").child(conversacion!!.idChat).setValue(conversacion)
                             }
                         ) {
                             Icon(
@@ -232,14 +258,13 @@ fun Chat(receptor: UserFb, sesion_key: String, mostrar: String, conversacion: Co
                                 tint = colorResource(id = R.color.white)
                             )
                         }
-                    }/*
-                    //para actualizar el scroll
-                    LaunchedEffect(conversacion.mensajes) {
-                        listState.scrollToItem(conversacion.mensajes.lastIndex)
                     }
-                    LaunchedEffect(mensajeAux.texto) {
-                        listState.scrollToItem(conversacion.mensajes.lastIndex)
-                    }*/
+                    //para actualizar el scroll
+                    LaunchedEffect(mensajes) {
+                        if (mensajes.isNotEmpty()) {
+                            listState.scrollToItem(mensajes.lastIndex)
+                        }
+                    }
                 },
                 textStyle = TextStyle(color = colorResource(id = R.color.white)),
                 cursorBrush= SolidColor(colorResource(id = R.color.white)),

@@ -90,6 +90,7 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.cargaChats
+import com.david.pokedex_pruebas.modelo.fetchAllUsers
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 import okhttp3.Dispatcher
 import java.io.File
@@ -99,6 +100,9 @@ private lateinit var refBBDD: DatabaseReference
 lateinit var scopeUpdate: CoroutineScope
 private lateinit var usuario_key: String
 
+var mostrar by mutableStateOf("")
+var id_receptor by mutableStateOf("")
+var muestra_perfil by mutableStateOf(true)
 
 class ComposePerfilUsuarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,12 +129,12 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
     val usuario= UsuarioFromKey(usuario_key, refBBDD)
     Log.d("usuario", usuario.toString())
 
-    var mostrar by remember { mutableStateOf((""))}
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var nick by remember { mutableStateOf((""))}
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var avatarLink by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -145,7 +149,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
     val context = LocalContext.current
 
-    var muestra_perfil by remember { mutableStateOf(true) }
+
 
     var modifier_si_mensajes=if(muestra_perfil){
         Modifier
@@ -613,68 +617,59 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             .fillMaxSize()
                     ){
 
-                        //contenido
 
-                        //dummy para pruebas
-                        /*
 
-                        */
-                        //fin de dummy
-                        val idChat=refBBDD.child("chats").push().key!!
-                        var conversacion = ConversacionFB(idChat,usuario_key)
-                        //se cargan los chats del usuario
-                        val coroutineScope = rememberCoroutineScope()
-                        LaunchedEffect(Unit) {
-                            coroutineScope.launch {
-                                cargaChats(refBBDD, usuario_key, { resultado ->
-                                    if(resultado != null){
-                                        conversacion = resultado
-                                        println(conversacion.idUser)
-                                    }
-                                })
-                                Log.d("conversacion", conversacion.idUser)
-                            }
-                        }
-                        val otro_key="-OChJafMy4GQUEw-rbog"
-                        val otro=UsuarioFromKey(otro_key,refBBDD)
-
-                        Chat(otro, usuario_key, mostrar, conversacion,onMostrarChange = { newMostrar ->
+                        Chat(id_receptor, usuario_key, mostrar, onMostrarChange = { newMostrar ->
                             mostrar = newMostrar
                             muestra_perfil=true
                         })
                     }
                 }
                 "Usuarios"->{
+
+                    var usuarios by remember { mutableStateOf<List<UserFb>>(emptyList()) }
+
+                    LaunchedEffect(key1 = refBBDD) {
+                        scope.launch {
+                            usuarios= fetchAllUsers(refBBDD)
+                        }
+                    }
+
+
                     ConstraintLayout(
                         modifier = Modifier
                             .wrapContentHeight()
                             .fillMaxWidth()
                     ){
-                        val(usuarios,boton1,boton2,titulo)=createRefs()
+                        val(lista_usuarios,boton1,boton2,titulo)=createRefs()
                         Text(modifier = Modifier
                             .constrainAs(titulo){
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                                 top.linkTo(parent.top)
-                                bottom.linkTo(usuarios.top)
+                                bottom.linkTo(lista_usuarios.top)
                             },
                             color = Color.White,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             text = "USUARIOS")
+
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .fillMaxHeight(0.9f)
-                                .constrainAs(usuarios) {
+                                .constrainAs(lista_usuarios) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                     top.linkTo(titulo.bottom)
                                     bottom.linkTo(boton1.top)
                                 }
                         ){
-                            items(usuario.equipo) { usuario ->
-                                //todos los usuarios de la BD
+
+                            items(usuarios) { usuario ->
+                                if(usuario.key!=usuario_key) {
+                                    UserCard(usuario)
+                                }
                             }
                         }
 
@@ -763,11 +758,15 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 ),
                                 shape = RoundedCornerShape(10.dp),
                                 onClick = {
-                                    mostrar="Mensajes"
-                                    muestra_perfil=false
+                                    if(id_receptor==""){
+                                        mostrar="Usuarios"
+                                    }else{
+                                        mostrar="Mensajes"
+                                        muestra_perfil=false
+                                    }
                                 })
                             {
-                                Text("Mensajes")
+                                Text("Último Chat")
                             }
                         }
                         Row(
