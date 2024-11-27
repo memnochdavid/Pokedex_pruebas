@@ -19,3 +19,9 @@ data class MensajeFB(
         fecha = dateFormat.format(Date())
     }
 }
+
+data class ConversacionFB(
+    var emisor:UserFb,
+    var receptor:UserFb,
+    var mensajes:MutableList<MensajeFB>
+):Serializable

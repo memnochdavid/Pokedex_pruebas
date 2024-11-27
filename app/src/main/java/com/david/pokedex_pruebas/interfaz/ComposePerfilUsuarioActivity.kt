@@ -697,7 +697,6 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         {
                             Text("Cancelar")
                         }
-
                     }
                 }
                 ""->{//aquí cada botón para abrir cada una de las opciones e inyectar el contenido en el when de arriba
