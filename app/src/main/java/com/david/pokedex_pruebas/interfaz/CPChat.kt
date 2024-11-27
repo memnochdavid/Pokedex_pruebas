@@ -158,9 +158,6 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key: String, mostrar: String, 
                 .background(colorResource(R.color.rojo_muy_claro)),
             verticalAlignment = Alignment.Top
         ){
-
-
-
             LazyColumn(
                 state = listState
             ) {
@@ -177,9 +174,9 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key: String, mostrar: String, 
                             .background(colorResource(R.color.transparente))
                             .padding(vertical = 15.dp, horizontal = 15.dp),
                         horizontalArrangement = if (mensaje.emisor.key == emisor.key) {
-                            Arrangement.End // Align messages from emisor to the right
+                            Arrangement.End // el que escribe a la derecha
                         } else {
-                            Arrangement.Start // Align messages from receptor to the left
+                            Arrangement.Start // el que escribe a la izquierda
                         },
                     ) {
                         Mensaje(mensaje, color)
@@ -187,10 +184,7 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key: String, mostrar: String, 
 
                 }
             }
-            //para actualizar el scroll
-            LaunchedEffect(conversacion.mensajes) {
-                listState.scrollToItem(conversacion.mensajes.lastIndex)
-            }
+
 
         }
         Row(
@@ -251,6 +245,13 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key: String, mostrar: String, 
                                 tint = colorResource(id = R.color.white)
                             )
                         }
+                    }
+                    //para actualizar el scroll
+                    LaunchedEffect(conversacion.mensajes) {
+                        listState.scrollToItem(conversacion.mensajes.lastIndex)
+                    }
+                    LaunchedEffect(mensajeAux.texto) {
+                        listState.scrollToItem(conversacion.mensajes.lastIndex)
                     }
                 },
                 textStyle = TextStyle(color = colorResource(id = R.color.white)),

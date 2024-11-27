@@ -642,7 +642,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             color = Color.White,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            text = "EQUIPO")
+                            text = "USUARIOS")
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
