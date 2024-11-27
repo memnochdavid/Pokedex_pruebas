@@ -144,11 +144,19 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
     var muestra_perfil by remember { mutableStateOf(true) }
 
-    ConstraintLayout(//parent
-        modifier = Modifier
+    var modifier_si_mensajes=if(muestra_perfil){
+        Modifier
             .fillMaxSize()
             .background(colorResource(R.color.lista_con_foco))
             .padding(15.dp)
+    } else{
+        Modifier
+            .fillMaxSize()
+            .background(colorResource(R.color.lista_con_foco))
+    }
+
+    ConstraintLayout(//parent
+        modifier = modifier_si_mensajes
     ) {
         val (avatar, opciones, inyecta, col1) = createRefs()
         if(muestra_perfil){//se oculta cuando se van a mostrar los chats
@@ -172,60 +180,10 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         .background(colorResource(R.color.lista_con_foco)),
                     verticalArrangement = Arrangement.Center
                 ){
-                    //abre activity para crear un usuario - borrar cuando menu
-                    IconButton(
-                        onClick = {
-                            //
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.8f)
-                    ) {/*
-                    AsyncImage(
-                        model = sesion.avatar,
-                        contentDescription = "avatar de usuario",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .background(colorResource(R.color.fuego))
-                    )*/
-
-                        //toda esta mierda es para que la imagen no se almacene en cache y se muestre bien cuando se modifica el avatar
-                        Surface(modifier = Modifier.fillMaxSize()) {
-                            val imageUrl = usuario.avatar
-                            val listener = object : ImageRequest.Listener {
-                                override fun onError(request: ImageRequest, result: ErrorResult) {
-                                    super.onError(request, result)
-                                }
-                                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                                    super.onSuccess(request, result)
-                                }
-                            }
-                            val imageRequest = ImageRequest.Builder(context)
-                                .data(imageUrl)
-                                .listener(listener)
-                                .dispatcher(Dispatchers.IO)
-                                .memoryCacheKey(imageUrl)
-                                .diskCacheKey(imageUrl)
-                                .diskCachePolicy(CachePolicy.DISABLED)
-                                .memoryCachePolicy(CachePolicy.DISABLED)
-                                .build()
-
-                            AsyncImage(
-                                model = imageRequest,
-                                contentDescription = "Image Description",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(CircleShape)
-                                    .background(colorResource(R.color.transparente))
-                            )
-                        }
-                    }
+                    UserButton( context, usuario_key)
                 }
+                Spacer(modifier = Modifier.weight(0.05f))//horizontal
 
-                Spacer(modifier = Modifier.weight(0.05f))
                 Column(//Column Datos
                     modifier = Modifier
                         .fillMaxHeight()
@@ -652,7 +610,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         modifier = Modifier
                             .fillMaxSize()
                     ){
-                        var (cancela_mensajes)=createRefs()
+
                         //contenido
 
                         //dummy para pruebas
@@ -660,13 +618,70 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
                         val otro=UsuarioFromKey(otro_key,refBBDD)
                         //fin de dummy
-                        Chat(usuario, otro, usuario_key)
 
+                        Chat(usuario, otro, usuario_key, mostrar, onMostrarChange = { newMostrar ->
+                            mostrar = newMostrar
+                            muestra_perfil=true
+                        })
+                    }
+                }
+                "Usuarios"->{
+                    ConstraintLayout(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .fillMaxWidth()
+                    ){
+                        val(usuarios,boton1,boton2,titulo)=createRefs()
+                        Text(modifier = Modifier
+                            .constrainAs(titulo){
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(usuarios.top)
+                            },
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            text = "EQUIPO")
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.9f)
+                                .constrainAs(usuarios) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    top.linkTo(titulo.bottom)
+                                    bottom.linkTo(boton1.top)
+                                }
+                        ){
+                            items(usuario.equipo) { usuario ->
+                                //todos los usuarios de la BD
+                            }
+                        }
 
                         Button(modifier = Modifier
                             .padding(vertical = 8.dp)
-                            .constrainAs(cancela_mensajes) {
+                            .constrainAs(boton1) {
                                 start.linkTo(parent.start)
+                                end.linkTo(boton2.start)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.bottom)
+                            },
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.rojo_muy_claro),
+                                contentColor = colorResource(R.color.white)
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                mostrar="Interacciones"
+                            })
+                        {
+                            Text("Interacciones")
+                        }
+                        Button(modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .constrainAs(boton2) {
+                                start.linkTo(boton1.end)
                                 end.linkTo(parent.end)
                                 bottom.linkTo(parent.bottom)
                                 top.linkTo(parent.bottom)
@@ -678,16 +693,16 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             shape = RoundedCornerShape(10.dp),
                             onClick = {
                                 mostrar=""
-                                muestra_perfil=true
                             })
                         {
                             Text("Cancelar")
                         }
+
                     }
                 }
                 ""->{//aquí cada botón para abrir cada una de las opciones e inyectar el contenido en el when de arriba
                     ConstraintLayout() {
-                        val (equipo, mensajes)=createRefs()
+                        val (equipo, mensajes, usuarios)=createRefs()
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -735,6 +750,30 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 })
                             {
                                 Text("Mensajes")
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(usuarios) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(mensajes.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    mostrar="Usuarios"
+                                })
+                            {
+                                Text("Usuarios")
                             }
                         }
                     }
