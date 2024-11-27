@@ -614,7 +614,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                         //contenido
 
                         //dummy para pruebas
-                        val otro_key="-OCYd1tvcSLb5ypwD6oT"
+                        val otro_key="-OChJafMy4GQUEw-rbog"
 
                         val otro=UsuarioFromKey(otro_key,refBBDD)
                         //fin de dummy
@@ -702,7 +702,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                 }
                 ""->{//aquí cada botón para abrir cada una de las opciones e inyectar el contenido en el when de arriba
                     ConstraintLayout() {
-                        val (equipo, mensajes, usuarios)=createRefs()
+                        val (fb,equipo, mensajes, usuarios)=createRefs()
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -776,84 +776,88 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 Text("Usuarios")
                             }
                         }
-                    }
+                        /*
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(fb) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(usuarios.bottom)
+                                    //bottom.linkTo(parent.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
+                                    //sube a Firebase y AppWrite
+                                    //refStorage = FirebaseStorage.getInstance().reference
+                                    for (i in listaPokeFB) {
+                                        try {
+                                            val resources = context.resources
+                                            resources
+                                                .openRawResource(i.foto)
+                                                .use { inputStream ->
+                                                    val identificador = refBBDD
+                                                        .child("pokemones")
+                                                        .push().key!!
+                                                    refBBDD
+                                                        .child("pokemones")
+                                                        .child(identificador)
+                                                        .setValue(i)
 
-/*
-                    /////////////////////////////////////////////////////////////
-                    Button(modifier = Modifier
-                        .padding(vertical = 8.dp),
-                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.rojo_muy_claro),
-                            contentColor = colorResource(R.color.white)
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = {
-
-                            ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
-                            //sube a Firebase y AppWrite
-                            //refStorage = FirebaseStorage.getInstance().reference
-                            for (i in listaPokeFB) {
-                                try {
-                                    val resources = context.resources
-                                    resources
-                                        .openRawResource(i.foto)
-                                        .use { inputStream ->
-                                            val identificador = refBBDD
-                                                .child("pokemones")
-                                                .push().key!!
-                                            refBBDD
-                                                .child("pokemones")
-                                                .child(identificador)
-                                                .setValue(i)
-
-                                            val tempFile = File.createTempFile(
-                                                identificador.drop(1),
-                                                ".png",
-                                                context.cacheDir
-                                            )
-                                            inputStream.use { input ->
-                                                tempFile
-                                                    .outputStream()
-                                                    .use { output ->
-                                                        input.copyTo(output)
-                                                    }
-                                            }
-                                            scope.launch {
-                                                withContext(
-                                                    Dispatchers.IO
-                                                ) {
-
-                                                    storage.createFile(
-                                                        bucketId = appwrite_bucket,
-                                                        fileId = identificador.drop(1),//elimina "_"
-                                                        file = InputFile.fromPath(
-                                                            tempFile.absolutePath
-                                                        )
+                                                    val tempFile = File.createTempFile(
+                                                        identificador.drop(1),
+                                                        ".png",
+                                                        context.cacheDir
                                                     )
-                                                    tempFile.delete() // Delete after upload
+                                                    inputStream.use { input ->
+                                                        tempFile
+                                                            .outputStream()
+                                                            .use { output ->
+                                                                input.copyTo(output)
+                                                            }
+                                                    }
+                                                    scope.launch {
+                                                        withContext(
+                                                            Dispatchers.IO
+                                                        ) {
+
+                                                            storage.createFile(
+                                                                bucketId = appwrite_bucket,
+                                                                fileId = identificador.drop(1),//elimina "_"
+                                                                file = InputFile.fromPath(
+                                                                    tempFile.absolutePath
+                                                                )
+                                                            )
+                                                            tempFile.delete() // Delete after upload
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                        } catch (e: Exception) {
+                                            // Handle exceptions appropriately
+
                                         }
-                                } catch (e: Exception) {
-                                    // Handle exceptions appropriately
+                                    }
 
-                                }
+
+
+                                })
+                            {
+                                Text("FB")
                             }
-
-
-
-                        })
-                    {
-                        Text("FB")
+                        }
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        */
                     }
-
-
-
-                            /////////////////////////////////////////////////////////////////////////
-
-*/
-
-
                 }
             }
 

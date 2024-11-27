@@ -139,8 +139,8 @@ fun Chat(emisor: UserFb, receptor: UserFb, sesion_key: String, mostrar: String, 
             //chat
             //conversación dummy
             var refBBDD= FirebaseDatabase.getInstance().getReference()
-            var emisor= UsuarioFromKey("-OCYd1tvcSLb5ypwD6oT", refBBDD)
-            var receptor= UsuarioFromKey("-OCcuV7oh20OTxz5SzQV", refBBDD)
+            var emisor= UsuarioFromKey("-OChJLjA_XpEBDjuUiWj", refBBDD)
+            var receptor= UsuarioFromKey("-OChJafMy4GQUEw-rbog", refBBDD)
             var mensaje1= MensajeFB(emisor,receptor,"dd/MM/yyyy HH:mm:ss", "ola k ase")
             var mensaje2= MensajeFB(receptor,emisor,"dd/MM/yyyy HH:mm:ss", "ta respondiendo o k ase")
             var mensaje3= MensajeFB(emisor,receptor,"dd/MM/yyyy HH:mm:ss", "otro mensaje")
