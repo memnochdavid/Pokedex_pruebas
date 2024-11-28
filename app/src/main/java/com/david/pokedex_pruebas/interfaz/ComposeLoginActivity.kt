@@ -186,16 +186,19 @@ fun Login() {
                                     val checkUser = pojo.getValue(UserFb::class.java)
                                     if (email == checkUser?.email && password == checkUser?.pass) {
                                         loginExiste = true
-                                        //arraySesion.add(checkUser)
-                                        Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
+                                        //Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(context, ComposeListaActivity::class.java)
                                         intent.putExtra("sesion", checkUser.key)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                         context.startActivity(intent)
                                         break
                                     }
                                 }
                                 if (!loginExiste) {
                                     Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                }
+                                else{
+                                    Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
                                 }
                             }
                             override fun onCancelled(error: DatabaseError) {

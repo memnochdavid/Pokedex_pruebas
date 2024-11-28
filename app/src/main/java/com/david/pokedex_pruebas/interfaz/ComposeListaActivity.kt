@@ -92,7 +92,7 @@ private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "6746fbd1000a68a610a6"
+val appwrite_bucket = "6748407b00157c463874"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -127,15 +127,6 @@ class ComposeListaActivity : ComponentActivity() {
             for (childSnapshot in dataSnapshot.children) {
                 val pokemon = childSnapshot.getValue(PokemonFB::class.java)
                 pokemon?.let { pokemonList.add(it) }
-
-                //appwrite
-                val identificadorAppWrite = childSnapshot.key?.substring(1, 20) ?: "" // coge el identificador
-                //pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/preview?project=[PROJECT_ID]"//--plantilla
-                if (pokemon != null) {
-                    //guarda la URL de la imagen en el objeto PokemonFB como string en pokemon.imagenFB
-                    pokemon.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
-                }
-
             }
             listaPokeFireBase = pokemonList
             isLoading = false // Está cargando
@@ -151,7 +142,7 @@ class ComposeListaActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaPokeFireBase, isLoading,UsuarioFromKey(usuario_key, refBBDD))//FireBase,AppWrite -- false
+            VerListaPoke(listaPokeFireBase, isLoading,usuario_key)//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
 
@@ -170,8 +161,9 @@ class ComposeListaActivity : ComponentActivity() {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb) {
-    var selectedItemIndex by remember { mutableStateOf(0) }
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,usuario_key:String) {
+    //var selectedItemIndex by remember { mutableStateOf(0) }
+    //var sesion = UsuarioFromKey(usuario_key, refBBDD)
 
     var busquedaTipos by remember { mutableStateOf(false) }
     var textobusqueda by remember { mutableStateOf("") }
@@ -253,7 +245,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,sesion:UserFb)
                         },
                     horizontalArrangement = Arrangement.End
                 ){
-                    sesion.key?.let { UserButton(context, it) }
+                    UserButton(context, usuario_key)
                 }
 
                 LazyColumn(

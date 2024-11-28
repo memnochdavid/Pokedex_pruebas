@@ -54,7 +54,8 @@
             android:exported="false"
             android:theme="@style/TemaLight" />
         <activity android:name=".old.VistaActivity" />
-        <activity android:name=".interfaz.ComposeVistaActivity" />
+        <activity android:name=".interfaz.ComposeVistaActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
 
 

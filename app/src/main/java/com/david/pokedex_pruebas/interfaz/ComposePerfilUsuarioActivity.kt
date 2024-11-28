@@ -793,7 +793,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 Text("Usuarios")
                             }
                         }
-                        /*
+/*
                         //////////////////////////////////////////////////////////////////////////////////////
                         Row(
                             modifier = Modifier
@@ -819,6 +819,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                     //refStorage = FirebaseStorage.getInstance().reference
                                     for (i in listaPokeFB) {
                                         try {
+
                                             val resources = context.resources
                                             resources
                                                 .openRawResource(i.foto)
@@ -826,6 +827,10 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                                     val identificador = refBBDD
                                                         .child("pokemones")
                                                         .push().key!!
+
+                                                    val identificadorAppWrite = identificador.substring(1, 20)
+                                                    i.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+
                                                     refBBDD
                                                         .child("pokemones")
                                                         .child(identificador)
@@ -850,7 +855,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
                                                             storage.createFile(
                                                                 bucketId = appwrite_bucket,
-                                                                fileId = identificador.drop(1),//elimina "_"
+                                                                fileId = identificadorAppWrite,//elimina "_"
                                                                 file = InputFile.fromPath(
                                                                     tempFile.absolutePath
                                                                 )
@@ -869,11 +874,11 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
                                 })
                             {
-                                Text("FB")
+                                Text("BD")
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-                        */
+*/
                     }
                 }
             }

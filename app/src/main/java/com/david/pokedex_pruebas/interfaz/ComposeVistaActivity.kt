@@ -68,6 +68,7 @@ import androidx.compose.runtime.setValue
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.modelo.adaptaNombre
 import com.david.pokedex_pruebas.modelo.listaPokeFB
+import java.util.concurrent.CountDownLatch
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -95,16 +96,10 @@ class ComposeVistaActivity : AppCompatActivity() {
         }else{
             usuario_key = ""
         }
-
-
-        //se rescatan los datos del intent
-        //val poke = intent.getParcelableExtra<PokemonFB>("pokemon")
-        //val lista = intent.getParcelableArrayListExtra<PokemonFB>("lista" ) as List<PokemonFB>
         val indice = intent.getIntExtra("indice", 0)
-        //val sesion = intent.getParcelableArrayListExtra<UserFb>("sesion" ) as List<UserFb>
-        //enableEdgeToEdge()
+        //descargamos la lista de pokemon
+
         setContent{
-            //VerPokemonScreen(poke?: PokemonFB())//para cuando se actualiza la FB
             VerListaPokemon(listaPokeFireBase, indice, usuario_key, this, refBBDD)
             //VerPokemon(lista[45])
         }
@@ -114,7 +109,7 @@ class ComposeVistaActivity : AppCompatActivity() {
 
 
 @Composable
-fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
+fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
     val num=pokemon.num
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
@@ -123,6 +118,10 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
     var mediaPlayer: MediaPlayer? = null
 
     val context = LocalContext.current
+
+    val usuario=UsuarioFromKey(usuario_key, refBBDD)
+
+    var updatedEquipo by remember { mutableStateOf(usuario.equipo) }
 
 
     ConstraintLayout(
@@ -238,14 +237,20 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
                     IconButton(
                         onClick = {
                             if (usuario.equipo.size < 6) {
-                                val updatedEquipo = usuario.equipo + pokemon
+                                updatedEquipo = (usuario.equipo + pokemon).toMutableList()
                                 val updates = hashMapOf<String, Any>(
                                     "usuarios/${usuario.key}/equipo" to updatedEquipo
                                 )
+
                                 refBBDD.updateChildren(updates)
                                     .addOnSuccessListener {
                                         Toast.makeText(context, "${pokemon.name} se ha añadido a tu equipo", Toast.LENGTH_SHORT).show()
                                         Log.v("AÑADEEEEEEEEE", pokemon.name)
+                                        // No need to finish the activity here
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        // Handle failure, but do not finish the activity
+                                        // You might want to display an error message to the user
                                     }
                             } else {
                                 Toast.makeText(context, "Ya hay 6 Pokemon en tu equipo", Toast.LENGTH_SHORT).show()
@@ -350,7 +355,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario:UserFb) {
 @Composable
 fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, context: Context, refBBDD: DatabaseReference) {
 
-    val usuario=UsuarioFromKey(usuario_key, refBBDD)
+    //val usuario=UsuarioFromKey(usuario_key, refBBDD)
 
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = indice
@@ -361,7 +366,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, con
             .zIndex(2f),
         horizontalArrangement = Arrangement.End
     ) {
-        usuario.key?.let { UserButton(context, it) }
+        UserButton(context, usuario_key)
     }
     LazyRow(
         state = listState,
@@ -393,7 +398,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, con
                         .background(color1)
                         .fillMaxHeight(0.2f)
                 )
-                VerPokemon(pokemon, usuario)
+                VerPokemon(pokemon, usuario_key)
             }
         }
     }
