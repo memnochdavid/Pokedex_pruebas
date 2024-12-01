@@ -68,7 +68,6 @@ import androidx.lifecycle.get
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.interfaz.ui.theme.Pokedex_pruebasTheme
 import com.david.pokedex_pruebas.modelo.UserFb
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
