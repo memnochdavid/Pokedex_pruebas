@@ -64,13 +64,13 @@ fun Chat(receptor_key: String, sesion_key: String, mostrar: String,onMostrarChan
     //var idChat=refBBDD.child("chats").push().key!!
     var conversacion by remember { mutableStateOf<ConversacionFB?>(ConversacionFB("",sesion_key, receptor_key, mutableListOf<MensajeFB>())) }
     val lifecycleScope = rememberCoroutineScope()
+    var mensajes = remember { mutableStateListOf<MensajeFB>() }
 
     LaunchedEffect(key1 = refBBDD, key2 = sesion_key) {
         lifecycleScope.launch {
             conversacion = cargaChats(refBBDD, sesion_key, id_receptor)
         }
     }
-    var mensajes = remember { mutableStateListOf<MensajeFB>() }
 
 
 // Initialize mensajes with your initial data
