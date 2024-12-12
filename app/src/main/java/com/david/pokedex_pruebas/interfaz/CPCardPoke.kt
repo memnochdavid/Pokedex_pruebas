@@ -262,9 +262,9 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: Mutab
             var aux=UsuarioFromKey( usuario_key, refBBDD)
             IconButton(
                 onClick = {
-                    val updatedEquipo = aux.equipo.filter { it.name != pokemon.name }
+                    equipo.value = aux.equipo.filter { it.name != pokemon.name }
                     val updates = hashMapOf<String, Any>(
-                        "usuarios/$usuario_key/equipo" to updatedEquipo
+                        "usuarios/$usuario_key/equipo" to equipo.value
                     )
                     refBBDD.updateChildren(updates)
                         .addOnSuccessListener {
@@ -273,7 +273,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: Mutab
                         .addOnFailureListener {
                             // Handle error
                         }
-                    equipo.value = updatedEquipo
+                    //equipo.value = updatedEquipo
                 },
                 modifier = Modifier
                     .constrainAs(delete) {

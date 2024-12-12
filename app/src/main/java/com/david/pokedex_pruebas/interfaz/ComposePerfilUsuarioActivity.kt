@@ -504,7 +504,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 }
                         ){
 
-                            //lista_equipo=usuario.equipo
+
 
 
                             items(equipo_lista.value) { pokemon ->
