@@ -179,7 +179,7 @@ fun Login() {
                 refBBDD = FirebaseDatabase.getInstance().reference
                 if (email.isNotEmpty() && password.isNotEmpty()) {
                     refBBDD.child("usuarios")
-                        .addValueEventListener(object : ValueEventListener {
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 loginExiste = false
                                 for (pojo in snapshot.children) {

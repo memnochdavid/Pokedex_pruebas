@@ -65,7 +65,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 import java.util.concurrent.CountDownLatch
@@ -131,6 +133,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
     ) {
         val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add) = createRefs()
         //imagen remote
+        /*
         AsyncImage(
             model = pokemon.imagenFB,
             contentDescription = null,
@@ -162,7 +165,44 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         mediaPlayer?.start()
                     }
                 },
+        )*/
+        val painter = rememberAsyncImagePainter(
+            model = pokemon.imagenFB,
+            contentScale = ContentScale.Crop,
         )
+        Image(
+            painter = painter,
+            contentDescription = "avatar de usuario",
+            modifier = Modifier
+                .size(350.dp)
+                .fillMaxSize()
+                .constrainAs(foto) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(datos.top)
+                }
+                .clickable {//reproduce su grito
+                    val resourceId = context.resources.getIdentifier(
+                        adaptaNombre(pokemon.name),
+                        //pokemon.name.trim().lowercase(),
+                        "raw",
+                        context.packageName
+                    )
+                    // Initialize MediaPlayer if it's null
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer.create(context, resourceId)
+                    }
+                    // Start or resume playback
+                    if (mediaPlayer?.isPlaying == true) {
+                        mediaPlayer?.pause()
+                    } else {
+                        mediaPlayer?.start()
+                    }
+                },
+        )
+
+
 /*
         //imagen local
         Image(

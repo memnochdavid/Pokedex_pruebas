@@ -1,5 +1,6 @@
 package com.david.pokedex_pruebas.interfaz
 
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.animation.core.Spring
@@ -36,22 +37,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.MutableState
+import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
-import com.david.pokedex_pruebas.modelo.listaPokeFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
 private lateinit var refBBDD: DatabaseReference
 @Composable
-fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
+fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int, equipo:MutableState<List<PokemonFB>>) {
 //    var arrayPoke=ArrayList<PokemonFB>()
 //    arrayPoke.addAll(listaPokeFireBase)
     refBBDD = FirebaseDatabase.getInstance().reference
@@ -151,10 +151,29 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                 )*/
 
                 //imagen remota
+                /*
                 AsyncImage(
                     model = pokemon.imagenFB,
-                    contentDescription = "Pokemon Image",
                     contentScale = ContentScale.Crop,
+                    contentDescription = "Pokemon Image",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .constrainAs(pokemonImage) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )*/
+
+                val painter = rememberAsyncImagePainter(
+                    model = pokemon.imagenFB,
+                    contentScale = ContentScale.Crop,
+                )
+
+                Image(
+                    painter = painter,
+                    contentDescription = "Pokemon Image",
                     modifier = Modifier
                         .size(100.dp)
                         .fillMaxSize()
@@ -254,6 +273,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
                         .addOnFailureListener {
                             // Handle error
                         }
+                    equipo.value=updatedEquipo
                 },
                 modifier = Modifier
                     .constrainAs(delete) {
@@ -274,8 +294,11 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int) {
 
 }
 
+
+/*
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview3() {
     PokemonCard(listaPokeFB[7], "",2)
 }
+*/

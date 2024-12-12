@@ -2,8 +2,6 @@ package com.david.pokedex_pruebas.interfaz
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +9,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,51 +25,33 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.core.app.ActivityCompat.recreate
-import androidx.lifecycle.get
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.UserFb
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 //import com.google.firebase.database.core.persistence.CachePolicy
 import io.appwrite.models.InputFile
 import kotlinx.coroutines.CoroutineScope
@@ -81,18 +59,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import coil.request.CachePolicy
-import coil.request.ErrorResult
-import coil.request.SuccessResult
-import com.david.pokedex_pruebas.modelo.ConversacionFB
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
-import com.david.pokedex_pruebas.modelo.cargaChats
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
-import com.david.pokedex_pruebas.modelo.listaPokeFB
-import okhttp3.Dispatcher
-import java.io.File
 
 //private lateinit var sesionUser: ArrayList<UserFb>
 private lateinit var refBBDD: DatabaseReference
@@ -102,6 +72,8 @@ private lateinit var usuario_key: String
 var mostrar by mutableStateOf("")
 var id_receptor by mutableStateOf("")
 var muestra_perfil by mutableStateOf(true)
+//var equipo_lista by mutableStateOf(MutableList<PokemonFB>(0){PokemonFB(0,"",0,"","","")})
+var equipo_lista: MutableState<List<PokemonFB>> = mutableStateOf(emptyList())
 
 class ComposePerfilUsuarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,6 +105,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var avatarLink by remember { mutableStateOf("") }
+
     val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -428,54 +401,56 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                 ),
                                 shape = RoundedCornerShape(10.dp),
                                 onClick = {
-                                        val identificadorAppWrite = usuario.key.toString().substring(1, 20) ?: "" // coge el identificador
-                                        avatarLink="https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
-                                        val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
-                                        val usuarioCambios = UserFb(//objeto aux con los cambios
-                                            nick,
-                                            email,
-                                            password,
-                                            avatarLink,
-                                            usuario.key.toString(),
-                                            usuario.equipo
-                                        )
-                                        //referencia a Firebase
-                                        //appwrite para el avater
-                                        refBBDD.child("usuarios").child(usuario.key.toString()).setValue(usuarioCambios)
-                                        if (inputStream != null) {
-                                            scopeUpdate.launch {
-                                                try{
-                                                    val file = inputStream.use { input ->
-                                                        val tempFile = kotlin.io.path.createTempFile().toFile()
-                                                        tempFile.outputStream().use { output ->
-                                                            input.copyTo(output)
-                                                        }
-                                                        InputFile.fromFile(tempFile) // Use fromFile method
+                                    val identificadorAppWrite = usuario.key.toString().substring(1, 20) ?: "" // coge el identificador
+                                    //val identificadorAppWrite=refBBDD.child("usuarios").push().key!!.toString().substring(1, 20)
+                                    avatarLink="https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+                                    val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
+                                    val usuarioCambios = UserFb(//objeto aux con los cambios
+                                        nick,
+                                        email,
+                                        password,
+                                        avatarLink,
+                                        usuario.key.toString(),
+                                        usuario.equipo
+                                    )
+                                    //referencia a Firebase
+                                    //appwrite para el avater
+                                    refBBDD.child("usuarios").child(usuario.key.toString()).setValue(usuarioCambios)
+                                    if (inputStream != null) {
+                                        scopeUpdate.launch {
+                                            try{
+                                                val file = inputStream.use { input ->
+                                                    val tempFile = kotlin.io.path.createTempFile(identificadorAppWrite).toFile()
+                                                    tempFile.outputStream().use { output ->
+                                                        input.copyTo(output)
                                                     }
-                                                    withContext(Dispatchers.IO) {
-                                                        //borra la foto vieja
-                                                        storage.deleteFile(
-                                                            bucketId = appwrite_bucket,
-                                                            fileId = identificadorAppWrite
-                                                        )
-                                                        delay(500)
-                                                        //crea la nueva foto con el mismo nombre
-                                                        storage.createFile(
-                                                            bucketId = appwrite_bucket,
-                                                            fileId = identificadorAppWrite,
-                                                            file = file
-                                                        )
-                                                        delay(500)
-                                                    }
-                                                }catch (e: Exception){
-                                                    Log.e("UploadError", "Failed to upload image: ${e.message}")
+                                                    InputFile.fromFile(tempFile) // Use fromFile method
                                                 }
-                                                finally {
-                                                    Toast.makeText(context, "Usuario $nick actualizado con éxito", Toast.LENGTH_SHORT).show()
-                                                    (context as? Activity)?.recreate()
+                                                withContext(Dispatchers.IO) {
+
+                                                    //borra la foto vieja
+                                                    storage.deleteFile(
+                                                        bucketId = appwrite_bucket,
+                                                        fileId = identificadorAppWrite
+                                                    )
+                                                    delay(500)
+                                                    //crea la nueva foto con el mismo nombre
+                                                    storage.createFile(
+                                                        bucketId = appwrite_bucket,
+                                                        fileId = identificadorAppWrite,
+                                                        file = file
+                                                    )
+                                                    delay(500)
                                                 }
+                                            }catch (e: Exception){
+                                                Log.e("UploadError", "Failed to upload image: ${e.message}")
+                                            }
+                                            finally {
+                                                Toast.makeText(context, "Usuario $nick actualizado con éxito", Toast.LENGTH_SHORT).show()
+                                                (context as? Activity)?.recreate()
                                             }
                                         }
+                                    }
 
                                 })
                             {
@@ -527,8 +502,12 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                                     bottom.linkTo(boton1.top)
                                 }
                         ){
+
+                            //lista_equipo=usuario.equipo
+
+
                             items(usuario.equipo) { pokemon ->
-                                usuario.key?.let { PokemonCard(pokemon, it, 2) }
+                                usuario.key?.let { PokemonCard(pokemon, it, 2, equipo_lista) }
                             }
                         }
 

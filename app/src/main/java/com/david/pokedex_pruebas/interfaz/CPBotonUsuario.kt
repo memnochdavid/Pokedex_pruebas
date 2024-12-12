@@ -35,18 +35,6 @@ fun UserButton(context: Context, usuario_key: String){
 
     val sesion= UsuarioFromKey( usuario_key, refBBDD)
 
-
-    /*
-                    AsyncImage(
-                        model = sesion.avatar,
-                        contentDescription = "avatar de usuario",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .background(colorResource(R.color.fuego))
-                    )*/
-
     IconButton(
         onClick = {//para abrir el activity perfil de usuario
 
@@ -97,7 +85,18 @@ fun UserButton(context: Context, usuario_key: String){
                     .clip(CircleShape)
                     .background(colorResource(R.color.fuego))
             )
+
+/*
+        AsyncImage(
+            model = sesion.avatar,
+            contentDescription = "avatar de usuario",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .background(colorResource(R.color.fuego))
+        )*/
         }
     }
-
 }
+

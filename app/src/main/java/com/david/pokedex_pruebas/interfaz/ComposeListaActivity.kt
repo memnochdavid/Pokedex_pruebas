@@ -9,10 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -30,7 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -46,7 +43,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -75,8 +71,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.david.pokedex_pruebas.R
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
-import com.david.pokedex_pruebas.modelo.UserFb
-import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -91,8 +85,8 @@ private lateinit var refBBDD: DatabaseReference
 private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
-val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "674d88bd002a7343e4c8"
+val appwrite_project = "67542604001bce94410d"
+val appwrite_bucket = "675affb4001fa3b4baf1"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -270,7 +264,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,usuario_key:St
 //                                stiffness = Spring.StiffnessMedium // Moderate stiffness
 //                            )
 //                        )
-                        PokemonCard(pokemon, usuario_key,1)
+                        PokemonCard(pokemon, usuario_key,1, equipo_lista)
 
                     }
                 }
