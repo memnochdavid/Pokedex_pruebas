@@ -51,7 +51,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 private lateinit var refBBDD: DatabaseReference
 @Composable
-fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int, equipo:MutableState<List<PokemonFB>>) {
+fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: MutableState<List<PokemonFB>>) {
 //    var arrayPoke=ArrayList<PokemonFB>()
 //    arrayPoke.addAll(listaPokeFireBase)
     refBBDD = FirebaseDatabase.getInstance().reference
@@ -273,7 +273,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key:String, opc:Int, equipo:MutableS
                         .addOnFailureListener {
                             // Handle error
                         }
-                    equipo.value=updatedEquipo
+                    equipo.value = updatedEquipo
                 },
                 modifier = Modifier
                     .constrainAs(delete) {

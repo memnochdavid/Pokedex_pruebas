@@ -99,6 +99,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
     val usuario= UsuarioFromKey(usuario_key, refBBDD)
     Log.d("usuario", usuario.toString())
+    equipo_lista.value=usuario.equipo
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var nick by remember { mutableStateOf((""))}
@@ -506,7 +507,7 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
                             //lista_equipo=usuario.equipo
 
 
-                            items(usuario.equipo) { pokemon ->
+                            items(equipo_lista.value) { pokemon ->
                                 usuario.key?.let { PokemonCard(pokemon, it, 2, equipo_lista) }
                             }
                         }
