@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,6 +64,7 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
+import kotlinx.coroutines.flow.MutableStateFlow
 
 //private lateinit var sesionUser: ArrayList<UserFb>
 private lateinit var refBBDD: DatabaseReference
@@ -73,7 +75,7 @@ var mostrar by mutableStateOf("")
 var id_receptor by mutableStateOf("")
 var muestra_perfil by mutableStateOf(true)
 //var equipo_lista by mutableStateOf(MutableList<PokemonFB>(0){PokemonFB(0,"",0,"","","")})
-var equipo_lista: MutableState<List<PokemonFB>> = mutableStateOf(emptyList())
+var equipo_lista: MutableStateFlow<List<PokemonFB>> = MutableStateFlow(emptyList())
 
 class ComposePerfilUsuarioActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,25 +89,34 @@ class ComposePerfilUsuarioActivity : ComponentActivity() {
 
         setContent {
             scopeUpdate = rememberCoroutineScope()
-            PerfilUser(usuario_key, scopeUpdate, refBBDD)
+            val usuario= UsuarioFromKey(usuario_key, refBBDD)
+            equipo_lista= MutableStateFlow(usuario.equipo)
+            PerfilUser(usuario, scopeUpdate, refBBDD)
         }
     }
 }
 
 @SuppressLint("ResourceAsColor")
 @Composable
-fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: DatabaseReference) {
+fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseReference) {
     //var edicion by remember { mutableStateOf(false) }
 
-    val usuario= UsuarioFromKey(usuario_key, refBBDD)
-    Log.d("usuario", usuario.toString())
-    equipo_lista.value=usuario.equipo
+//    val usuario= UsuarioFromKey(usuario_key, refBBDD)
+//    Log.d("usuario", usuario.toString())
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var nick by remember { mutableStateOf((""))}
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var avatarLink by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = usuario.key) { // Trigger when usuario.key is available
+        if (usuario.key != null) {
+            equipo_lista.value = usuario.equipo
+        }
+    }
+    val equipoState by equipo_lista.collectAsState()
+
 
     val scope = rememberCoroutineScope()
     val launcher = rememberLauncherForActivityResult(
@@ -507,8 +518,10 @@ fun PerfilUser(usuario_key: String, scopeUpdate: CoroutineScope, refBBDD: Databa
 
 
 
-                            items(equipo_lista.value) { pokemon ->
-                                usuario.key?.let { PokemonCard(pokemon, it, 2, equipo_lista) }
+
+
+                            items(equipoState) { pokemon ->
+                                usuario.key?.let { PokemonCard(pokemon, it, 2) }
                             }
                         }
 

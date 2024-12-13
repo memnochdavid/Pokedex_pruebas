@@ -264,7 +264,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,usuario_key:St
 //                                stiffness = Spring.StiffnessMedium // Moderate stiffness
 //                            )
 //                        )
-                        PokemonCard(pokemon, usuario_key,1, equipo_lista)
+                        PokemonCard(pokemon, usuario_key,1)
 
                     }
                 }

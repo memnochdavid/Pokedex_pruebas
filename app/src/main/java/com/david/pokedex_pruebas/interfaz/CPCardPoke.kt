@@ -3,6 +3,7 @@ package com.david.pokedex_pruebas.interfaz
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -42,16 +43,19 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 
 private lateinit var refBBDD: DatabaseReference
 @Composable
-fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: MutableState<List<PokemonFB>>) {
+fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
 //    var arrayPoke=ArrayList<PokemonFB>()
 //    arrayPoke.addAll(listaPokeFireBase)
     refBBDD = FirebaseDatabase.getInstance().reference
@@ -262,18 +266,21 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: Mutab
             var aux=UsuarioFromKey( usuario_key, refBBDD)
             IconButton(
                 onClick = {
-                    equipo.value = aux.equipo.filter { it.name != pokemon.name }
-                    val updates = hashMapOf<String, Any>(
-                        "usuarios/$usuario_key/equipo" to equipo.value
-                    )
-                    refBBDD.updateChildren(updates)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Has liberado a ${pokemon.name}", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener {
-                            // Handle error
-                        }
-                    //equipo.value = updatedEquipo
+                    scope.launch { // Use a coroutine scope
+                        val latestEquipo = aux.equipo // Fetch latest team data
+                        val updatedEquipo = latestEquipo.filter { it.name != pokemon.name }
+                        val updates = hashMapOf<String, Any>(
+                            "usuarios/$usuario_key/equipo" to updatedEquipo
+                        )
+                        refBBDD.updateChildren(updates)
+                            .addOnSuccessListener {
+                                equipo_lista.value = updatedEquipo // Update equipo_lista
+                                Toast.makeText(context, "Has liberado a ${pokemon.name}", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                // Handle error
+                            }
+                    }
                 },
                 modifier = Modifier
                     .constrainAs(delete) {
@@ -293,7 +300,6 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int, equipo: Mutab
     }
 
 }
-
 
 /*
 @Preview(showBackground = true)
