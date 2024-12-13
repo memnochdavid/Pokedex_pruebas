@@ -266,8 +266,8 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
             var aux=UsuarioFromKey( usuario_key, refBBDD)
             IconButton(
                 onClick = {
-                    scope.launch { // Use a coroutine scope
-                        val latestEquipo = aux.equipo // Fetch latest team data
+                    scope.launch {
+                        val latestEquipo = aux.equipo
                         val updatedEquipo = latestEquipo.filter { it.name != pokemon.name }
                         val updates = hashMapOf<String, Any>(
                             "usuarios/$usuario_key/equipo" to updatedEquipo
