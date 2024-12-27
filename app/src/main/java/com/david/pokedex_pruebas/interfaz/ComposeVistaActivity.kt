@@ -71,7 +71,7 @@ import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
-import com.david.pokedex_pruebas.modelo.listaPokeFB
+//import com.david.pokedex_pruebas.modelo.listaPokeFB
 import java.util.concurrent.CountDownLatch
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419

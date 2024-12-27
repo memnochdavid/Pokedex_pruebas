@@ -64,7 +64,7 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
-import com.david.pokedex_pruebas.modelo.listaPokeFB
+//import com.david.pokedex_pruebas.modelo.listaPokeFB
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.File
 
@@ -784,7 +784,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
-/*
+
                         //AÑADE las EVOS de los pokemon
                         Row(
                             modifier = Modifier
@@ -807,7 +807,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 onClick = {
 
                                     scope.launch {
-                                        for (i in listaPokeFB){
+                                        for (i in listaPokeFireBase){
                                             evosAux+=i.evos
                                             if(i.evos.isNotEmpty())Log.e("EVOS",i.evos.toString())
                                         }
@@ -828,7 +828,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             {
                                 Text("EVOS")
                             }
-                        }*/
+                        }
 
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
@@ -853,7 +853,8 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                     ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                                     //sube a Firebase y AppWrite
                                     //refStorage = FirebaseStorage.getInstance().reference
-                                    for (i in listaPokeFB) {
+
+                                    for (i in listaPokeFireBase) {
                                         try {
 
                                             val resources = context.resources

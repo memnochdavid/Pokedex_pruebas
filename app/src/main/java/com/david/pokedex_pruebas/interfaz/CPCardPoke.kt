@@ -71,7 +71,7 @@ import com.david.pokedex_pruebas.modelo.debsFB
 import com.david.pokedex_pruebas.modelo.fortalezasEquipo
 import com.david.pokedex_pruebas.modelo.fortsFB
 import com.david.pokedex_pruebas.modelo.inmuneFB
-import com.david.pokedex_pruebas.modelo.listaPokeFB
+//import com.david.pokedex_pruebas.modelo.listaPokeFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -414,7 +414,7 @@ fun evosPoke(pokemon: PokemonFB):List<PokemonFB>{
     var lista=mutableListOf<PokemonFB>()
     for(i in pokemon.evos){
         //lista.add(listaPokeFireBase[i]) listaPokeFB
-        lista.add(listaPokeFB[i-1])
+        lista.add(listaPokeFireBase[i-1])
     }
     return lista
 }

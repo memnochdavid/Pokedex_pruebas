@@ -1,13 +1,11 @@
 package com.david.pokedex_pruebas.modelo
 
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import com.david.pokedex_pruebas.R
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 import kotlin.text.replace
-import kotlin.text.trim
 
 @Parcelize
 data class PokemonFB(
@@ -375,7 +373,11 @@ fun fortalezasEquipo(lista:List<PokemonFB>):List<Int>{
     }
     return fortalezas.distinct()
 }
+
+
+/*
 var listaPokeFB : List<PokemonFB> = listOf(
+
     PokemonFB(1,"1",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(2,"1",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(3,"1",R.drawable.venusaur, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO), listOf(1, 2,3)),
@@ -1082,6 +1084,9 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(704,"6",R.drawable.goomy, "Goomy","Es el Pokémon de tipo Dragón más débil. Habita en zonas oscuras y húmedas para evitar que su viscoso cuerpo se seque.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(705,"6",R.drawable.sliggoo, "Sliggoo","Segrega una mucosidad que corroe todo lo que toca y consigue así ahuyentar al enemigo. Sus ojos han involucionado, por lo que no puede ver.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(706,"6",R.drawable.goodra, "Goodra","Ataca con sus antenas retráctiles, desplegando una fuerza comparable a los puñetazos de 100 boxeadores profesionales.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
+
+
+
     PokemonFB(707,"6",R.drawable.klefki, "Klefki","Tiene el hábito de coleccionar llaves. Cuando un enemigo lo ataca, las hace tintinear como método de intimidación.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.HADA), listOf(707)),
     PokemonFB(708,"6",R.drawable.phantump, "Phantump","Nace cuando el alma de un niño perdido habita un tocón. Su grito se asemeja a un escalofriante chillido.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
     PokemonFB(709,"6",R.drawable.trevenant, "Trevenant","Es amable con los seres que habitan los bosques, pero se cuenta que devora a quienes los mancillan.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
@@ -1401,7 +1406,13 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1023,"9",R.drawable.ferrotesta, "Ferrotesta","Se dice que puede cortarlo todo a su alrededor lanzando afiladas hojas luminosas, pero nada más se sabe acerca de esta criatura.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.PSIQUICO), listOf(1023)),
     PokemonFB(1024,"9",R.drawable.terapagos, "Terapagos","Se vale de su capacidad para transformar energía en duros cristales para protegerse. Este Pokémon dio origen a la teracristalización.",listOf(PokemonTipoFB.NORMAL), listOf(1024)),
     PokemonFB(1025,"9",R.drawable.pecharunt, "Pecharunt","Su caparazón con forma de melocotón alberga un potente veneno con el que prepara un mochi tóxico que ofrece a humanos y Pokémon.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.FANTASMA), listOf(1025))
-    )
+
+)
+*/
+
+
+
+
 
 
 
