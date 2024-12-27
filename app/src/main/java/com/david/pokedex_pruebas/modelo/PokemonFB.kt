@@ -1401,12 +1401,6 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1023,"9",R.drawable.ferrotesta, "Ferrotesta","Se dice que puede cortarlo todo a su alrededor lanzando afiladas hojas luminosas, pero nada más se sabe acerca de esta criatura.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.PSIQUICO), listOf(1023)),
     PokemonFB(1024,"9",R.drawable.terapagos, "Terapagos","Se vale de su capacidad para transformar energía en duros cristales para protegerse. Este Pokémon dio origen a la teracristalización.",listOf(PokemonTipoFB.NORMAL), listOf(1024)),
     PokemonFB(1025,"9",R.drawable.pecharunt, "Pecharunt","Su caparazón con forma de melocotón alberga un potente veneno con el que prepara un mochi tóxico que ofrece a humanos y Pokémon.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.FANTASMA), listOf(1025))
-
-
-
-
-
-
     )
 
 

@@ -784,7 +784,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
-
+/*
                         //AÑADE las EVOS de los pokemon
                         Row(
                             modifier = Modifier
@@ -828,8 +828,8 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             {
                                 Text("EVOS")
                             }
-                        }
-/*
+                        }*/
+
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
@@ -902,19 +902,15 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                                 }
                                         } catch (e: Exception) {
                                             // Handle exceptions appropriately
-
                                         }
                                     }
-
-
-
                                 })
                             {
                                 Text("BD")
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-*/
+
                     }
                 }
             }
