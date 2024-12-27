@@ -169,9 +169,6 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     }
                 },
         )*/
-
-
-
         //imagen local
         Image(
             painter = painterResource(id = pokemon.foto),
