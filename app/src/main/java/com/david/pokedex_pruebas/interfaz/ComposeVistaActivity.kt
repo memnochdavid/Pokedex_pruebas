@@ -61,6 +61,8 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -131,9 +133,9 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos) = createRefs()
         //imagen remote
-        /*
+/*
         val painter = rememberAsyncImagePainter(
             model = pokemon.imagenFB,
             contentScale = ContentScale.Crop,
@@ -170,6 +172,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                 },
         )*/
         //imagen local
+
         Image(
             painter = painterResource(id = pokemon.foto),
             contentDescription = "Pokeball",
@@ -201,6 +204,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                 },
 
         )
+
         LazyColumn(
             modifier = Modifier
                 .constrainAs(datos) {
@@ -210,7 +214,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     bottom.linkTo(parent.bottom)
                     height = Dimension.fillToConstraints
                 }
-                .fillMaxHeight()
+                .fillMaxHeight(),
+            reverseLayout = true/////////////////
         ){
             item {
                 ConstraintLayout{
@@ -219,7 +224,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            //bottom.linkTo(parent.bottom)
+                            bottom.linkTo(nombre.top)////////????????????
                         }
                         .padding(bottom = 10.dp)
                         .fillMaxHeight(),//////////
@@ -328,7 +333,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             top.linkTo(tipo1.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            bottom.linkTo(interacciones.top)
+                            //bottom.linkTo(interacciones.top)
                         }
                         .width(300.dp)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
@@ -338,16 +343,36 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(vertical = 10.dp)
+                            //.padding(vertical = 10.dp)??????
                             //.wrapContentHeight()//-------------------
                             //.height(columnHeight.dp)
                             .constrainAs(interacciones) {
                                 top.linkTo(desc.bottom)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(evos.top)
                             }
                     ){
                         val listaDummy= mutableListOf<PokemonFB>()//lista vacía para poder reutilizar la función. Una lista de equipo válida es necesaria si la opc==2
                         Interacciones(pokemon, listaDummy,1)//opción 1 para un único pokemon
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            //.padding(vertical = 10.dp)????????
+                            .background(colorResource(id = R.color.electrico))
+                            .constrainAs(evos) {
+                                top.linkTo(interacciones.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ){
+                        //val test = listaPokeFB[pokemon.num-1]
+                        Log.v(  "POKE", pokemon.toString())
+                        Log.v(  "EVOS", evosPoke(pokemon).toString())
+                        val evosPoke=evosPoke(pokemon)
+                        //LineaEvo(evosPoke)
+                        LineaEvo(evosPoke)
                     }
                 }
 

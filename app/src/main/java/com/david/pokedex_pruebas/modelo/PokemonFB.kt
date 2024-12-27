@@ -18,7 +18,8 @@ data class PokemonFB(
     var name: String="",
     var desc: String="",
     var tipo: List<PokemonTipoFB> = listOf(),
-    var evos: List<Int>? = null,
+    var evos: List<Int> = listOf(),
+    var key: String? = null,
     var stability:Int=0
 ):Serializable, Parcelable{
     constructor(
@@ -28,9 +29,9 @@ data class PokemonFB(
         name: String,
         desc: String,
         tipo: List<PokemonTipoFB>,
-        evos: List<Int>?
+        evos: List<Int>,
 
-    ) : this(num, gen, foto, null, name, desc, tipo, null)
+    ) : this(num, gen, foto, null, name, desc, tipo, evos)
 }
 
 enum class PokemonTipoFB(val tag: String) {
@@ -537,9 +538,9 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(149,"1",R.drawable.dragonite, "Dragonite", "Se dice que este Pokémon vive en algún lugar del mar, y que vuela. De todos modos, sólo es un rumor.", listOf(PokemonTipoFB.DRAGON, PokemonTipoFB.VOLADOR), listOf(147,148,149)),
     PokemonFB(150,"1",R.drawable.mewtwo, "Mewtwo", "Fue creado por un científico tras años de horribles experimentos de manipulación genética.", listOf(PokemonTipoFB.PSIQUICO), listOf(150)),
     PokemonFB(151,"1",R.drawable.mew, "Mew", "Se dice que contiene la composición genética de todos los Pokémon. Es muy raramente visto.", listOf(PokemonTipoFB.PSIQUICO), listOf(151)),
-    PokemonFB(152,"2",R.drawable.chikorita, "Chikorita","Un dulce aroma se desprende de la hoja de su cabeza. Es dócil y le encanta absorber los rayos de sol.",listOf(PokemonTipoFB.PLANTA), listOf()),
-    PokemonFB(153,"2",R.drawable.bayleef, "Bayleef","Su cuello huele a especias. Dicen que por alguna razón, su simple olor te incita a luchar.",listOf(PokemonTipoFB.PLANTA), listOf()),
-    PokemonFB(154,"2",R.drawable.meganium, "Meganium","El olor que desprenden sus pétalos contiene una sustancia que calma el instinto agresivo.",listOf(PokemonTipoFB.PLANTA), listOf()),
+    PokemonFB(152,"2",R.drawable.chikorita, "Chikorita","Un dulce aroma se desprende de la hoja de su cabeza. Es dócil y le encanta absorber los rayos de sol.",listOf(PokemonTipoFB.PLANTA), listOf(152,153,154)),
+    PokemonFB(153,"2",R.drawable.bayleef, "Bayleef","Su cuello huele a especias. Dicen que por alguna razón, su simple olor te incita a luchar.",listOf(PokemonTipoFB.PLANTA), listOf(152,153,154)),
+    PokemonFB(154,"2",R.drawable.meganium, "Meganium","El olor que desprenden sus pétalos contiene una sustancia que calma el instinto agresivo.",listOf(PokemonTipoFB.PLANTA), listOf(152,153,154)),
     PokemonFB(155,"2",R.drawable.cyndaquil, "Cyndaquil","Es tímido y siempre se enrosca como una pelota. Si es atacado, enciende el lomo para protegerse.",listOf(PokemonTipoFB.FUEGO), listOf()),
     PokemonFB(156,"2",R.drawable.quilava, "Quilava","Ten cuidado si te da la espalda en combate. Significa que te va a atacar con su lomo de fuego.",listOf(PokemonTipoFB.FUEGO), listOf()),
     PokemonFB(157,"2",R.drawable.typhlosion, "Typhlosion","Si su furia crece, se calienta tanto que cualquier cosa que toque se prenderá al instante.",listOf(PokemonTipoFB.FUEGO), listOf()),

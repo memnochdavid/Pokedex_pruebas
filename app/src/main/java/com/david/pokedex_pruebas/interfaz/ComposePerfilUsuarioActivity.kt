@@ -64,7 +64,9 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
+import com.david.pokedex_pruebas.modelo.listaPokeFB
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.io.File
 
 //private lateinit var sesionUser: ArrayList<UserFb>
 private lateinit var refBBDD: DatabaseReference
@@ -516,11 +518,6 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 }
                         ){
 
-
-
-
-
-
                             items(equipoState) { pokemon ->
                                 usuario.key?.let { PokemonCard(pokemon, it, 2) }
                             }
@@ -575,7 +572,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             tipos_equipo.add(i.tipo[1])
                         }
                     }
-                    val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo)
+                    val auxPoke= PokemonFB(0,"_",0,"","",tipos_equipo, listOf(1))
                     ConstraintLayout(
                         modifier = Modifier
                             .wrapContentHeight()
@@ -708,7 +705,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                 }
                 ""->{//aquí cada botón para abrir cada una de las opciones e inyectar el contenido en el when de arriba
                     ConstraintLayout() {
-                        val (fb,equipo, mensajes, usuarios)=createRefs()
+                        val (fb,equipo, mensajes, usuarios, evos)=createRefs()
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -786,15 +783,52 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
+
+                        //AÑADE las EVOS de los pokemon
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(evos) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(usuarios.bottom)
+                                    //bottom.linkTo(parent.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+                                    var evosAux= listOf<Int>()
+                                    var updates = hashMapOf<String, Any>()
+                                    com.david.pokedex_pruebas.interfaz.scope.launch {
+                                        for (i in listaPokeFB){
+                                            evosAux=i.evos!!
+                                            updates = hashMapOf<String, Any>(
+                                                "pokemones/${i.key}/evos" to evosAux
+                                            )
+                                        }
+                                        refBBDD.updateChildren(updates)
+                                    }
+                                })
+                            {
+                                Text("EVOS")
+                            }
+                        }
 /*
-                        //////////////////////////////////////////////////////////////////////////////////////
+                        //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                                 .constrainAs(fb) {
                                     start.linkTo(parent.start)
-                                    top.linkTo(usuarios.bottom)
+                                    top.linkTo(evos.bottom)
                                     //bottom.linkTo(parent.bottom)
                                 },
                             horizontalArrangement = Arrangement.Start
@@ -823,7 +857,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
 
                                                     val identificadorAppWrite = identificador.substring(1, 20)
                                                     i.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
-
+                                                    i.key=identificador
                                                     refBBDD
                                                         .child("pokemones")
                                                         .child(identificador)

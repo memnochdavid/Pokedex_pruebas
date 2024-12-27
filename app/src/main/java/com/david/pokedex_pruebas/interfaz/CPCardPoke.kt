@@ -7,18 +7,33 @@ import androidx.activity.result.launch
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,8 +60,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.david.pokedex_pruebas.modelo.debilidadesEquipo
+import com.david.pokedex_pruebas.modelo.debsFB
+import com.david.pokedex_pruebas.modelo.fortalezasEquipo
+import com.david.pokedex_pruebas.modelo.fortsFB
+import com.david.pokedex_pruebas.modelo.inmuneFB
+import com.david.pokedex_pruebas.modelo.listaPokeFB
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -283,15 +308,121 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                 )
             }
         }
+        if(opc==3){
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .scale(scale.value)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null, // Remove default ripple effect
+
+                        onClick = {
+
+                        }
+                    )
+                    .indication(
+                        interactionSource = interactionSource,
+                        indication = null
+                    )
+                    .pointerInput(Unit) {//lo que hace al pulsar en el Card()
+                        detectTapGestures(
+                            onPress = {
+                                isPressed = true
+                                try {
+                                    awaitRelease()
+                                } finally {
+                                    isPressed = false // Reset isPressed in finally block
+                                }
+                                //isPressed = false
+                                //intent a ComposeVistaActivity
+                                val index = pokemon.num - 1
+                                val intent = Intent(context, ComposeVistaActivity::class.java)
+                                //intent.putParcelableArrayListExtra("lista", arrayPoke)
+                                intent.putExtra("sesion", usuario_key)
+                                intent.putExtra("indice", index)
+                                context.startActivity(intent)
+                                //oculta campo de búsqueda
+                                campoBusqueda = false
+                            }
+                        )
+                    }
+            ){}
+        }
 
     }
 
+}
+
+@Composable
+fun LineaEvo(evos: List<PokemonFB>){
+
+    var show_evos by remember { mutableStateOf(false) }
+    val alturaEvos by animateFloatAsState(
+        targetValue = if (show_evos) 250f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = 1
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.electrico))
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text ="Evoluciones",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(vertical = 15.dp)
+                    .clickable {
+                        show_evos = !show_evos
+                    },
+            )
+
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(alturaEvos.dp)
+        ){
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+            ){
+                items(evos) { pokemon ->
+                    PokemonCard(pokemon, "",3)
+                }
+            }
+        }
+    }
+
+
+}
+
+fun evosPoke(pokemon: PokemonFB):List<PokemonFB>{
+    var lista=mutableListOf<PokemonFB>()
+    for(i in pokemon.evos){
+        //lista.add(listaPokeFireBase[i]) listaPokeFB
+        lista.add(listaPokeFB[i-1])
+    }
+    return lista
 }
 
 /*
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview3() {
-    PokemonCard(listaPokeFB[7], "",2)
+    PokemonCard(listaPokeFB[4], "",1)
 }
 */
