@@ -112,6 +112,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var avatarLink by remember { mutableStateOf("") }
+    var evosAux by remember { mutableStateOf(listOf<Int>()) }
 
     LaunchedEffect(key1 = usuario.key) { // Trigger when usuario.key is available
         if (usuario.key != null) {
@@ -804,11 +805,19 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 ),
                                 shape = RoundedCornerShape(10.dp),
                                 onClick = {
-                                    var evosAux= listOf<Int>()
-                                    var updates = hashMapOf<String, Any>()
-                                    com.david.pokedex_pruebas.interfaz.scope.launch {
+
+                                    scope.launch {
                                         for (i in listaPokeFB){
-                                            evosAux=i.evos!!
+                                            evosAux+=i.evos
+                                            if(i.evos.isNotEmpty())Log.e("EVOS",i.evos.toString())
+                                        }
+                                    }
+
+
+                                    scope.launch {
+                                        var updates = hashMapOf<String, Any>()
+                                        for (i in listaPokeFireBase){
+
                                             updates = hashMapOf<String, Any>(
                                                 "pokemones/${i.key}/evos" to evosAux
                                             )

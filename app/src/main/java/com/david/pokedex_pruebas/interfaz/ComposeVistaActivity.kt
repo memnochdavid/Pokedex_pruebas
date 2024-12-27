@@ -336,7 +336,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             //bottom.linkTo(interacciones.top)
                         }
                         .width(300.dp)
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 30.dp),
                         text = pokemon.desc,
                         fontSize = 18.sp)
 
