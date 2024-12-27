@@ -140,7 +140,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                 )
 
                 //imagen local
-                /*
+
                 Image(
                     painter = painterResource(id = pokemon.foto),
                     contentDescription = "Pokeball",
@@ -152,24 +152,10 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                )*/
+                )
 
                 //imagen remota
-                /*
-                AsyncImage(
-                    model = pokemon.imagenFB,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "Pokemon Image",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .fillMaxSize()
-                        .constrainAs(pokemonImage) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                        }
-                )*/
-
+                /*BUENA
                 val painter = rememberAsyncImagePainter(
                     model = pokemon.imagenFB,
                     contentScale = ContentScale.Crop,
@@ -186,7 +172,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                )
+                )*/
                 Text(
                     text = "#$num",
                     color = Color.Black,
@@ -263,18 +249,19 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
             }
         }
         if(opc==2){
-            var aux=UsuarioFromKey( usuario_key, refBBDD)
+            //var aux=UsuarioFromKey( usuario_key, refBBDD)
             IconButton(
                 onClick = {
                     scope.launch {
-                        val latestEquipo = aux.equipo
-                        val updatedEquipo = latestEquipo.filter { it.name != pokemon.name }
+                        //val latestEquipo = equipo_lista.value
+                        val updatedEquipo = equipo_lista.value.filter { it.name != pokemon.name }
+                        // Emit the new list to the StateFlow
                         val updates = hashMapOf<String, Any>(
                             "usuarios/$usuario_key/equipo" to updatedEquipo
                         )
+                        equipo_lista.emit(updatedEquipo)
                         refBBDD.updateChildren(updates)
                             .addOnSuccessListener {
-                                equipo_lista.value = updatedEquipo // Update equipo_lista
                                 Toast.makeText(context, "Has liberado a ${pokemon.name}", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener {

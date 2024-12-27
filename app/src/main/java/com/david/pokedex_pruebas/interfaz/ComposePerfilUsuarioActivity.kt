@@ -89,8 +89,9 @@ class ComposePerfilUsuarioActivity : ComponentActivity() {
 
         setContent {
             scopeUpdate = rememberCoroutineScope()
-            val usuario= UsuarioFromKey(usuario_key, refBBDD)
-            equipo_lista= MutableStateFlow(usuario.equipo)
+            val usuario = UsuarioFromKey(usuario_key, refBBDD)
+            // Initialize equipo_lista directly
+            equipo_lista = MutableStateFlow(usuario.equipo)
             PerfilUser(usuario, scopeUpdate, refBBDD)
         }
     }
