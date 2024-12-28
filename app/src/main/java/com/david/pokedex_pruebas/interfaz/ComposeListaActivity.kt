@@ -30,6 +30,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -161,7 +164,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
     var busquedaTipos by remember { mutableStateOf(false) }
     var textobusqueda by remember { mutableStateOf("") }
-    var tipoBuscado by remember { mutableStateOf("") }
+    var tipoBuscado1 by remember { mutableStateOf("") }
+    var tipoBuscado2 by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(pokemonList) }
     val generations = listOf("1", "2", "3", "4", "5","6","7","8","9")
     val selectedGenerations = remember { mutableStateMapOf<String, Boolean>() }
@@ -172,13 +176,16 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
             selectedGenerations[generation] = false
         }
     }
-    val listState = rememberLazyListState(
+    val listState1 = rememberLazyListState(
+        initialFirstVisibleItemIndex = 0
+    )
+    val listState2 = rememberLazyListState(
         initialFirstVisibleItemIndex = 0
     )
 
     //efectos
     val alturaCampoBusqueda by animateFloatAsState(
-        targetValue = if (campoBusqueda) 250f else 0f,
+        targetValue = if (campoBusqueda) 300f else 0f,
         animationSpec = tween(durationMillis = 300) // duración
     )
     val context = LocalContext.current
@@ -199,7 +206,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
         }
     } else {//cuando ha cargado, comienza a mostrar cosas
 
-        LaunchedEffect(key1 = selectedGenerationsKey, key2 = textobusqueda, key3 = tipoBuscado) {
+        LaunchedEffect(selectedGenerationsKey, textobusqueda, tipoBuscado1, tipoBuscado2) {
             selectedGenerationsList.clear()
             selectedGenerationsKey.forEach { generation ->
                 selectedGenerationsList.add(generation)
@@ -209,11 +216,12 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
             listaFiltrada = pokemonList.filter { pokemon ->
                 (textobusqueda.isEmpty() || pokemon.name.contains(textobusqueda, ignoreCase = true)) &&
-                        (tipoBuscado.isEmpty() || pokemon.tipo.any { it.tag.contains(tipoBuscado, ignoreCase = true) }) &&
-                        // Generation filter
+                        (tipoBuscado1.isEmpty() || pokemon.tipo.any { it.tag.contains(tipoBuscado1, ignoreCase = true) }) &&
+                        (tipoBuscado2.isEmpty() || pokemon.tipo.any { it.tag.contains(tipoBuscado2, ignoreCase = true) }) && // New condition for tipoBuscado2
                         (selectedGenerationsList.isEmpty() || selectedGenerationsList.contains(pokemon.gen))
             }
         }
+
 
         Box(
             modifier = Modifier
@@ -271,7 +279,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                 Button(
                     onClick = {
                         campoBusqueda = !campoBusqueda
-                        tipoBuscado=""
+                        tipoBuscado1=""
                         textobusqueda=""
                     },
                     modifier = Modifier
@@ -327,8 +335,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                 .padding(vertical = 20.dp)
 
                         ) {
-                            //tipos
-                            LazyColumn(state=listState,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)){
+                            //tipo 1
+                            LazyColumn(state=listState1,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState1)){
                                 items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
                                     Image(
                                         painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
@@ -340,7 +348,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                             .wrapContentHeight()
                                             .clickable(
                                                 onClick = {
-                                                    tipoBuscado = tipo.tag
+                                                    tipoBuscado1 = tipo.tag
                                                 }
                                             )
                                     )
@@ -359,7 +367,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .weight(0.5f),//weight vertical
+                                    .weight(0.25f),//weight vertical
                             ){
                                 OutlinedTextField(
                                     value = textobusqueda,
@@ -368,7 +376,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                         color= colorResource(R.color.white),
                                         text="Buscar") },
                                     modifier = Modifier
-                                        .padding(vertical = 20.dp)
+                                        .padding(top = 15.dp)
                                         .fillMaxWidth()
                                         .background(colorResource(id = R.color.transparente))
                                         .clip(RoundedCornerShape(10.dp)),
@@ -396,35 +404,57 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .weight(0.5f),//weight vertical
+                                    .weight(0.4f),//weight vertical
+                                verticalAlignment = Alignment.CenterVertically
                             ){
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
-                                    //horizontalArrangement = Arrangement.spacedBy(8.dp) // Add spacing between items
+                                LazyVerticalGrid(
+                                    columns = GridCells.Fixed(4), // Adjust the number of columns as needed
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    verticalArrangement = Arrangement.spacedBy((-8).dp), // Add vertical spacing
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp) // Add horizontal spacing
                                 ) {
                                     items(generations) { generation ->
-                                        Row(verticalAlignment = Alignment.CenterVertically) { // Align Text and Checkbox vertically
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
                                             Checkbox(
                                                 checked = selectedGenerations[generation] ?: false,
                                                 onCheckedChange = { isChecked ->
                                                     selectedGenerations[generation] = isChecked
                                                 },
                                                 colors = CheckboxDefaults.colors(
-                                                    checkedColor = colorResource(R.color.planta),  // Color when checked
-                                                    uncheckedColor = Color.White, // Color when unchecked
-                                                    checkmarkColor = Color.White, // Color of the checkmark
-
-                                                ),
+                                                    checkedColor = colorResource(R.color.planta),
+                                                    uncheckedColor = Color.White,
+                                                    checkmarkColor = Color.White
+                                                )
                                             )
                                             Text(
                                                 text = generation,
-                                                fontSize = 25.sp,
+                                                fontSize = 20.sp,
                                                 color = colorResource(R.color.white),
                                                 fontWeight = FontWeight.Bold,
                                                 modifier = Modifier.padding(end = 4.dp)
                                             )
                                         }
                                     }
+                                }
+                            }
+                            LazyRow(modifier = Modifier.weight(0.22f), state=listState2,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState2)){
+                                items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
+                                    Image(
+                                        painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
+                                        contentDescription = "Tipo",
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .padding(start = 5.dp, end = 5.dp)
+                                            .width(55.dp)
+                                            .wrapContentHeight()
+                                            .clickable(
+                                                onClick = {
+                                                    tipoBuscado2 = tipo.tag
+                                                }
+                                            )
+                                    )
                                 }
                             }
                         }
