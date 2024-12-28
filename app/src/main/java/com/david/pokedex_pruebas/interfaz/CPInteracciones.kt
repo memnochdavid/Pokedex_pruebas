@@ -63,7 +63,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.hada))
+            .background(colorResource(id = R.color.rojo_primario))
     ){
         Row(
             modifier = Modifier
@@ -77,7 +77,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                 color = Color.Black,
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(vertical = 15.dp)
+                    .padding(vertical = 10.dp)
                     .clickable {
                         show_interacciones = !show_interacciones
                     },

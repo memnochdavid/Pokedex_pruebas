@@ -64,6 +64,8 @@ import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
+import com.david.pokedex_pruebas.modelo.listaPokeFB
+//import com.david.pokedex_pruebas.modelo.listaFormasRegionalesFB
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.File
@@ -784,6 +786,90 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
+                        /*
+                        //REGIONALES
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .constrainAs(fb) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(usuarios.bottom)
+                                    //bottom.linkTo(parent.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            Button(modifier = Modifier
+                                .padding(vertical = 8.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(R.color.rojo_muy_claro),
+                                    contentColor = colorResource(R.color.white)
+                                ),
+                                shape = RoundedCornerShape(10.dp),
+                                onClick = {
+
+
+                                    /////////////////////////////////////////////////////////////////////////////
+                                    //sube a Firebase y AppWrite
+                                    //refStorage = FirebaseStorage.getInstance().reference
+
+                                    for (i in listaFormasRegionalesFB) {
+                                        try {
+
+                                            val resources = context.resources
+                                            resources
+                                                .openRawResource(i.foto)
+                                                .use { inputStream ->
+                                                    val identificador = refBBDD
+                                                        .child("pokemones")
+                                                        .push().key!!
+
+                                                    val identificadorAppWrite = identificador.substring(1, 20)
+                                                    i.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+                                                    i.key=identificador
+                                                    refBBDD
+                                                        .child("pokemones")
+                                                        .child(identificador)
+                                                        .setValue(i)
+
+                                                    val tempFile = File.createTempFile(
+                                                        identificador.drop(1),
+                                                        ".png",
+                                                        context.cacheDir
+                                                    )
+                                                    inputStream.use { input ->
+                                                        tempFile
+                                                            .outputStream()
+                                                            .use { output ->
+                                                                input.copyTo(output)
+                                                            }
+                                                    }
+                                                    scope.launch {
+                                                        withContext(
+                                                            Dispatchers.IO
+                                                        ) {
+
+                                                            storage.createFile(
+                                                                bucketId = appwrite_bucket,
+                                                                fileId = identificadorAppWrite,//elimina "_"
+                                                                file = InputFile.fromPath(
+                                                                    tempFile.absolutePath
+                                                                )
+                                                            )
+                                                            tempFile.delete() // Delete after upload
+                                                        }
+                                                    }
+                                                }
+                                        } catch (e: Exception) {
+                                            // Handle exceptions appropriately
+                                        }
+                                    }
+                                })
+                            {
+                                Text("REGIONALES")
+                            }
+
+                        }*/
 /*
                         //AÑADE las EVOS de los pokemon
                         Row(
@@ -829,7 +915,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("EVOS")
                             }
                         }*/
-/*
+
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
@@ -837,7 +923,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 .wrapContentHeight()
                                 .constrainAs(fb) {
                                     start.linkTo(parent.start)
-                                    top.linkTo(evos.bottom)
+                                    top.linkTo(usuarios.bottom)
                                     //bottom.linkTo(parent.bottom)
                                 },
                             horizontalArrangement = Arrangement.Start
@@ -854,7 +940,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                     //sube a Firebase y AppWrite
                                     //refStorage = FirebaseStorage.getInstance().reference
 
-                                    for (i in listaPokeFireBase) {
+                                    for (i in listaPokeFB) {
                                         try {
 
                                             val resources = context.resources
@@ -911,7 +997,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-*/
+
                     }
                 }
             }

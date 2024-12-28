@@ -2,6 +2,7 @@ package com.david.pokedex_pruebas.modelo
 
 
 import android.os.Parcelable
+import android.util.Log
 import com.david.pokedex_pruebas.R
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
@@ -380,10 +381,28 @@ fun inmunidadesEquipo(lista:List<PokemonFB>):List<Int>{
     }
     return inmunidades.distinct()
 }
+fun limpiaNombrePoke(nombre:String):String{
+    val nombrePokeLimpio=nombre
+        .lowercase()
+        .replace("á", "a")
+        .replace("é", "e")
+        .replace("í", "i")
+        .replace("ó", "o")
+        .replace("ú", "u")
+        .replace(" ","")
+        .replace("dealola","")
+        .replace("degalar","")
+        .replace("dehisui","")
+        .replace("depaldea","")
+        .replace("combatiente","")
+        .replace("ardiente","")
+        .replace("acuatico","")
+    Log.v("NOMBRE - POKE", nombrePokeLimpio)
+    return nombrePokeLimpio
+}
 
-/*
 var listaPokeFB : List<PokemonFB> = listOf(
-
+/*
     PokemonFB(1,"1",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(2,"1",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(3,"1",R.drawable.venusaur, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO), listOf(1, 2,3)),
@@ -1090,9 +1109,9 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(704,"6",R.drawable.goomy, "Goomy","Es el Pokémon de tipo Dragón más débil. Habita en zonas oscuras y húmedas para evitar que su viscoso cuerpo se seque.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(705,"6",R.drawable.sliggoo, "Sliggoo","Segrega una mucosidad que corroe todo lo que toca y consigue así ahuyentar al enemigo. Sus ojos han involucionado, por lo que no puede ver.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(706,"6",R.drawable.goodra, "Goodra","Ataca con sus antenas retráctiles, desplegando una fuerza comparable a los puñetazos de 100 boxeadores profesionales.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
+*/
 
-
-
+/*
     PokemonFB(707,"6",R.drawable.klefki, "Klefki","Tiene el hábito de coleccionar llaves. Cuando un enemigo lo ataca, las hace tintinear como método de intimidación.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.HADA), listOf(707)),
     PokemonFB(708,"6",R.drawable.phantump, "Phantump","Nace cuando el alma de un niño perdido habita un tocón. Su grito se asemeja a un escalofriante chillido.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
     PokemonFB(709,"6",R.drawable.trevenant, "Trevenant","Es amable con los seres que habitan los bosques, pero se cuenta que devora a quienes los mancillan.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
@@ -1411,69 +1430,73 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1022,"9",R.drawable.ferromole, "Ferromole","Su cuerpo parece estar compuesto enteramente de metal. Debe su nombre a un objeto descrito en un tomo antiguo.",listOf(PokemonTipoFB.ROCA,PokemonTipoFB.PSIQUICO), listOf(1022)),
     PokemonFB(1023,"9",R.drawable.ferrotesta, "Ferrotesta","Se dice que puede cortarlo todo a su alrededor lanzando afiladas hojas luminosas, pero nada más se sabe acerca de esta criatura.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.PSIQUICO), listOf(1023)),
     PokemonFB(1024,"9",R.drawable.terapagos, "Terapagos","Se vale de su capacidad para transformar energía en duros cristales para protegerse. Este Pokémon dio origen a la teracristalización.",listOf(PokemonTipoFB.NORMAL), listOf(1024)),
-    PokemonFB(1025,"9",R.drawable.pecharunt, "Pecharunt","Su caparazón con forma de melocotón alberga un potente veneno con el que prepara un mochi tóxico que ofrece a humanos y Pokémon.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.FANTASMA), listOf(1025))
+    PokemonFB(1025,"9",R.drawable.pecharunt, "Pecharunt","Su caparazón con forma de melocotón alberga un potente veneno con el que prepara un mochi tóxico que ofrece a humanos y Pokémon.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.FANTASMA), listOf(1025)),
 
-)
 */
 
+/*
+    PokemonFB(1026,"7",R.drawable.alolarattata,"Rattata de Alola", "Por la noche se aventura en las casas en busca de comida. El elevado número de ejemplares se está convirtiendo en un problema.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1026,1027)),
+    PokemonFB(1027,"7",R.drawable.alolaraticate,"Raticate de Alola", "Es de naturaleza avariciosa. Obliga a los Rattata a acumular tanta comida en su madriguera que a menudo no puede comérsela toda.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1026,1027)),
+    PokemonFB(1028,"7",R.drawable.alolaraichu,"Raichu de Alola", "Concentra sus poderes psíquicos en la cola y se desplaza deslizándose sobre ella. Se lo conoce como el Surfista de Tierra Firme.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PSIQUICO),listOf(1028)),
+    PokemonFB(1029,"7",R.drawable.alolasandshrew,"Sandshrew de Alola", "La piel de su espalda es dura como el acero. Para protegerse la tripa, que es blanda, se aferra al suelo con todas sus fuerzas.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.ACERO),listOf(1029,1030)),
+    PokemonFB(1030,"7",R.drawable.alolasandslash,"Sandslash de Alola", "Atraviesa los parajes nevados a gran velocidad. Ha desarrollado unas garras robustas y afiladas para moverse mejor en la nieve.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.ACERO),listOf(1029,1030)),
+    PokemonFB(1031,"7",R.drawable.alolavulpix,"Vulpix de Alola", "Aquellos incautos que se le acercan por su entrañable apariencia acaban congelados por el Ninetales que lidera la manada.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.HADA),listOf(1031,1032)),
+    PokemonFB(1032,"7",R.drawable.alolaninetales,"Ninetales de Alola", "En su pelaje se crean cristales de hielo con los que cubre al enemigo. Quien lo enfada acaba congelado al instante.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.HADA),listOf(1031,1032)),
+    PokemonFB(1033,"7",R.drawable.aloladiglett,"Diglett de Alola", "Los pelillos metálicos de la cabeza son fruto de una mutación. Se comunica con sus compañeros bamboleándose.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(1033,1034)),
+    PokemonFB(1034,"7",R.drawable.aloladugtrio,"Dugtrio de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(1033,1034)),
+    PokemonFB(1035,"7",R.drawable.alolageodude,"Geodude de Alola", "Los pelillos metálicos de la cabeza son fruto de una mutación. Se comunica con sus compañeros bamboleándose.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(1035,1036,1037)),
+    PokemonFB(1036,"7",R.drawable.alolagraveler,"Graveler de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(1035,1036,1037)),
+    PokemonFB(1037,"7",R.drawable.alolagolem,"Golem de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(1035,1036,1037)),
+    PokemonFB(1038,"7",R.drawable.alolagrimer,"Grimer de Alola", "Los Grimer se introdujeron para remediar la nociva proliferación de residuos. Su aspecto cambió de un día para otro.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.SINIESTRO),listOf(1038,1039)),
+    PokemonFB(1039,"7",R.drawable.alolamuk,"Muk de Alola", "Sus colmillos y uñas son toxinas cristalizadas. Envenenan al contacto, por lo que no conviene acercarse demasiado.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.SINIESTRO),listOf(1038,1039)),
+    PokemonFB(1040,"7",R.drawable.alolaexeggutor,"Exeggutor de Alola", "Su poder psíquico ha desaparecido al crecer, pero ha despertado en cambio el poder dragón que tenía latente.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.DRAGON),listOf(1040)),
+    PokemonFB(1041,"7",R.drawable.alolamarowak,"Marowak de Alola", "La región de Alola, tan frondosa y fértil, no resulta un entorno acogedor para Marowak. Manipula el fuego para mantenerse vivo.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.FANTASMA),listOf(1041)),
+    PokemonFB(1042,"8",R.drawable.galarmeowth,"Meowth de Galar", "Algunas partes de su cuerpo se volvieron metálicas tras una larga convivencia con aguerrida gente del mar.", listOf(PokemonTipoFB.ACERO),listOf(1042)),
+    PokemonFB(1043,"8",R.drawable.galarponyta,"Ponyta de Galar", "Su pequeño cuerno posee poderes curativos capaces de sanar heridas no muy graves con tan solo un leve roce.", listOf(PokemonTipoFB.PSIQUICO),listOf(1043,1044)),
+    PokemonFB(1044,"8",R.drawable.galarrapidash,"Rapidash de Galar", "Es un Pokémon orgulloso y gallardo. Atraviesa bosques sin esfuerzo concentrando sus poderes psíquicos en el pelaje de las patas.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.HADA),listOf(1043,1044)),
+    PokemonFB(1045,"8",R.drawable.galarslowpoke,"Slowpoke de Galar", "Su pequeño cuerno posee poderes curativos capaces de sanar heridas no muy graves con tan solo un leve roce.", listOf(PokemonTipoFB.PSIQUICO),listOf(1045,1046,1053)),
+    PokemonFB(1046,"8",R.drawable.galarslowbro,"Slowbro de Galar", "Es un Pokémon orgulloso y gallardo. Atraviesa bosques sin esfuerzo concentrando sus poderes psíquicos en el pelaje de las patas.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.PSIQUICO),listOf(1045,1046,1053)),
+    PokemonFB(1047,"8",R.drawable.galarfarfetchd,"Farfetch'd de Galar", "Los Farfetch'd de Galar han adoptado esta forma de tanto blandir los puerros típicos de la región, que son gruesos y largos.", listOf(PokemonTipoFB.LUCHA),listOf(1047)),
+    PokemonFB(1048,"8",R.drawable.galarweezing,"Weezing de Galar", "Se desconoce el motivo, pero adoptó esta forma tiempo atrás, cuando las numerosas chimeneas de las fábricas de la región contaminaban el aire.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.HADA),listOf(1048)),
+    PokemonFB(1049,"8",R.drawable.galarmrmime,"Mr. Mime de Galar", "Emite un aire glacial por las plantas de los pies. Baila claqué con entusiasmo sobre las superficies que ha congelado.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.PSIQUICO),listOf(439,866,1049)),
+    PokemonFB(1050,"8",R.drawable.galararticuno,"Articuno de Galar", "Su nombre evoca el frío ártico, tal vez por los rayos que emite y que inmovilizan a sus rivales como si estuvieran congelados.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(1050)),
+    PokemonFB(1051,"8",R.drawable.galarzapdos,"Zapdos de Galar", "El origen de su nombre parece provenir del sonido que produce el roce de su plumaje, que recuerda al estallido de un chispazo eléctrico.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.VOLADOR),listOf(1051)),
+    PokemonFB(1052,"8",R.drawable.galarmoltres,"Moltres de Galar", "Este Pokémon legendario emite un aura maligna que le rodea el cuerpo y que arde cual llama.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.VOLADOR),listOf(1052)),
+    PokemonFB(1053,"8",R.drawable.galarslowking,"Slowking de Galar", "Fabrica un extraño brebaje mezclando lo que ingiere con sus propias toxinas mientras recita un ominoso encantamiento.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.PSIQUICO),listOf(1045,1046,1053)),
+    PokemonFB(1054,"8",R.drawable.galarcorsola,"Corsola de Galar", "Perdió la vida hace miles de años debido a un repentino cambio en su hábitat. Absorbe la vitalidad de la gente con sus ramas.", listOf(PokemonTipoFB.FANTASMA),listOf(864,1054)),
+    PokemonFB(1055,"8",R.drawable.galarzigzagoon,"Zigzagoon de Galar", "Corretea por doquier sin descanso. En cuanto ve a otro Pokémon, se lanza contra él para provocarlo y buscar pelea.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1055,1056,862)),
+    PokemonFB(1056,"8",R.drawable.galarlinoone,"Linoone de Galar", "Provoca a sus presas con su larga lengua y arremete con fuerza contra ellas cuando montan en cólera.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1055,1056,862)),
+    PokemonFB(1057,"8",R.drawable.galardarumaka,"Darumaka de Galar", "Cuanto menor es su temperatura corporal, mejor se siente. Juega a lanzar las bolas de nieve que crea congelando el aliento.", listOf(PokemonTipoFB.HIELO),listOf(1057,1058)),
+    PokemonFB(1058,"8",R.drawable.galardarmanitan,"Darmanitan de Galar", "Transporta su alimento en la bola de nieve de la cabeza. Los días de ventisca desciende hasta las zonas habitadas por los humanos.", listOf(PokemonTipoFB.HIELO),listOf(1057,1058)),
+    PokemonFB(1059,"8",R.drawable.galaryamask,"Yamask de Galar", "Se dice que este Pokémon no es sino un alma lastrada por un intenso rencor, atraída por una antigua tabla de arcilla.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.FANTASMA),listOf(1059,867)),
+    PokemonFB(1060,"8",R.drawable.galarstunfisk,"Stunfisk de Galar", "Atrae a su presa con los labios, que destacan al ocultar su cuerpo en el lodo, y la aferra con sus aletas serradas y duras como el acero.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(1060)),
+    PokemonFB(1061,"8",R.drawable.hisuigrowlithe,"Growlithe de Hisui", "Patrullan su territorio en pareja. Las rocas ígneas que salpican su pelaje quizá sean el resultado de la actividad volcánica del lugar.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.FUEGO),listOf(1061,1062)),
+    PokemonFB(1062,"8",R.drawable.hisuiarcanine,"Arcanine de Hisui", "Lanza dentelladas con colmillos envueltos en un intenso fuego. A pesar de su gran tamaño, es un maestro de las fintas y juguetea alrededor de sus oponentes como si danzara.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.FUEGO),listOf(1061,1062)),
+    PokemonFB(1063,"8",R.drawable.hisuivoltorb,"Voltorb de Hisui", "Curioso ejemplar que guarda cierta similitud con una Poké Ball. Cuanto más se altera, mayor es la descarga eléctrica que libera de su vientre, a la que sigue una sonora carcajada.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PLANTA),listOf(1063,1064)),
+    PokemonFB(1064,"8",R.drawable.hisuielectrode,"Electrode de Hisui", "Curiosamente, su complexión superficial es muy semejante a la de un bonguri. Cuando se enoja, la electricidad que emite es veinte veces más potente que la de un rayo.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PLANTA),listOf(1063,1064)),
+    PokemonFB(1065,"8",R.drawable.hisuityphlosion,"Typhlosion de Hisui", "Mi teoría es que la montaña sagrada que se yergue en el centro de Hisui ha influido en su apariencia. Se dice que purifica con sus llamas a las almas errantes y las conduce al otro mundo.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.FANTASMA),listOf(1063,1065)),
+    PokemonFB(1066,"8",R.drawable.hisuiqwilfish,"Qwilfish de Hisui", "Vive en las aguas cercanas a tierras frías. Sus púas tóxicas son más gruesas y cortas que las de los Qwilfish de otras regiones.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.VENENO),listOf(1066)),
+    PokemonFB(1067,"8",R.drawable.hisuisneasel,"Sneasel de Hisui", "Sus robustas garras son ideales para moverse por los riscos más escarpados. De sus puntas rezuma un veneno que daña los nervios de las presas que captura.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.VENENO),listOf(1067,903)),
+    PokemonFB(1068,"8",R.drawable.hisuisamurott,"Samurott de Hisui", "De actitud indiferente y muy hábil con la espada, propina incesantes y violentos ataques cual maremoto. Se trata de una forma poco común que solo se da en Hisui.", listOf(PokemonTipoFB.AGUA, PokemonTipoFB.SINIESTRO),listOf(1068)),
+    PokemonFB(1069,"8",R.drawable.hisuililligant,"Lilligant de Hisui", "Habitar en montañas cubiertas de nieves le ha permitido desarrollar unas piernas robustas. Expulsa un aroma por la flor de su corona que infunde ánimo a quien esté cerca.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.LUCHA),listOf(1069)),
+    PokemonFB(1070,"8",R.drawable.hisuizorua,"Zorua de Hisui", "Es un alma difunta resucitada en Hisui que transforma su rencor en energía. Esta surge de su cabeza y adopta la forma de su oponente, disipando así su inquina.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(1070,1071)),
+    PokemonFB(1071,"8",R.drawable.hisuizoroark,"Zoroark de Hisui", "La revuelta melena blanca le hace parecer la personificación de la muerte. Abate a sus rivales sin consideración por su vida valiéndose de un profundo rencor que también daña su cuerpo.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(1070,1071)),
+    PokemonFB(1072,"8",R.drawable.hisuibraviary,"Braviary de Hisui", "Esta enorme ave emite un espeluznante graznido de guerra cuando sale de caza. Lanza ondas contra los lagos y atrapa a las presas que afloran a la superficie.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(1072)),
+    PokemonFB(1073,"8",R.drawable.hisuisliggoo,"Sliggoo de Hisui", "Adolece de una personalidad lúgubre. Sospecho que su concha metálica se formó mediante una reacción entre la mucosidad que recubre su piel y el contenido férreo del agua de Hisui.", listOf(PokemonTipoFB.ACERO, PokemonTipoFB.DRAGON),listOf(704,1073,1074)),
+    PokemonFB(1074,"8",R.drawable.hisuigoodra,"Goodra de Hisui", "Puede alterar la dureza de su caparazón metálico a voluntad. De carácter dependiente, detesta la soledad y monta en cólera si lo abandona alguien a quien profese gran afecto.", listOf(PokemonTipoFB.ACERO, PokemonTipoFB.DRAGON),listOf(704,1073,1074)),
+    PokemonFB(1075,"8",R.drawable.hisuiavalugg,"Avalugg de Hisui", "La coraza de hielo que cubre su mandíbula es más dura que el acero y le permite triturar rocas con facilidad. Avanza veloz por escarpados senderos montañosos apartando la nieve a su paso.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(1075)),
+    PokemonFB(1076,"8",R.drawable.hisuidecidueye,"Decidueye de Hisui", "Almacena aire en el raquis de las plumas, lo que le permite aguantar las gélidas temperaturas de Hisui. Un claro ejemplo de cómo el entorno puede influir en la evolución de los Pokémon.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(1076)),
+    PokemonFB(1077,"9",R.drawable.paldeatauroslucha,"Tauros Combatiente de Paldea", "Destaca en el combate cuerpo a cuerpo gracias a su constitución musculosa. Ataca los puntos vitales del enemigo con sus cortos cuernos.", listOf(PokemonTipoFB.LUCHA),listOf(1077)),
+    PokemonFB(1078,"9",R.drawable.paldeataurosfuego,"Tauros Ardiente de Paldea", "Sus cuernos alcanzan los 1000ºC cuando los calienta con energía ígnea. Quienes reciben una de sus cornadas sufren heridas y quemaduras.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.FUEGO),listOf(1078)),
+    PokemonFB(1079,"9",R.drawable.paldeataurosagua,"Tauros Acuático de Paldea", "Perfora a sus rivales lanzando chorros de agua a alta presión por la cavidad que tiene en la punta de los cuernos.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.AGUA),listOf(1079)),
+    PokemonFB(1080,"9",R.drawable.paldeawooper,"Wooper de Paldea", "Ante el riesgo que le supone desplazarse solo, forma filas de tres o cuatro individuos que cuidan unos de otros mientras recorren los pantanos.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.TIERRA),listOf(1080)),
 
-var listaFormasRegionalesFB : List<PokemonFB> = listOf(
-    PokemonFB(2019,"7",R.drawable.alolarattata,"Rattata de Alola", "Por la noche se aventura en las casas en busca de comida. El elevado número de ejemplares se está convirtiendo en un problema.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(2019,2020)),
-    PokemonFB(2020,"7",R.drawable.alolaraticate,"Raticate de Alola", "Es de naturaleza avariciosa. Obliga a los Rattata a acumular tanta comida en su madriguera que a menudo no puede comérsela toda.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(2019,2020)),
-    PokemonFB(2021,"7",R.drawable.alolaraichu,"Raichu de Alola", "Concentra sus poderes psíquicos en la cola y se desplaza deslizándose sobre ella. Se lo conoce como el Surfista de Tierra Firme.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PSIQUICO),listOf(2021)),
-    PokemonFB(2022,"7",R.drawable.alolasandshrew,"Sandshrew de Alola", "La piel de su espalda es dura como el acero. Para protegerse la tripa, que es blanda, se aferra al suelo con todas sus fuerzas.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.ACERO),listOf(2022,2023)),
-    PokemonFB(2023,"7",R.drawable.alolasandslash,"Sandslash de Alola", "Atraviesa los parajes nevados a gran velocidad. Ha desarrollado unas garras robustas y afiladas para moverse mejor en la nieve.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.ACERO),listOf(2022,2023)),
-    PokemonFB(2024,"7",R.drawable.alolavulpix,"Vulpix de Alola", "Aquellos incautos que se le acercan por su entrañable apariencia acaban congelados por el Ninetales que lidera la manada.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.HADA),listOf(2024,2025)),
-    PokemonFB(2025,"7",R.drawable.alolaninetales,"Ninetales de Alola", "En su pelaje se crean cristales de hielo con los que cubre al enemigo. Quien lo enfada acaba congelado al instante.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.HADA),listOf(2024,2025)),
-    PokemonFB(2026,"7",R.drawable.aloladiglett,"Diglett de Alola", "Los pelillos metálicos de la cabeza son fruto de una mutación. Se comunica con sus compañeros bamboleándose.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(2026,2027)),
-    PokemonFB(2027,"7",R.drawable.aloladugtrio,"Dugtrio de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(2026,2027)),
-    PokemonFB(2028,"7",R.drawable.alolageodude,"Geodude de Alola", "Los pelillos metálicos de la cabeza son fruto de una mutación. Se comunica con sus compañeros bamboleándose.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(2028,2029,2030)),
-    PokemonFB(2029,"7",R.drawable.alolagraveler,"Graveler de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(2028,2029,2030)),
-    PokemonFB(2030,"7",R.drawable.alolagolem,"Golem de Alola", "Su pelo dorado y brillante le sirve de protección. Se dice que recoger los pelos que se le caen trae mala suerte.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.ELECTRICO),listOf(2028,2029,2030)),
-    PokemonFB(2031,"7",R.drawable.alolagrimer,"Grimer de Alola", "Los Grimer se introdujeron para remediar la nociva proliferación de residuos. Su aspecto cambió de un día para otro.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.SINIESTRO),listOf(2031,2032)),
-    PokemonFB(2032,"7",R.drawable.alolamuk,"Muk de Alola", "Sus colmillos y uñas son toxinas cristalizadas. Envenenan al contacto, por lo que no conviene acercarse demasiado.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.SINIESTRO),listOf(2031,2032)),
-    PokemonFB(2033,"7",R.drawable.alolaexeggutor,"Exeggutor de Alola", "Su poder psíquico ha desaparecido al crecer, pero ha despertado en cambio el poder dragón que tenía latente.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.DRAGON),listOf(2033)),
-    PokemonFB(2034,"7",R.drawable.alolamarowak,"Marowak de Alola", "La región de Alola, tan frondosa y fértil, no resulta un entorno acogedor para Marowak. Manipula el fuego para mantenerse vivo.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.FANTASMA),listOf(2034)),
-    PokemonFB(2035,"8",R.drawable.galarmeowth,"Meowth de Galar", "Algunas partes de su cuerpo se volvieron metálicas tras una larga convivencia con aguerrida gente del mar.", listOf(PokemonTipoFB.ACERO),listOf(2035)),
-    PokemonFB(2036,"8",R.drawable.galarponyta,"Ponyta de Galar", "Su pequeño cuerno posee poderes curativos capaces de sanar heridas no muy graves con tan solo un leve roce.", listOf(PokemonTipoFB.PSIQUICO),listOf(2036,2037)),
-    PokemonFB(2037,"8",R.drawable.galarrapidash,"Rapidash de Galar", "Es un Pokémon orgulloso y gallardo. Atraviesa bosques sin esfuerzo concentrando sus poderes psíquicos en el pelaje de las patas.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.HADA),listOf(2036,2037)),
-    PokemonFB(2038,"8",R.drawable.galarslowpoke,"Slowpoke de Galar", "Su pequeño cuerno posee poderes curativos capaces de sanar heridas no muy graves con tan solo un leve roce.", listOf(PokemonTipoFB.PSIQUICO),listOf(2038,2039,2047)),
-    PokemonFB(2039,"8",R.drawable.galarslowbro,"Slowbro de Galar", "Es un Pokémon orgulloso y gallardo. Atraviesa bosques sin esfuerzo concentrando sus poderes psíquicos en el pelaje de las patas.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.PSIQUICO),listOf(2038,2039,2047)),
-    PokemonFB(2040,"8",R.drawable.galarfarfetchd,"Farfetch'd de Galar", "Los Farfetch'd de Galar han adoptado esta forma de tanto blandir los puerros típicos de la región, que son gruesos y largos.", listOf(PokemonTipoFB.LUCHA),listOf(2040)),
-    PokemonFB(2042,"8",R.drawable.galarweezing,"Weezing de Galar", "Se desconoce el motivo, pero adoptó esta forma tiempo atrás, cuando las numerosas chimeneas de las fábricas de la región contaminaban el aire.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.HADA),listOf(2041)),
-    PokemonFB(2043,"8",R.drawable.galarmrmime,"Mr. Mime de Galar", "Emite un aire glacial por las plantas de los pies. Baila claqué con entusiasmo sobre las superficies que ha congelado.", listOf(PokemonTipoFB.HIELO, PokemonTipoFB.PSIQUICO),listOf(439,866,2043)),
-    PokemonFB(2044,"8",R.drawable.galararticuno,"Articuno de Galar", "Su nombre evoca el frío ártico, tal vez por los rayos que emite y que inmovilizan a sus rivales como si estuvieran congelados.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(2044)),
-    PokemonFB(2045,"8",R.drawable.galarzapdos,"Zapdos de Galar", "El origen de su nombre parece provenir del sonido que produce el roce de su plumaje, que recuerda al estallido de un chispazo eléctrico.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.VOLADOR),listOf(2045)),
-    PokemonFB(2046,"8",R.drawable.galarmoltres,"Moltres de Galar", "Este Pokémon legendario emite un aura maligna que le rodea el cuerpo y que arde cual llama.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.VOLADOR),listOf(2046)),
-    PokemonFB(2047,"8",R.drawable.galarslowking,"Slowking de Galar", "Fabrica un extraño brebaje mezclando lo que ingiere con sus propias toxinas mientras recita un ominoso encantamiento.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.PSIQUICO),listOf(2038,2039,2047)),
-    PokemonFB(2048,"8",R.drawable.galarcorsola,"Corsola de Galar", "Perdió la vida hace miles de años debido a un repentino cambio en su hábitat. Absorbe la vitalidad de la gente con sus ramas.", listOf(PokemonTipoFB.FANTASMA),listOf(864,2048)),
-    PokemonFB(2048,"8",R.drawable.galarzigzagoon,"Zigzagoon de Galar", "Corretea por doquier sin descanso. En cuanto ve a otro Pokémon, se lanza contra él para provocarlo y buscar pelea.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(2048,2049,862)),
-    PokemonFB(2049,"8",R.drawable.galarlinoone,"Linoone de Galar", "Provoca a sus presas con su larga lengua y arremete con fuerza contra ellas cuando montan en cólera.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(2048,2049,862)),
-    PokemonFB(2050,"8",R.drawable.galardarumaka,"Darumaka de Galar", "Cuanto menor es su temperatura corporal, mejor se siente. Juega a lanzar las bolas de nieve que crea congelando el aliento.", listOf(PokemonTipoFB.HIELO),listOf(2050,2051)),
-    PokemonFB(2051,"8",R.drawable.galardarmanitan,"Darmanitan de Galar", "Transporta su alimento en la bola de nieve de la cabeza. Los días de ventisca desciende hasta las zonas habitadas por los humanos.", listOf(PokemonTipoFB.HIELO),listOf(2050,2051)),
-    PokemonFB(2052,"8",R.drawable.galaryamask,"Yamask de Galar", "Se dice que este Pokémon no es sino un alma lastrada por un intenso rencor, atraída por una antigua tabla de arcilla.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.FANTASMA),listOf(2052,867)),
-    PokemonFB(2053,"8",R.drawable.galarstunfisk,"Stunfisk de Galar", "Atrae a su presa con los labios, que destacan al ocultar su cuerpo en el lodo, y la aferra con sus aletas serradas y duras como el acero.", listOf(PokemonTipoFB.TIERRA, PokemonTipoFB.ACERO),listOf(2048,2049,862)),
-    PokemonFB(2054,"8",R.drawable.hisuigrowlithe,"Growlithe de Hisui", "Patrullan su territorio en pareja. Las rocas ígneas que salpican su pelaje quizá sean el resultado de la actividad volcánica del lugar.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.FUEGO),listOf(2054,2055)),
-    PokemonFB(2055,"8",R.drawable.hisuiarcanine,"Arcanine de Hisui", "Lanza dentelladas con colmillos envueltos en un intenso fuego. A pesar de su gran tamaño, es un maestro de las fintas y juguetea alrededor de sus oponentes como si danzara.", listOf(PokemonTipoFB.ROCA, PokemonTipoFB.FUEGO),listOf(2054,2055)),
-    PokemonFB(2056,"8",R.drawable.hisuivoltorb,"Voltorb de Hisui", "Curioso ejemplar que guarda cierta similitud con una Poké Ball. Cuanto más se altera, mayor es la descarga eléctrica que libera de su vientre, a la que sigue una sonora carcajada.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PLANTA),listOf(2056,2057)),
-    PokemonFB(2057,"8",R.drawable.hisuielectrode,"Electrode de Hisui", "Curiosamente, su complexión superficial es muy semejante a la de un bonguri. Cuando se enoja, la electricidad que emite es veinte veces más potente que la de un rayo.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PLANTA),listOf(2056,2057)),
-    PokemonFB(2058,"8",R.drawable.hisuityphlosion,"Typhlosion de Hisui", "Mi teoría es que la montaña sagrada que se yergue en el centro de Hisui ha influido en su apariencia. Se dice que purifica con sus llamas a las almas errantes y las conduce al otro mundo.", listOf(PokemonTipoFB.FUEGO, PokemonTipoFB.FANTASMA),listOf(2058)),
-    PokemonFB(2059,"8",R.drawable.hisuiqwilfish,"Qwilfish de Hisui", "Vive en las aguas cercanas a tierras frías. Sus púas tóxicas son más gruesas y cortas que las de los Qwilfish de otras regiones.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.VENENO),listOf(2059)),
-    PokemonFB(2060,"8",R.drawable.hisuisneasel,"Sneasel de Hisui", "Sus robustas garras son ideales para moverse por los riscos más escarpados. De sus puntas rezuma un veneno que daña los nervios de las presas que captura.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.VENENO),listOf(2060,903)),
-    PokemonFB(2061,"8",R.drawable.hisuisamurott,"Samurott de Hisui", "De actitud indiferente y muy hábil con la espada, propina incesantes y violentos ataques cual maremoto. Se trata de una forma poco común que solo se da en Hisui.", listOf(PokemonTipoFB.AGUA, PokemonTipoFB.SINIESTRO),listOf(2061)),
-    PokemonFB(2062,"8",R.drawable.hisuililligant,"Lilligant de Hisui", "Habitar en montañas cubiertas de nieves le ha permitido desarrollar unas piernas robustas. Expulsa un aroma por la flor de su corona que infunde ánimo a quien esté cerca.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.LUCHA),listOf(2062)),
-    PokemonFB(2063,"8",R.drawable.hisuizorua,"Zorua de Hisui", "Es un alma difunta resucitada en Hisui que transforma su rencor en energía. Esta surge de su cabeza y adopta la forma de su oponente, disipando así su inquina.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(2063,2064)),
-    PokemonFB(2064,"8",R.drawable.hisuizoroark,"Zoroark de Hisui", "La revuelta melena blanca le hace parecer la personificación de la muerte. Abate a sus rivales sin consideración por su vida valiéndose de un profundo rencor que también daña su cuerpo.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(2063,2064)),
-    PokemonFB(2065,"8",R.drawable.hisuibraviary,"Braviary de Hisui", "Esta enorme ave emite un espeluznante graznido de guerra cuando sale de caza. Lanza ondas contra los lagos y atrapa a las presas que afloran a la superficie.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(2065)),
-    PokemonFB(2066,"8",R.drawable.hisuisliggoo,"Sliggoo de Hisui", "Adolece de una personalidad lúgubre. Sospecho que su concha metálica se formó mediante una reacción entre la mucosidad que recubre su piel y el contenido férreo del agua de Hisui.", listOf(PokemonTipoFB.ACERO, PokemonTipoFB.DRAGON),listOf(704,2066,2067)),
-    PokemonFB(2067,"8",R.drawable.hisuigoodra,"Goodra de Hisui", "Puede alterar la dureza de su caparazón metálico a voluntad. De carácter dependiente, detesta la soledad y monta en cólera si lo abandona alguien a quien profese gran afecto.", listOf(PokemonTipoFB.ACERO, PokemonTipoFB.DRAGON),listOf(704,2066,2067)),
-    PokemonFB(2068,"8",R.drawable.hisuiavalugg,"Avalugg de Hisui", "La coraza de hielo que cubre su mandíbula es más dura que el acero y le permite triturar rocas con facilidad. Avanza veloz por escarpados senderos montañosos apartando la nieve a su paso.", listOf(PokemonTipoFB.FANTASMA, PokemonTipoFB.NORMAL),listOf(2068)),
-    PokemonFB(2069,"8",R.drawable.hisuidecidueye,"Decidueye de Hisui", "Almacena aire en el raquis de las plumas, lo que le permite aguantar las gélidas temperaturas de Hisui. Un claro ejemplo de cómo el entorno puede influir en la evolución de los Pokémon.", listOf(PokemonTipoFB.PSIQUICO, PokemonTipoFB.VOLADOR),listOf(2069)),
-    PokemonFB(2070,"9",R.drawable.paldeatauroslucha,"Tauros Combatiente de Paldea", "Destaca en el combate cuerpo a cuerpo gracias a su constitución musculosa. Ataca los puntos vitales del enemigo con sus cortos cuernos.", listOf(PokemonTipoFB.LUCHA),listOf(2070)),
-    PokemonFB(2071,"9",R.drawable.paldeataurosfuego,"Tauros Ardiente de Paldea", "Sus cuernos alcanzan los 1000ºC cuando los calienta con energía ígnea. Quienes reciben una de sus cornadas sufren heridas y quemaduras.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.FUEGO),listOf(2071)),
-    PokemonFB(2072,"9",R.drawable.paldeataurosagua,"Tauros Acuático de Paldea", "Perfora a sus rivales lanzando chorros de agua a alta presión por la cavidad que tiene en la punta de los cuernos.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.AGUA),listOf(2071)),
-    PokemonFB(2073,"9",R.drawable.paldeawooper,"Wooper de Paldea", "Ante el riesgo que le supone desplazarse solo, forma filas de tres o cuatro individuos que cuidan unos de otros mientras recorren los pantanos.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.TIERRA),listOf(980,2073)),
+
+
+*/
+
     )
+
 
 
 

@@ -354,11 +354,12 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
     }
 
 }
-
+var show_regis by mutableStateOf(false)
+var show_desc by mutableStateOf(false)
 var show_evos by mutableStateOf(false)
 var desde_evos by mutableStateOf(false)
 @Composable
-fun LineaEvo(evos: List<PokemonFB>){
+fun LineaEvo(evos: List<PokemonFB>,opc:Int){
 
     val alturaEvos by animateFloatAsState(
         targetValue = if (show_evos) 250f else 0f,
@@ -367,46 +368,100 @@ fun LineaEvo(evos: List<PokemonFB>){
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = 1
     )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.electrico))
-    ){
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(
-                text ="Evoluciones",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(vertical = 15.dp)
-                    .clickable {
-                        show_evos = !show_evos
-                    },
-            )
+    val alturaRegis by animateFloatAsState(
+        targetValue = if (show_regis) 150f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
 
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(alturaEvos.dp)
-        ){
-            LazyColumn(
+    when(opc){
+        1->{
+            Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+                    .fillMaxSize()
+                    .background(colorResource(id = R.color.rojo_claro))
             ){
-                items(evos) { pokemon ->
-                    PokemonCard(pokemon, "",3)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text ="Línea Evolutiva",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 10.dp)
+                            .clickable {
+                                show_evos = !show_evos
+                            },
+                    )
+
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(alturaEvos.dp)
+                ){
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+                    ){
+                        items(evos) { pokemon ->
+                            PokemonCard(pokemon, "",3)
+                        }
+                    }
+                }
+            }
+        }
+        2->{
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(id = R.color.rojo_muy_claro))
+            ){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Text(
+                        text ="Formas Regionales",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(vertical = 10.dp)
+                            .clickable {
+                                show_regis = !show_regis
+                            },
+                    )
+
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(alturaRegis.dp)
+                ){
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+                    ){
+                        items(evos) { pokemon ->
+                            PokemonCard(pokemon, "",3)
+                        }
+                    }
                 }
             }
         }
     }
+
+
+
 
 
 }
@@ -418,6 +473,70 @@ fun evosPoke(pokemon: PokemonFB):List<PokemonFB>{
         lista.add(listaPokeFireBase[i-1])
     }
     return lista
+}
+
+fun formasRegionales(pokemon: PokemonFB):List<PokemonFB>{
+    var lista=mutableListOf<PokemonFB>()
+    var i=1025
+    while(i<=1079){
+        if(listaPokeFireBase[i].name.contains(pokemon.name)){
+            lista.add(listaPokeFireBase[i])
+        }
+        i++
+    }
+    return lista
+}
+
+@Composable
+fun MuestraDesc(desc:String){
+    val alturaDesc by animateFloatAsState(
+        targetValue = if (show_desc) 150f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.electrico))
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text ="Descripción",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        show_desc = !show_desc
+                        show_regis= false
+                        show_evos= false
+                    },
+            )
+
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(alturaDesc.dp),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(modifier = Modifier
+                .width(300.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
+                text = desc,
+                fontSize = 18.sp)
+        }
+    }
+
+
+
+
 }
 
 /*

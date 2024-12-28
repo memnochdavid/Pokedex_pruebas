@@ -86,7 +86,7 @@ import kotlinx.coroutines.delay
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "676e829800119c7f765d"
+val appwrite_bucket = "67701612000d7695cb51"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")

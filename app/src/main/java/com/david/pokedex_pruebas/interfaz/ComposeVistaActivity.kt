@@ -72,8 +72,10 @@ import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
+import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
 import java.util.concurrent.CountDownLatch
+import kotlin.text.replace
 
 //https://developer.android.com/develop/ui/compose/mental-model?hl=es-419
 
@@ -129,13 +131,14 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
 
     var updatedEquipo by remember { mutableStateOf(usuario.equipo) }
 
+    val nombrePokeLimpio=limpiaNombrePoke(pokemon.name)
 
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos,regis) = createRefs()
         //imagen remote
 /*
         val painter = rememberAsyncImagePainter(
@@ -189,7 +192,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                 }
                 .clickable {//reproduce su grito
                     val resourceId = context.resources.getIdentifier(
-                        pokemon.name.lowercase(),
+                        nombrePokeLimpio,
                         "raw",
                         context.packageName
                     )
@@ -217,6 +220,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxHeight(),
+            //verticalArrangement = Arrangement.SpaceBetween,
             reverseLayout = true/////////////////
         ){
             item {
@@ -226,7 +230,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            bottom.linkTo(nombre.top)////////????????????
+                            //bottom.linkTo(nombre.top)////////????????????
                         }
                         .padding(bottom = 10.dp)
                         .fillMaxHeight(),//////////
@@ -291,7 +295,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(vertical = 10.dp)
+                                .padding(top = 10.dp, bottom = 25.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
@@ -306,7 +310,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(vertical = 10.dp)
+                                .padding(top = 10.dp, bottom = 25.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(tipo2.start)
@@ -320,7 +324,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(vertical = 10.dp)
+                                .padding(top = 10.dp, bottom = 25.dp)
                                 .constrainAs(tipo2) {
                                     start.linkTo(tipo1.end)
                                     end.linkTo(parent.end)
@@ -330,17 +334,15 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         )
                     }
 
-                    Text(modifier = Modifier
+                    Row(modifier = Modifier
                         .constrainAs(desc) {
                             top.linkTo(tipo1.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            //bottom.linkTo(interacciones.top)
-                        }
-                        .width(300.dp)
-                        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
-                        text = pokemon.desc,
-                        fontSize = 18.sp)
+                            bottom.linkTo(interacciones.top)
+                        }){
+                        MuestraDesc(pokemon.desc)
+                    }
 
                     Row(
                         modifier = Modifier
@@ -366,7 +368,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 top.linkTo(interacciones.bottom)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(regis.top)
                             }
                     ){
                         //val test = listaPokeFB[pokemon.num-1]
@@ -374,7 +376,27 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         Log.v(  "EVOS", evosPoke(pokemon).toString())
                         val evosPoke=evosPoke(pokemon)
                         //LineaEvo(evosPoke)
-                        LineaEvo(evosPoke)
+                        if(evosPoke.size>1){
+                            LineaEvo(evosPoke,1)//opc 1 para que devuelva evos
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            //.padding(vertical = 10.dp)????????
+                            .background(colorResource(id = R.color.electrico))
+                            .constrainAs(regis) {
+                                top.linkTo(evos.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ){
+                        val regisPoke= formasRegionales(pokemon)
+                        if(regisPoke.isNotEmpty()){
+                            LineaEvo(regisPoke,2)//opc 2 para que devuelva formas regionales
+                        }
                     }
                 }
 
