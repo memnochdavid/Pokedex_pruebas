@@ -111,7 +111,7 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 selectedImageUri = uri
             }
         )
-        //var arraySesion=ArrayList<UserFb>()
+        var arraySesion=ArrayList<UserFb>()
         val (col1)=createRefs()
         Column(
             modifier = Modifier
@@ -217,53 +217,53 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || selectedImageUri != null) {
-                    refBBDD = FirebaseDatabase.getInstance().reference
-                    identificador = refBBDD.child("usuarios").push().key!!
-                    val identificadorAppWrite = identificador.substring(1, 20) ?: "" // coge el identificador
-                    val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
-                    if (inputStream != null) {
+                    if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || selectedImageUri != null) {
+                        refBBDD = FirebaseDatabase.getInstance().reference
+                        identificador = refBBDD.child("usuarios").push().key!!
+                        val identificadorAppWrite = identificador.substring(1, 20) ?: "" // coge el identificador
+                        val inputStream = context.contentResolver.openInputStream(selectedImageUri!!)
+                        if (inputStream != null) {
 
-                        scopeUser.launch {
-                            try{
-                                val file = inputStream.use { input ->
-                                    val tempFile = kotlin.io.path.createTempFile().toFile()
-                                    tempFile.outputStream().use { output ->
-                                        input.copyTo(output)
+                            scopeUser.launch {
+                                try{
+                                    val file = inputStream.use { input ->
+                                        val tempFile = kotlin.io.path.createTempFile().toFile()
+                                        tempFile.outputStream().use { output ->
+                                            input.copyTo(output)
+                                        }
+                                        InputFile.fromFile(tempFile) // Use fromFile method
                                     }
-                                    InputFile.fromFile(tempFile) // Use fromFile method
-                                }
-                                withContext(Dispatchers.IO) {
-                                    storage.createFile(
-                                        bucketId = appwrite_bucket,
-                                        fileId = identificadorAppWrite,
-                                        file = file
-                                    )
-                                }
-                                newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
-                                newUser = UserFb(username,email,password,newUserAvatar,identificador)
-                                refBBDD.child("usuarios").child(identificador).setValue(newUser)
+                                    withContext(Dispatchers.IO) {
+                                        storage.createFile(
+                                            bucketId = appwrite_bucket,
+                                            fileId = identificadorAppWrite,
+                                            file = file
+                                        )
+                                    }
+                                    newUserAvatar = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+                                    newUser = UserFb(username,email,password,newUserAvatar,identificador)
+                                    refBBDD.child("usuarios").child(identificador).setValue(newUser)
 
-                            }catch (e: Exception){
-                                Log.e("UploadError", "Failed to upload image: ${e.message}")
-                            }
-                            finally {
-                                Toast.makeText(context, "Usuario $username creado con éxito", Toast.LENGTH_SHORT).show()
-                            }
-                            withContext(Dispatchers.Main) { // Update on main thread
-                                objetoCreado = true
+                                }catch (e: Exception){
+                                    Log.e("UploadError", "Failed to upload image: ${e.message}")
+                                }
+                                finally {
+                                    Toast.makeText(context, "Usuario $username creado con éxito", Toast.LENGTH_SHORT).show()
+                                }
+                                withContext(Dispatchers.Main) { // Update on main thread
+                                    objetoCreado = true
+                                }
                             }
                         }
+
+
+
+
+
+                    }else{
+                        Toast.makeText(context, "Rellena todos los campos y elige una imagen", Toast.LENGTH_SHORT).show()
                     }
-
-
-
-
-
-                }else{
-                    Toast.makeText(context, "Rellena todos los campos y elige una imagen", Toast.LENGTH_SHORT).show()
-                }
-            }) {
+                }) {
                 Text("Crear usuario")
             }
 

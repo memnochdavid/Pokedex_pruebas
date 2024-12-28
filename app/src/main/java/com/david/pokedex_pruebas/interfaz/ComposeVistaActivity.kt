@@ -94,7 +94,7 @@ class ComposeVistaActivity : AppCompatActivity() {
         }else{
             usuario_key = ""
         }*/
-        //val indice = intent.getIntExtra("indice", 0)
+        val indice = intent.getIntExtra("indice", 0)
         //descargamos la lista de pokemon
 
         setContent{
@@ -386,6 +386,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun VerListaPokemon(context: Context) {
+
 
 
     val listState = rememberLazyListState(

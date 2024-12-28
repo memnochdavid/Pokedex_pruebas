@@ -2,6 +2,7 @@ package com.david.pokedex_pruebas.interfaz
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.launch
 import androidx.compose.animation.core.Spring
@@ -130,12 +131,14 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                             //isPressed = false
                             //intent a ComposeVistaActivity
                             index = pokemon.num - 1
+                            var indice=pokemon.num-1
+                            Log.d("INDEX - PokemonCard", index.toString())
                             //seleccionado= listaPokeFireBase[index]
                             if(opc!=3){
                                 val intent = Intent(context, ComposeVistaActivity::class.java)
                                 //intent.putParcelableArrayListExtra("lista", arrayPoke)
                                 intent.putExtra("sesion", usuario_key)
-                                intent.putExtra("indice", index)
+                                intent.putExtra("indice", indice)
                                 context.startActivity(intent)
                                 //oculta campo de búsqueda
                                 desde_evos=false

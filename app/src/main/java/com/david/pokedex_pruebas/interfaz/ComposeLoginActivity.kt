@@ -56,6 +56,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.runtime.LaunchedEffect
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 
 var refBBDD by mutableStateOf<DatabaseReference>(FirebaseDatabase.getInstance().reference)
@@ -63,7 +64,6 @@ var usuario_key by mutableStateOf("")
 
 class ComposeLoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         if (intent.hasExtra("sesion")) {
             usuario_key = intent.getStringExtra("sesion").toString()
         }else{
@@ -167,7 +167,7 @@ fun Login() {
                     unfocusedTextColor= colorResource(R.color.white),
                 ),
 
-            )
+                )
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
@@ -177,40 +177,42 @@ fun Login() {
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                //refBBDD = FirebaseDatabase.getInstance().reference
-                if (email.isNotEmpty() && password.isNotEmpty()) {
-                    refBBDD.child("usuarios")
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                loginExiste = false
-                                for (pojo in snapshot.children) {
-                                    val checkUser = pojo.getValue(UserFb::class.java)
-                                    if (email == checkUser?.email && password == checkUser?.pass) {
-                                        loginExiste = true
-                                        //Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
-                                        val intent = Intent(context, ComposeListaActivity::class.java)
-                                        intent.putExtra("sesion", checkUser.key)
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                        context.startActivity(intent)
-                                        usuario_key = checkUser.key.toString()
-                                        break
+                    refBBDD = FirebaseDatabase.getInstance().reference
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        refBBDD.child("usuarios")
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    loginExiste = false
+                                    for (pojo in snapshot.children) {
+                                        val checkUser = pojo.getValue(UserFb::class.java)
+                                        if (email == checkUser?.email && password == checkUser?.pass) {
+                                            loginExiste = true
+                                            usuario_key=checkUser.key.toString()
+                                            sesionUser.email=email
+                                            sesionUser.pass=password
+                                            //Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(context, ComposeListaActivity::class.java)
+                                            intent.putExtra("sesion", checkUser.key)
+                                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            context.startActivity(intent)
+                                            break
+                                        }
+                                    }
+                                    if (!loginExiste) {
+                                        Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else{
+                                        Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
                                     }
                                 }
-                                if (!loginExiste) {
-                                    Toast.makeText(context, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(context, "Error en la conexión", Toast.LENGTH_SHORT).show()
                                 }
-                                else{
-                                    Toast.makeText(context, "Login correcto", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            override fun onCancelled(error: DatabaseError) {
-                                Toast.makeText(context, "Error en la conexión", Toast.LENGTH_SHORT).show()
-                            }
-                        })
-                } else {
-                    Toast.makeText(context, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
-                }
-            }) {
+                            })
+                    } else {
+                        Toast.makeText(context, "Rellena todos los campos", Toast.LENGTH_SHORT).show()
+                    }
+                }) {
                 Text("Login")
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -228,9 +230,9 @@ fun Login() {
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                val intent = Intent(context, ComposeCreaUser::class.java)
-                context.startActivity(intent)
-            }) {
+                    val intent = Intent(context, ComposeCreaUser::class.java)
+                    context.startActivity(intent)
+                }) {
                 Text("Crear cuenta")
             }
         }
