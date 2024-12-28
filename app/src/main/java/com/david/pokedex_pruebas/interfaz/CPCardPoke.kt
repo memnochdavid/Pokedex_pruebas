@@ -77,6 +77,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlin.text.toFloat
 
 
 //private lateinit var refBBDD: DatabaseReference
@@ -378,7 +379,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(colorResource(id = R.color.rojo_claro))
+                    .background(colorResource(id = R.color.electrico))
             ){
                 Row(
                     modifier = Modifier
@@ -488,24 +489,25 @@ fun formasRegionales(pokemon: PokemonFB):List<PokemonFB>{
 }
 
 @Composable
-fun MuestraDesc(desc:String){
+fun MuestraDesc(desc: String) {
+    var textHeight by remember { mutableStateOf(0f) }
     val alturaDesc by animateFloatAsState(
-        targetValue = if (show_desc) 150f else 0f,
-        animationSpec = tween(durationMillis = 300) // duración
+        targetValue = if (show_desc) textHeight else 0f,
+        animationSpec = tween(durationMillis = 300)
     )
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(id = R.color.electrico))
-    ){
+            .background(colorResource(id = R.color.transparente))
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
-        ){
+        ) {
             Text(
-                text ="Descripción",
+                text = "Descripción",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -514,29 +516,32 @@ fun MuestraDesc(desc:String){
                     .padding(vertical = 10.dp)
                     .clickable {
                         show_desc = !show_desc
-                        show_regis= false
-                        show_evos= false
+                        show_regis = false
+                        show_evos = false
+                        Log.d("ALTURA TEXTO", textHeight.toString())
                     },
             )
-
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(alturaDesc.dp),
             horizontalArrangement = Arrangement.Center
-        ){
-            Text(modifier = Modifier
-                .width(300.dp)
-                .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .width(300.dp)
+                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                 text = desc,
-                fontSize = 18.sp)
+                fontSize = 18.sp,
+                onTextLayout = { textLayoutResult ->
+                    textHeight = 30.sp.value * textLayoutResult.lineCount
+
+                }
+            )
         }
     }
-
-
-
-
 }
 
 /*

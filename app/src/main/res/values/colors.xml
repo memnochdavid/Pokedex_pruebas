@@ -3,8 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="fuego">#8F2626</color>
+    <color name="planta_claro">#60A062</color>
     <color name="planta">#4CAF50</color>
+    <color name="planta_oscuro">#306D33</color>
+    <color name="agua_claro">#478FE4</color>
     <color name="agua">#2480ED</color>
+    <color name="agua_oscuro">#1D61B1</color>
     <color name="electrico">#F8BF00</color>
     <color name="fantasma">#6F406F</color>
     <color name="acero">#5FA1B8</color>
@@ -30,6 +34,16 @@
     <color name="rojo_oscuro">#420101</color>
     <color name="mensajein">#1F2A30</color>
     <color name="mensajeout">#05453F</color>
+    <color name="paleta1">#30374E</color>
+    <color name="paleta2">#35313B</color>
+    <color name="paleta3">#443744</color>
+    <color name="paleta4">#603C4B</color>
+    <color name="paleta6">#D4CC8A</color>
+    <color name="paleta7">#8ECE52</color>
+    <color name="paleta8">#028F7C</color>
+    <color name="paleta9">#03443D</color>
+    <color name="paleta10">#492512</color>
+    <color name="paleta11">#2C1001</color>
 
 
 </resources>

@@ -69,9 +69,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.test.top
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
+import com.david.pokedex_pruebas.modelo.enumToDrawable2FB
 import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
 import java.util.concurrent.CountDownLatch
@@ -180,7 +182,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
 
         Image(
             painter = painterResource(id = pokemon.foto),
-            contentDescription = "Pokeball",
+            contentDescription = "Pokemon",
             modifier = Modifier
                 .size(350.dp)
                 .fillMaxSize()
@@ -220,10 +222,9 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxHeight(),
-            //verticalArrangement = Arrangement.SpaceBetween,
             reverseLayout = true/////////////////
         ){
-            item {
+            item{
                 ConstraintLayout{
                     Text(modifier = Modifier
                         .constrainAs(number) {
@@ -232,23 +233,23 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             end.linkTo(parent.end)
                             //bottom.linkTo(nombre.top)////////????????????
                         }
-                        .padding(bottom = 10.dp)
+                        .padding(bottom = 25.dp)
                         .fillMaxHeight(),//////////
                         fontWeight = FontWeight.Bold,
                         text = "#$numero",
-                        fontSize = 30.sp)
+                        fontSize = 35.sp)
 
                     Text(modifier = Modifier
                         .constrainAs(nombre) {
                             top.linkTo(number.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            bottom.linkTo(tipo1.top)
+                            //bottom.linkTo(tipo1.top)
                         }
-                        .padding(vertical = 10.dp),
+                        .padding(bottom = 20.dp),
                         fontWeight = FontWeight.Bold,
                         text = pokemon.name,
-                        fontSize = 30.sp)
+                        fontSize = 32.sp)
 
                     IconButton(
                         onClick = {
@@ -290,12 +291,12 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
 
                     if (pokemon.tipo.size == 1) {
                         Image(
-                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[0])),
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(top = 10.dp, bottom = 25.dp)
+                                .padding(vertical = 20.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
@@ -305,12 +306,12 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         )
                     } else {
                         Image(
-                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
+                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[0])),
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(top = 10.dp, bottom = 25.dp)
+                                .padding(vertical = 20.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(tipo2.start)
@@ -319,12 +320,12 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 },
                         )
                         Image(
-                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
+                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[1])),
                             contentDescription = "Tipo 2",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
                                 .width(80.dp)
-                                .padding(top = 10.dp, bottom = 25.dp)
+                                .padding(vertical = 20.dp)
                                 .constrainAs(tipo2) {
                                     start.linkTo(tipo1.end)
                                     end.linkTo(parent.end)

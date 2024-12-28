@@ -78,6 +78,29 @@ fun enumToDrawableFB(tipo:PokemonTipoFB):Int{
         else -> { R.drawable.charmander}
     }
 }
+fun enumToDrawable2FB(tipo:PokemonTipoFB):Int{
+    return when(tipo){
+        PokemonTipoFB.PLANTA -> R.drawable.planta2
+        PokemonTipoFB.AGUA -> R.drawable.agua2
+        PokemonTipoFB.FUEGO -> R.drawable.fuego2
+        PokemonTipoFB.LUCHA -> R.drawable.lucha2
+        PokemonTipoFB.VENENO -> R.drawable.veneno2
+        PokemonTipoFB.ACERO -> R.drawable.acero2
+        PokemonTipoFB.BICHO -> R.drawable.bicho2
+        PokemonTipoFB.DRAGON -> R.drawable.dragon2
+        PokemonTipoFB.ELECTRICO -> R.drawable.electrico2
+        PokemonTipoFB.HADA -> R.drawable.hada2
+        PokemonTipoFB.HIELO -> R.drawable.hielo2
+        PokemonTipoFB.PSIQUICO -> R.drawable.psiquico2
+        PokemonTipoFB.ROCA -> R.drawable.roca2
+        PokemonTipoFB.TIERRA -> R.drawable.tierra2
+        PokemonTipoFB.SINIESTRO -> R.drawable.siniestro2
+        PokemonTipoFB.NORMAL -> R.drawable.normal2
+        PokemonTipoFB.VOLADOR -> R.drawable.volador2
+        PokemonTipoFB.FANTASMA -> R.drawable.fantasma2
+        else -> { R.drawable.charmander}
+    }
+}
 fun enumToDrawableFB_busqueda(tipo:PokemonTipoFB):Int{
     return when(tipo){
         PokemonTipoFB.PLANTA -> R.drawable.planta2
@@ -390,6 +413,8 @@ fun limpiaNombrePoke(nombre:String):String{
         .replace("ó", "o")
         .replace("ú", "u")
         .replace(" ","")
+        .replace("-","")
+        .replace(".","")
         .replace("dealola","")
         .replace("degalar","")
         .replace("dehisui","")
