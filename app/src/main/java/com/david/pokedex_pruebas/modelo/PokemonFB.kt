@@ -1472,13 +1472,8 @@ var listaFormasRegionalesFB : List<PokemonFB> = listOf(
     PokemonFB(2070,"9",R.drawable.paldeatauroslucha,"Tauros Combatiente de Paldea", "Destaca en el combate cuerpo a cuerpo gracias a su constitución musculosa. Ataca los puntos vitales del enemigo con sus cortos cuernos.", listOf(PokemonTipoFB.LUCHA),listOf(2070)),
     PokemonFB(2071,"9",R.drawable.paldeataurosfuego,"Tauros Ardiente de Paldea", "Sus cuernos alcanzan los 1000ºC cuando los calienta con energía ígnea. Quienes reciben una de sus cornadas sufren heridas y quemaduras.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.FUEGO),listOf(2071)),
     PokemonFB(2072,"9",R.drawable.paldeataurosagua,"Tauros Acuático de Paldea", "Perfora a sus rivales lanzando chorros de agua a alta presión por la cavidad que tiene en la punta de los cuernos.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.AGUA),listOf(2071)),
-
-
-
-
-
-
-)
+    PokemonFB(2073,"9",R.drawable.paldeawooper,"Wooper de Paldea", "Ante el riesgo que le supone desplazarse solo, forma filas de tres o cuatro individuos que cuidan unos de otros mientras recorren los pantanos.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.TIERRA),listOf(980,2073)),
+    )
 
 
 
