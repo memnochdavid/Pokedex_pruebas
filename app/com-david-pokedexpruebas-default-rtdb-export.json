@@ -2030,6 +2030,7 @@
     "-OFCph78aVdg2dBbHvkT": {
       "desc": "Este amable Pokémon es capaz de compartir sus nutrientes huevos con un Pokémon herido.",
       "evos": [
+        440,
         113,
         242
       ],
@@ -2186,8 +2187,7 @@
       "desc": "Siempre practica la misma pantomima. Hace creer al enemigo que existe algo que no es real.",
       "evos": [
         439,
-        122,
-        866
+        122
       ],
       "foto": 2131231599,
       "gen": "1",
@@ -4284,9 +4284,8 @@
     "-OFCphEOn7xfDOM4g_ly": {
       "desc": "Sus labios son la parte más sensible de su cuerpo. Siempre los usa para examinar las cosas.",
       "evos": [
-        124,
         238,
-        239
+        124
       ],
       "foto": 2131231912,
       "gen": "2",
@@ -4303,9 +4302,9 @@
     "-OFCphEQIqJARopsQhA2": {
       "desc": "Entre sus cuernos pasa una débil corriente eléctrica. Quien ponga ahí la mano se dará un calambrazo.",
       "evos": [
-        125,
         239,
-        240
+        125,
+        466
       ],
       "foto": 2131231207,
       "gen": "2",
@@ -4321,9 +4320,9 @@
     "-OFCphESvzmlDoBDLLpz": {
       "desc": "Aparece en los cráteres de los volcanes. Puede alcanzar los 600 grados de temperatura, así que no lo subestimes.",
       "evos": [
-        126,
         240,
-        241
+        126,
+        467
       ],
       "foto": 2131231517,
       "gen": "2",
@@ -4355,6 +4354,7 @@
     "-OFCphEWRZ1s3Q7HOMyy": {
       "desc": "Cualquiera que pruebe un poco de huevo de Blissey, se volverá más amable y agradable con todos.",
       "evos": [
+        440,
         113,
         242
       ],
@@ -5043,6 +5043,7 @@
       "evos": [
         280,
         281,
+        475,
         282
       ],
       "foto": 2131231796,
@@ -5062,6 +5063,7 @@
       "evos": [
         280,
         281,
+        475,
         282
       ],
       "foto": 2131231439,
@@ -5368,10 +5370,9 @@
     "-OFCphGnfhu9M3ESQQZ_": {
       "desc": "Su cola rebota como una pelota. Para luchar contra enemigos más grandes, la agita en el aire.",
       "evos": [
-        183,
         298,
-        311,
-        312
+        183,
+        184
       ],
       "foto": 2131230891,
       "gen": "3",
@@ -7848,8 +7849,10 @@
     "-OFCphMMIMlNQLiF1PMH": {
       "desc": "Cuando tiene a alguien delante imita su expresión y movimientos para extender sus sentimientos.",
       "evos": [
+        439,
         122,
-        439
+        1049,
+        866
       ],
       "foto": 2131231582,
       "gen": "4",
@@ -7866,8 +7869,8 @@
     "-OFCphMOmqDthFcCvRSp": {
       "desc": "Le encantan las cosas blancas y redondas. Imita a Chansey llevando una roca en forma de huevo.",
       "evos": [
-        113,
         440,
+        113,
         242
       ],
       "foto": 2131231349,
@@ -8328,8 +8331,8 @@
     "-OFCphNKFzurODIKAwdX": {
       "desc": "Al almacenar mucha electricidad, desprende chispas de una claridad increíble entre sus dos cuernos.",
       "evos": [
+        239,
         125,
-        126,
         466
       ],
       "foto": 2131231201,
@@ -8346,8 +8349,8 @@
     "-OFCphNMPbHf6I8UhaNG": {
       "desc": "Cuando lanza sus bolas de fuego a 2000 grados, su cuerpo adquiere un tono blanquecino por el calor.",
       "evos": [
+        240,
         126,
-        127,
         467
       ],
       "foto": 2131231522,
@@ -8506,7 +8509,6 @@
       "evos": [
         280,
         281,
-        282,
         475
       ],
       "foto": 2131231280,
@@ -9821,7 +9823,8 @@
     "-OFCphQq38Ho__DedAkk": {
       "desc": "Los de color azul y los de color rojo siempre se pelean. Son muy violentos, pero su sabor es excepcional.",
       "evos": [
-        550
+        550,
+        902
       ],
       "foto": 2131230899,
       "gen": "5",
@@ -10036,8 +10039,7 @@
       "desc": "Almas de humanos sepultados en tumbas que han adquirido forma de Pokémon. Recuerdan su vida antes de la muerte.",
       "evos": [
         562,
-        563,
-        776
+        563
       ],
       "foto": 2131232103,
       "gen": "5",
@@ -10054,8 +10056,7 @@
       "desc": "Atrapan en su interior a los ladrones de tumbas que los confunden con ataúdes de verdad.",
       "evos": [
         562,
-        563,
-        776
+        563
       ],
       "foto": 2131231072,
       "gen": "5",
@@ -11132,7 +11133,8 @@
       "desc": "Lucha bajo las órdenes de Bisharp. Se agarra a sus oponentes y les inflige daño utilizando sus cuchillas.",
       "evos": [
         624,
-        625
+        625,
+        983
       ],
       "foto": 2131231719,
       "gen": "5",
@@ -11150,7 +11152,8 @@
       "desc": "Su séquito son los Pawniard. Acorralan a su presa con todo el grupo y Bisharp propina el golpe de gracia.",
       "evos": [
         624,
-        625
+        625,
+        983
       ],
       "foto": 2131230918,
       "gen": "5",
@@ -14951,8 +14954,9 @@
       "desc": "Vive dentro de una manzana. Si se separa de ella, su cuerpo se deshidrata y se queda sin fuerzas.",
       "evos": [
         840,
-        841,
-        842
+        842,
+        1011,
+        1019
       ],
       "foto": 2131230863,
       "gen": "8",
@@ -14970,7 +14974,9 @@
       "desc": "Usa fluidos corporales para reparar su manzana. Las de los más fuertes y curtidos en combate se vuelven de un color terroso.",
       "evos": [
         840,
-        841
+        842,
+        1011,
+        1019
       ],
       "foto": 2131231252,
       "gen": "8",
@@ -14988,7 +14994,9 @@
       "desc": "Escupen una sustancia pegajosa para ahuyentar a los Lechonk que se acercan a lamerles el dulce néctar de la espalda.",
       "evos": [
         840,
-        842
+        842,
+        1011,
+        1019
       ],
       "foto": 2131230862,
       "gen": "8",
@@ -15199,7 +15207,6 @@
       "desc": "Según se dice, este Pokémon surgió de un alma solitaria que poseyó una taza abandonada llena de un té ya frío.",
       "evos": [
         854,
-        855,
         855
       ],
       "foto": 2131231890,
@@ -15217,7 +15224,6 @@
       "desc": "Se hospeda en teteras dignas de un anticuario. Las originales son escasísimas, pero existe un gran número de burdas falsificaciones.",
       "evos": [
         854,
-        855,
         855
       ],
       "foto": 2131231764,
@@ -15346,8 +15352,8 @@
     "-OFCq7LMh4rE8fBi4uR0": {
       "desc": "La potencia de su voz es realmente pasmosa. La técnica que usa para intimidar al rival mientras grita recibe el nombre de Obstrucción.",
       "evos": [
-        862,
-        865,
+        1055,
+        1056,
         862
       ],
       "foto": 2131231686,
@@ -15365,7 +15371,8 @@
     "-OFCq7LODMsCrXRKbm8L": {
       "desc": "El pelo de la cabeza se le ha endurecido hasta el punto de parecer un yelmo de hierro. Posee un temperamento muy combativo.",
       "evos": [
-        863
+        863,
+        1042
       ],
       "foto": 2131231723,
       "gen": "8",
@@ -15381,6 +15388,7 @@
     "-OFCq7LQzajTG2KdG5Yq": {
       "desc": "Su energía espiritual ha aumentado hasta hacerlo desprenderse de su base caliza. Protege el alma del núcleo con su cuerpo espectral.",
       "evos": [
+        1054,
         864
       ],
       "foto": 2131231122,
@@ -15397,8 +15405,7 @@
     "-OFCq7LSDbR2CoXCtnvw": {
       "desc": "Repele ataques con las hojas de su duro puerro y contraataca con su tallo afilado. El puerro que le sirve de armamento sigue siendo comestible.",
       "evos": [
-        865,
-        827,
+        83,
         865
       ],
       "foto": 2131231891,
@@ -15415,8 +15422,8 @@
     "-OFCq7LToBPuo9XSer-l": {
       "desc": "Es un bailarín consumado de claqué. Agita su bastón de hielo mientras exhibe su destreza con gráciles pasos.",
       "evos": [
-        866,
-        122,
+        439,
+        1049,
         866
       ],
       "foto": 2131231600,
@@ -15723,7 +15730,8 @@
     "-OFCq7LwW0tCau5l_Qvm": {
       "desc": "Su cuerpo, compuesto de un metal especial, es tan liso como si tuviese un acabado de espejo. Además de ligero, es resistente a las rayaduras.",
       "evos": [
-        884
+        884,
+        1018
       ],
       "foto": 2131231187,
       "gen": "8",
@@ -16036,8 +16044,7 @@
     "-OFCq7MP7ew5hVg-D3Yr": {
       "desc": "Durante las remontadas de los ríos, se envuelve de las almas de sus congéneres caídos en la ardua travesía. No tiene rival en ninguna de las corrientes que fluyen por la región de Hisui.",
       "evos": [
-        902,
-        782,
+        550,
         902
       ],
       "foto": 2131230898,
@@ -16055,9 +16062,8 @@
     "-OFCq7MRoIhxTIlEwCz1": {
       "desc": "Gracias a su fortaleza física y potente veneno, ninguna especie de las alturas heladas le planta cara. Es de personalidad solitaria y no forma manadas.",
       "evos": [
-        903,
-        783,
-        903
+        1067,
+        904
       ],
       "foto": 2131231914,
       "gen": "8",
@@ -16074,8 +16080,7 @@
     "-OFCq7MT0Jam6WzGc4nS": {
       "desc": "Sus púas tóxicas reaccionan como acto reflejo ante cualquier movimiento, por lo que ensartará todo lo que se acerque incluso mientras duerme.",
       "evos": [
-        904,
-        784,
+        1066,
         904
       ],
       "foto": 2131231701,
@@ -16559,8 +16564,6 @@
     "-OFCq7NDZgoRi9LddvU6": {
       "desc": "Prefieren vivir en las ciudades. Forman bandadas según el color de su plumaje y libran disputas por el control de los territorios.",
       "evos": [
-        931,
-        931,
         931
       ],
       "foto": 2131231936,
@@ -17383,8 +17386,6 @@
     "-OFCq7OSQY88k0k_vLD9": {
       "desc": "Pokémon dragón de pequeño tamaño. Vive en la boca de un Dondozo para protegerse de los ataques de los depredadores.",
       "evos": [
-        978,
-        978,
         978
       ],
       "foto": 2131231978,
@@ -17402,7 +17403,8 @@
     "-OFCq7OULZR-iB-6K9O_": {
       "desc": "Machaca sin piedad a sus rivales concentrando en los puños hasta el último ápice de ira albergada en su corazón.",
       "evos": [
-        190,
+        56,
+        57,
         979
       ],
       "foto": 2131230860,
@@ -17420,7 +17422,7 @@
     "-OFCq7OVJHE0bYwtqNUd": {
       "desc": "Vive en el fondo de los estanques y pantanos. Nada con Wooper sobre el lomo para ayudarlos a cruzar de una orilla a otra.",
       "evos": [
-        194,
+        1080,
         980
       ],
       "foto": 2131231067,
@@ -17473,6 +17475,7 @@
     "-OFCq7O_GlrHoPHD1l7l": {
       "desc": "Solo el Bisharp más destacado entre las filas de cada gran ejército tiene el honor de evolucionar a Kingambit.",
       "evos": [
+        624,
         625,
         983
       ],
@@ -17753,8 +17756,7 @@
       "desc": "El cofre en el que nació data de hace 1500 años aproximadamente. Absorbe la energía vital de los granujas que intentan hacerse con su tesoro.",
       "evos": [
         999,
-        1000,
-        999
+        1000
       ],
       "foto": 2131231295,
       "gen": "9",
@@ -17958,8 +17960,10 @@
     "-OFCq7PMGrJbor04M-rR": {
       "desc": "Ha evolucionado gracias a una manzana especial que solo se cultiva en cierta zona. Este Pokémon está formado por dos individuos.",
       "evos": [
+        840,
         842,
-        1011
+        1011,
+        1019
       ],
       "foto": 2131231152,
       "gen": "9",
@@ -18079,8 +18083,7 @@
     "-OFCq7PXW_7vKTsQFkES": {
       "desc": "Acumula la electricidad estática de su entorno. El rayo que dispara cuando está a cuatro patas posee una potencia colosal.",
       "evos": [
-        1018,
-        785,
+        884,
         1018
       ],
       "foto": 2131230869,
@@ -18098,7 +18101,9 @@
     "-OFCq7PZKKN-5PG82Cbb": {
       "desc": "Se trata de siete seres llamados Viborappli que viven juntos en una manzana de caramelo. El del centro es el líder del grupo.",
       "evos": [
+        840,
         842,
+        1011,
         1019
       ],
       "foto": 2131231381,
@@ -18507,7 +18512,8 @@
     "-OFCqNsnFhyZHXYtbwkd": {
       "desc": "Algunas partes de su cuerpo se volvieron metálicas tras una larga convivencia con aguerrida gente del mar.",
       "evos": [
-        1042
+        1042,
+        863
       ],
       "foto": 2131232147,
       "gen": "8",
@@ -18717,8 +18723,8 @@
     "-OFCqNt6XVjGiqbl6a9X": {
       "desc": "Perdió la vida hace miles de años debido a un repentino cambio en su hábitat. Absorbe la vitalidad de la gente con sus ramas.",
       "evos": [
-        864,
-        1054
+        1054,
+        864
       ],
       "foto": 2131232142,
       "gen": "8",
@@ -18931,7 +18937,8 @@
     "-OFCqNtRGnb9J1AFFdIc": {
       "desc": "Vive en las aguas cercanas a tierras frías. Sus púas tóxicas son más gruesas y cortas que las de los Qwilfish de otras regiones.",
       "evos": [
-        1066
+        1066,
+        904
       ],
       "foto": 2131232168,
       "gen": "8",
@@ -18949,7 +18956,7 @@
       "desc": "Sus robustas garras son ideales para moverse por los riscos más escarpados. De sus puntas rezuma un veneno que daña los nervios de las presas que captura.",
       "evos": [
         1067,
-        903
+        904
       ],
       "foto": 2131232171,
       "gen": "8",
@@ -19175,7 +19182,8 @@
     "-OFCqNtk6t2UYtnWBnfW": {
       "desc": "Ante el riesgo que le supone desplazarse solo, forma filas de tres o cuatro individuos que cuidan unos de otros mientras recorren los pantanos.",
       "evos": [
-        1080
+        1080,
+        980
       ],
       "foto": 2131232179,
       "gen": "9",

@@ -915,7 +915,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("EVOS")
                             }
                         }*/
-
+/*
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
@@ -997,7 +997,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-
+*/
                     }
                 }
             }

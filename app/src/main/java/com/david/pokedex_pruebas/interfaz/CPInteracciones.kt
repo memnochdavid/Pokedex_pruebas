@@ -55,7 +55,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
 
     altura=(altura+6)*16//se calcula la altura de la columna más grande, y se le aplica a todas
 
-    var show_interacciones by remember { mutableStateOf(false) }
+
     val alturaInter by animateFloatAsState(
         targetValue = if (show_interacciones) altura else 0f,
         animationSpec = tween(durationMillis = 300) // duración
@@ -88,6 +88,9 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                             .padding(vertical = 10.dp)
                             .clickable {
                                 show_interacciones = !show_interacciones
+                                show_desc = false
+                                show_regis = false
+                                show_evos = false
                                 Log.d("EQUIPO", equipo.toString())
                             },
                     )

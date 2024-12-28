@@ -358,6 +358,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
 var show_regis by mutableStateOf(false)
 var show_desc by mutableStateOf(false)
 var show_evos by mutableStateOf(false)
+var show_interacciones by mutableStateOf(false)
 var desde_evos by mutableStateOf(false)
 @Composable
 fun LineaEvo(evos: List<PokemonFB>,opc:Int){
@@ -396,6 +397,9 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                             .padding(vertical = 10.dp)
                             .clickable {
                                 show_evos = !show_evos
+                                show_interacciones=false
+                                show_regis = false
+                                show_desc = false
                             },
                     )
 
@@ -438,6 +442,9 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                             .padding(vertical = 10.dp)
                             .clickable {
                                 show_regis = !show_regis
+                                show_interacciones=false
+                                show_evos = false
+                                show_desc = false
                             },
                     )
 
@@ -516,6 +523,7 @@ fun MuestraDesc(desc: String) {
                     .padding(vertical = 10.dp)
                     .clickable {
                         show_desc = !show_desc
+                        show_interacciones=false
                         show_regis = false
                         show_evos = false
                         Log.d("ALTURA TEXTO", textHeight.toString())
