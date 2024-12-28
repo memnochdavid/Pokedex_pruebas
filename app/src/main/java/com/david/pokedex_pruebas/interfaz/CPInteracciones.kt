@@ -170,7 +170,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                     }
                 }
                 2->{//fortalezas y debilidades acumuladas del equipo
-
+                    altura=(altura+5)*16//se calcula la altura de la columna más grande, y se le aplica a todas
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -223,7 +223,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                                 .verticalScroll(state = rememberScrollState())
                                 .padding(vertical = 10.dp)
                                 .background(colorResource(id = R.color.transparente))
-                                //.height(altura.dp),
+                                //.height(altura.dp)
                                 .wrapContentHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Top
@@ -246,7 +246,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                                 .verticalScroll(state = rememberScrollState())
                                 .padding(vertical = 10.dp)
                                 .background(colorResource(id = R.color.transparente))
-                                //.height(altura.dp),
+                                //.height(altura.dp)
                                 .wrapContentHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Top

@@ -78,12 +78,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
-private lateinit var refBBDD: DatabaseReference
+//private lateinit var refBBDD: DatabaseReference
+var index by mutableStateOf(0)
 @Composable
 fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
 //    var arrayPoke=ArrayList<PokemonFB>()
 //    arrayPoke.addAll(listaPokeFireBase)
-    refBBDD = FirebaseDatabase.getInstance().reference
+    //refBBDD = FirebaseDatabase.getInstance().reference
     var isPressed by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val scale = animateFloatAsState(
@@ -128,14 +129,18 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                             }
                             //isPressed = false
                             //intent a ComposeVistaActivity
-                            val index = pokemon.num - 1
-                            val intent = Intent(context, ComposeVistaActivity::class.java)
-                            //intent.putParcelableArrayListExtra("lista", arrayPoke)
-                            intent.putExtra("sesion", usuario_key)
-                            intent.putExtra("indice", index)
-                            context.startActivity(intent)
-                            //oculta campo de búsqueda
-                            campoBusqueda = false
+                            index = pokemon.num - 1
+                            //seleccionado= listaPokeFireBase[index]
+                            if(opc!=3){
+                                val intent = Intent(context, ComposeVistaActivity::class.java)
+                                //intent.putParcelableArrayListExtra("lista", arrayPoke)
+                                intent.putExtra("sesion", usuario_key)
+                                intent.putExtra("indice", index)
+                                context.startActivity(intent)
+                                //oculta campo de búsqueda
+                                desde_evos=false
+                                campoBusqueda = false
+                            }
                         }
                     )
                 }
@@ -319,7 +324,9 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                         indication = null, // Remove default ripple effect
 
                         onClick = {
-
+                            index = pokemon.num - 1
+                            desde_evos=true
+                            //seleccionado= listaPokeFireBase[index]
                         }
                     )
                     .indication(
@@ -335,16 +342,6 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                                 } finally {
                                     isPressed = false // Reset isPressed in finally block
                                 }
-                                //isPressed = false
-                                //intent a ComposeVistaActivity
-                                val index = pokemon.num - 1
-                                val intent = Intent(context, ComposeVistaActivity::class.java)
-                                //intent.putParcelableArrayListExtra("lista", arrayPoke)
-                                intent.putExtra("sesion", usuario_key)
-                                intent.putExtra("indice", index)
-                                context.startActivity(intent)
-                                //oculta campo de búsqueda
-                                campoBusqueda = false
                             }
                         )
                     }
@@ -355,10 +352,11 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
 
 }
 
+var show_evos by mutableStateOf(false)
+var desde_evos by mutableStateOf(false)
 @Composable
 fun LineaEvo(evos: List<PokemonFB>){
 
-    var show_evos by remember { mutableStateOf(false) }
     val alturaEvos by animateFloatAsState(
         targetValue = if (show_evos) 250f else 0f,
         animationSpec = tween(durationMillis = 300) // duración

@@ -81,8 +81,8 @@ import kotlinx.coroutines.delay
 
 
 //para firebase
-private lateinit var refBBDD: DatabaseReference
-private lateinit var usuario_key: String
+//private lateinit var refBBDD: DatabaseReference
+//private lateinit var usuario_key: String
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "67542604001bce94410d"
@@ -105,13 +105,13 @@ var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
 class ComposeListaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        refBBDD = FirebaseDatabase.getInstance().reference
-
+        //refBBDD = FirebaseDatabase.getInstance().reference
+/*
         if (intent.hasExtra("sesion")) {
             usuario_key = intent.getStringExtra("sesion").toString()
         }else{
             usuario_key = ""
-        }
+        }*/
 
 
         //var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
@@ -136,7 +136,7 @@ class ComposeListaActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaPokeFireBase, isLoading,usuario_key)//FireBase,AppWrite -- false
+            VerListaPoke(listaPokeFireBase, isLoading)//FireBase,AppWrite -- false
             scope = rememberCoroutineScope()
         }
 
@@ -155,7 +155,7 @@ class ComposeListaActivity : ComponentActivity() {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,usuario_key:String) {
+fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
     //var selectedItemIndex by remember { mutableStateOf(0) }
     //var sesion = UsuarioFromKey(usuario_key, refBBDD)
 
@@ -239,7 +239,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean,usuario_key:St
                         },
                     horizontalArrangement = Arrangement.End
                 ){
-                    UserButton(context, usuario_key)
+                    UserButton(context)
                 }
 
                 LazyColumn(

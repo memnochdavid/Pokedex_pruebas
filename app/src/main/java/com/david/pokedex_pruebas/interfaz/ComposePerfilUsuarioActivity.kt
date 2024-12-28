@@ -69,9 +69,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.File
 
 //private lateinit var sesionUser: ArrayList<UserFb>
-private lateinit var refBBDD: DatabaseReference
+//private lateinit var refBBDD: DatabaseReference
 lateinit var scopeUpdate: CoroutineScope
-private lateinit var usuario_key: String
+//private lateinit var usuario_key: String
 
 var mostrar by mutableStateOf("")
 var id_receptor by mutableStateOf("")
@@ -80,13 +80,13 @@ var muestra_perfil by mutableStateOf(true)
 var equipo_lista: MutableStateFlow<List<PokemonFB>> = MutableStateFlow(emptyList())
 
 class ComposePerfilUsuarioActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {/*
         if (intent.hasExtra("sesion")) {
             usuario_key = intent.getStringExtra("sesion").toString()
         }else{
             usuario_key = ""
-        }
-        refBBDD = FirebaseDatabase.getInstance().reference
+        }*/
+        //refBBDD = FirebaseDatabase.getInstance().reference
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -175,7 +175,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                         .background(colorResource(R.color.lista_con_foco)),
                     verticalArrangement = Arrangement.Center
                 ){
-                    UserButton( context, usuario_key)
+                    UserButton(context)
                 }
                 Spacer(modifier = Modifier.weight(0.05f))//horizontal
 
@@ -784,7 +784,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
-
+/*
                         //AÑADE las EVOS de los pokemon
                         Row(
                             modifier = Modifier
@@ -828,8 +828,8 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             {
                                 Text("EVOS")
                             }
-                        }
-
+                        }*/
+/*
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
@@ -911,7 +911,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-
+*/
                     }
                 }
             }

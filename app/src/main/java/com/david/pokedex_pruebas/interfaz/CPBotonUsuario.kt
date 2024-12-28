@@ -28,10 +28,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 
-private lateinit var refBBDD: DatabaseReference
+//private lateinit var refBBDD: DatabaseReference
 @Composable
-fun UserButton(context: Context, usuario_key: String){
-    refBBDD = FirebaseDatabase.getInstance().reference
+fun UserButton(context: Context){
+    //refBBDD = FirebaseDatabase.getInstance().reference
 
     val sesion= UsuarioFromKey( usuario_key, refBBDD)
 

@@ -106,7 +106,7 @@ fun Chat(receptor_key: String, sesion_key: String, mostrar: String,onMostrarChan
                     .padding(horizontal = 10.dp),
                 verticalArrangement = Arrangement.Center
             ){
-                receptor.key?.let { UserButton(context, it) }
+                UserButton(context)
             }
             Column(
                 modifier = Modifier

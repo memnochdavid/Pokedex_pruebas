@@ -63,6 +63,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -79,45 +80,46 @@ import java.util.concurrent.CountDownLatch
 
 //firebase
 
-private lateinit var refBBDD: DatabaseReference
-private lateinit var usuario_key: String
-    /*
-    private lateinit var refStorage: StorageReference
-    private lateinit var urlImagen: Uri
-    private lateinit var identificador: String*/
-
-
-
+//private lateinit var refBBDD: DatabaseReference
+//private lateinit var usuario_key: String
 
 class ComposeVistaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        refBBDD = FirebaseDatabase.getInstance().reference
-
+        //refBBDD = FirebaseDatabase.getInstance().reference
+/*
         if (intent.hasExtra("sesion")) {
             usuario_key = intent.getStringExtra("sesion").toString()
         }else{
             usuario_key = ""
-        }
-        val indice = intent.getIntExtra("indice", 0)
+        }*/
+        //val indice = intent.getIntExtra("indice", 0)
         //descargamos la lista de pokemon
 
         setContent{
-            VerListaPokemon(listaPokeFireBase, indice, usuario_key, this, refBBDD)
+            VerListaPokemon(this)
             //VerPokemon(lista[45])
         }
     }
 }
 
-
+//var seleccionado by mutableStateOf(PokemonFB(0,"",0,"","", ""))
 
 @Composable
 fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
+
     val num=pokemon.num
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
+/*
+    LaunchedEffect (seleccionado){
+        pokemon=seleccionado
+    }
+    LaunchedEffect (index){
+        pokemon=listaPokeFireBase[index]
+    }*/
 
     var mediaPlayer: MediaPlayer? = null
 
@@ -336,7 +338,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             //bottom.linkTo(interacciones.top)
                         }
                         .width(300.dp)
-                        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 30.dp),
+                        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                         text = pokemon.desc,
                         fontSize = 18.sp)
 
@@ -383,20 +385,25 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, context: Context, refBBDD: DatabaseReference) {
+fun VerListaPokemon(context: Context) {
 
-    //val usuario=UsuarioFromKey(usuario_key, refBBDD)
 
     val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex = indice
+        initialFirstVisibleItemIndex = index,
     )
+    LaunchedEffect(index) {
+        listState.scrollToItem(index)
+        if(desde_evos){
+            show_evos=true
+        }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .zIndex(2f),
         horizontalArrangement = Arrangement.End
     ) {
-        UserButton(context, usuario_key)
+        UserButton(context)
     }
     LazyRow(
         state = listState,
@@ -404,7 +411,7 @@ fun VerListaPokemon(lista: List<PokemonFB>, indice:Int, usuario_key: String, con
             .fillMaxSize(),
         flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
     ){
-        items(lista) { pokemon ->
+        items(listaPokeFireBase) { pokemon ->
 
             var color1: Color=colorResource(id = enumToColorFB(pokemon.tipo[0]))
             var color2: Color=colorResource(id = enumToColorFB(pokemon.tipo[0]))

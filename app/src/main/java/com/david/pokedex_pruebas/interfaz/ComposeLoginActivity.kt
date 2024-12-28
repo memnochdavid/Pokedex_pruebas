@@ -58,11 +58,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 
-private lateinit var refBBDD: DatabaseReference
-private lateinit var usuario_key: String
+var refBBDD by mutableStateOf<DatabaseReference>(FirebaseDatabase.getInstance().reference)
+var usuario_key by mutableStateOf("")
 
 class ComposeLoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         if (intent.hasExtra("sesion")) {
             usuario_key = intent.getStringExtra("sesion").toString()
         }else{
@@ -176,7 +177,7 @@ fun Login() {
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                refBBDD = FirebaseDatabase.getInstance().reference
+                //refBBDD = FirebaseDatabase.getInstance().reference
                 if (email.isNotEmpty() && password.isNotEmpty()) {
                     refBBDD.child("usuarios")
                         .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -191,6 +192,7 @@ fun Login() {
                                         intent.putExtra("sesion", checkUser.key)
                                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                         context.startActivity(intent)
+                                        usuario_key = checkUser.key.toString()
                                         break
                                     }
                                 }

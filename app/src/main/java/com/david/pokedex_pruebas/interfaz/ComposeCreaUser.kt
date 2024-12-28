@@ -71,7 +71,7 @@ import kotlin.io.path.createFile
 import kotlinx.coroutines.flow.collect
 
 //para firebase
-private lateinit var refBBDD: DatabaseReference
+//private lateinit var refBBDD: DatabaseReference
 private lateinit var identificador: String
 //private lateinit var urlImagen: Uri
 lateinit var scopeUser: CoroutineScope
@@ -111,7 +111,7 @@ fun FormNewUser(scopeUser: CoroutineScope) {
                 selectedImageUri = uri
             }
         )
-        var arraySesion=ArrayList<UserFb>()
+        //var arraySesion=ArrayList<UserFb>()
         val (col1)=createRefs()
         Column(
             modifier = Modifier
