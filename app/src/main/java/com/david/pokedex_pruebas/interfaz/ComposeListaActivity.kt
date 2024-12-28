@@ -412,8 +412,8 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
-                                    verticalArrangement = Arrangement.spacedBy((-8).dp), // Add vertical spacing
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp) // Add horizontal spacing
+                                    verticalArrangement = Arrangement.spacedBy((0).dp), // Add vertical spacing
+                                    horizontalArrangement = Arrangement.spacedBy(0.dp) // Add horizontal spacing
                                 ) {
                                     items(generations) { generation ->
                                         Row(verticalAlignment = Alignment.CenterVertically) {
