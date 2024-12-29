@@ -65,7 +65,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.david.pokedex_pruebas.modelo.UnonwnFormas
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.debilidadesEquipo
 import com.david.pokedex_pruebas.modelo.debsFB
@@ -312,7 +314,7 @@ fun PokemonCard(pokemon: PokemonFB, usuario_key: String, opc: Int) {
                     .padding(top = 5.dp, end = 15.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = com.android.car.ui.R.drawable.car_ui_icon_close),
+                    painter = painterResource(id = R.drawable.close),
                     contentDescription = "Descripción del icono" // Agrega una descripción de contenido
                 )
             }
@@ -359,7 +361,177 @@ var show_regis by mutableStateOf(false)
 var show_desc by mutableStateOf(false)
 var show_evos by mutableStateOf(false)
 var show_interacciones by mutableStateOf(false)
+var show_formas_unown by mutableStateOf(false)
 var desde_evos by mutableStateOf(false)
+
+@Composable
+fun FormasUnown(formas: List<UnonwnFormas>){
+    val alturaFormas by animateFloatAsState(
+        targetValue = if (show_formas_unown) 110f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+    var listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = 1
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text ="Formas Unown",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        show_formas_unown = !show_formas_unown
+                        show_evos=false
+                        show_interacciones=false
+                        show_regis = false
+                        show_desc = false
+                    },
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(alturaFormas.dp)
+        ){
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxSize(),
+                flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+            ){
+                items(formas){forma ->
+                    UnownCard(forma)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun UnownCard(unown: UnonwnFormas){
+    var isPressed by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = animateFloatAsState(
+        targetValue = if (isPressed) 0.90f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+            stiffness = Spring.StiffnessMedium // Moderate stiffness
+        )
+    )
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val(foto,forma)=createRefs()
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .scale(scale.value)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null, // Remove default ripple effect
+
+                    onClick = {
+                        //
+                    }
+                )
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = null
+                )
+                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
+                    detectTapGestures(
+                        onPress = {
+
+
+                            isPressed = true
+                            try {
+                                awaitRelease()
+                            } finally {
+                                isPressed = false // Reset isPressed in finally block
+                            }
+
+
+                        }
+                    )
+                }
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .background(colorResource(R.color.objeto_lista))
+                    .padding(end = 30.dp)
+            ) {
+                //imagen local
+                Image(
+                    painter = painterResource(id = unown.foto),
+                    contentDescription = "Pokeball",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .constrainAs(foto) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+                /*
+                                    //imagen remota
+                                    AsyncImage(
+                                        model = unown.imagenFB,
+                                        contentDescription = "Pokemon Image",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .fillMaxSize()
+                                            .constrainAs(avatar) {
+                                                start.linkTo(parent.start)
+                                                top.linkTo(parent.top)
+                                                bottom.linkTo(parent.bottom)
+                                            }
+                                    )
+                                    */
+                Text(
+                    text = unown.name,
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .constrainAs(forma) {
+                            start.linkTo(foto.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        }
+                )
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 @Composable
 fun LineaEvo(evos: List<PokemonFB>,opc:Int){
 
@@ -400,6 +572,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                                 show_interacciones=false
                                 show_regis = false
                                 show_desc = false
+                                show_formas_unown=false
                             },
                     )
 
@@ -445,6 +618,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                                 show_interacciones=false
                                 show_evos = false
                                 show_desc = false
+                                show_formas_unown=false
                             },
                     )
 
@@ -526,6 +700,7 @@ fun MuestraDesc(desc: String) {
                         show_interacciones=false
                         show_regis = false
                         show_evos = false
+                        show_formas_unown=false
                         Log.d("ALTURA TEXTO", textHeight.toString())
                     },
             )

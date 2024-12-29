@@ -74,6 +74,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
 import com.david.pokedex_pruebas.modelo.enumToDrawable2FB
+import com.david.pokedex_pruebas.modelo.formasUnown
 import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
 import java.util.concurrent.CountDownLatch
@@ -140,7 +141,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos,regis) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos,regis,formas_unown) = createRefs()
         //imagen remote
 /*
         val painter = rememberAsyncImagePainter(
@@ -284,7 +285,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             }
                     ) {
                         Icon(
-                            painter = painterResource(id = com.android.car.ui.R.drawable.car_ui_icon_add),
+                            painter = painterResource(id = R.drawable.add),
                             contentDescription = "Descripción del icono" // Agrega una descripción de contenido
                         )
                     }
@@ -391,7 +392,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 top.linkTo(evos.bottom)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(formas_unown.top)
                             }
                     ){
                         val regisPoke= formasRegionales(pokemon)
@@ -399,6 +400,24 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             LineaEvo(regisPoke,2)//opc 2 para que devuelva formas regionales
                         }
                     }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            //.padding(vertical = 10.dp)????????
+                            .background(colorResource(id = R.color.electrico))
+                            .constrainAs(formas_unown) {
+                                top.linkTo(regis.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ){
+                        if(pokemon.name.contains("Unown")){
+                            FormasUnown(formasUnown)
+                        }
+                    }
+
                 }
 
             }

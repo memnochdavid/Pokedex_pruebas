@@ -33,6 +33,20 @@ data class PokemonFB(
     ) : this(num, gen, foto, null, name, desc, tipo, evos)
 }
 
+@Parcelize
+data class UnonwnFormas(
+    var name:String="",
+    var foto:Int=0,
+    var imagenFB: String? = null,//soporte en la nube
+    var key: String? = null,
+    var stability:Int=0
+):Serializable, Parcelable{
+    constructor(
+        name: String,
+        foto: Int,
+    ) : this(name, foto, null)
+}
+
 enum class PokemonTipoFB(val tag: String) {
     PLANTA("planta"),
     AGUA("agua"),
@@ -427,7 +441,87 @@ fun limpiaNombrePoke(nombre:String):String{
     return nombrePokeLimpio
 }
 
+
+
+var formasUnown:List<UnonwnFormas> = listOf(
+    UnonwnFormas("A",R.drawable.unonwna),
+    UnonwnFormas("B",R.drawable.unonwnb),
+    UnonwnFormas("C",R.drawable.unonwnc),
+    UnonwnFormas("D",R.drawable.unonwnd),
+    UnonwnFormas("E",R.drawable.unonwne),
+    UnonwnFormas("F",R.drawable.unonwnf),
+    UnonwnFormas("G",R.drawable.unonwng),
+    UnonwnFormas("H",R.drawable.unonwnh),
+    UnonwnFormas("I",R.drawable.unonwni),
+    UnonwnFormas("J",R.drawable.unonwnj),
+    UnonwnFormas("K",R.drawable.unonwnk),
+    UnonwnFormas("L",R.drawable.unonwnl),
+    UnonwnFormas("M",R.drawable.unonwnm),
+    UnonwnFormas("N",R.drawable.unonwnn),
+    UnonwnFormas("O",R.drawable.unonwno),
+    UnonwnFormas("P",R.drawable.unonwnp),
+    UnonwnFormas("Q",R.drawable.unonwnq),
+    UnonwnFormas("R",R.drawable.unonwnr),
+    UnonwnFormas("S",R.drawable.unonwns),
+    UnonwnFormas("T",R.drawable.unonwnt),
+    UnonwnFormas("U",R.drawable.unonwnu),
+    UnonwnFormas("V",R.drawable.unonwnv),
+    UnonwnFormas("W",R.drawable.unonwnw),
+    UnonwnFormas("X",R.drawable.unonwnx),
+    UnonwnFormas("Y",R.drawable.unonwny),
+    UnonwnFormas("Z",R.drawable.unonwnz)
+)
+
+var evosGigamax:List<PokemonFB> = listOf(
+    PokemonFB(3,"",R.drawable.gigamaxvenusaur,"Venusaur Gigamax","", listOf(), listOf()),
+    PokemonFB(6,"",R.drawable.gigamaxcharizard,"Charizard Gigamax","", listOf(), listOf()),
+    PokemonFB(9,"",R.drawable.gigamaxblastoise,"Blastoise Gigamax","", listOf(), listOf()),
+    PokemonFB(12,"",R.drawable.gigamaxbutterfree,"Butterfree Gigamax","", listOf(), listOf()),
+    PokemonFB(25,"",R.drawable.gigamaxpikachu,"Pikachu Gigamax","", listOf(), listOf()),
+    PokemonFB(52,"",R.drawable.gigamaxmeowth,"Meowth Gigamax","", listOf(), listOf()),
+    PokemonFB(67,"",R.drawable.gigamaxmachamp,"Machamp Gigamax","", listOf(), listOf()),
+    PokemonFB(94,"",R.drawable.gigamaxgengar,"Gengar Gigamax","", listOf(), listOf()),
+    PokemonFB(99,"",R.drawable.gigamaxkingler,"Kingler Gigamax","", listOf(), listOf()),
+    PokemonFB(131,"",R.drawable.gigamaxlapras,"Lapras Gigamax","", listOf(), listOf()),
+    PokemonFB(133,"",R.drawable.gigamaxeevee,"Eevee Gigamax","", listOf(), listOf()),
+    PokemonFB(143,"",R.drawable.gigamaxsnorlax,"Snorlax Gigamax","", listOf(), listOf()),
+    PokemonFB(569,"",R.drawable.gigamaxgarbodor,"Garbodor Gigamax","", listOf(), listOf()),
+    PokemonFB(809,"",R.drawable.gigamaxmelmetal,"Melmetal Gigamax","", listOf(), listOf()),
+    PokemonFB(812,"",R.drawable.gigamaxrillaboom,"Rillaboom Gigamax","", listOf(), listOf()),
+    PokemonFB(815,"",R.drawable.gigamaxcinderace,"Cinderace Gigamax","", listOf(), listOf()),
+    PokemonFB(817,"",R.drawable.gigamaxinteleon,"Inteleon Gigamax","", listOf(), listOf()),
+    PokemonFB(823,"",R.drawable.gigamaxcorviknight,"Corviknight Gigamax","", listOf(), listOf()),
+    PokemonFB(826,"",R.drawable.gigamaxorbeetle,"Orbeetle Gigamax","", listOf(), listOf()),
+    PokemonFB(834,"",R.drawable.gigamaxdrednaw,"Drednaw Gigamax","", listOf(), listOf()),
+    PokemonFB(839,"",R.drawable.gigamaxcoalossal,"Coalossal Gigamax","", listOf(), listOf()),
+    PokemonFB(841,"",R.drawable.gigamaxflapple,"Flapple Gigamax","", listOf(), listOf()),
+    PokemonFB(842,"",R.drawable.gigamaxappletun,"Appletun Gigamax","", listOf(), listOf()),
+    PokemonFB(844,"",R.drawable.gigamaxsandaconda,"Sandaconda Gigamax","", listOf(), listOf()),
+    PokemonFB(849,"",R.drawable.gigamaxtoxtricity,"Toxtricity Gigamax","", listOf(), listOf()),
+    PokemonFB(850,"",R.drawable.gigamaxcentiskorch,"Centiskorch Gigamax","", listOf(), listOf()),
+    PokemonFB(858,"",R.drawable.gigamaxhatterene,"Hatterene Gigamax","", listOf(), listOf()),
+    PokemonFB(861,"",R.drawable.gigamaxgrimmsnarl,"Grimmsnarl Gigamax","", listOf(), listOf()),
+    PokemonFB(869,"",R.drawable.gigamaxalcremie,"Alcremie Gigamax","", listOf(), listOf()),
+    PokemonFB(879,"",R.drawable.gigamaxcopperajah,"Copperajah Gigamax","", listOf(), listOf()),
+    PokemonFB(884,"",R.drawable.gigamaxduraludon,"Duraludon Gigamax","", listOf(), listOf()),
+    PokemonFB(892,"",R.drawable.gigamaxurshifubrusco,"Urshifu Brusco Gigamax","", listOf(), listOf()),
+    PokemonFB(892,"",R.drawable.gigamaxurshifufluido,"Urshifu Fluído Gigamax","", listOf(), listOf()),
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 var listaPokeFB : List<PokemonFB> = listOf(
+
 /*
     PokemonFB(1,"1",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(2,"1",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
@@ -1519,9 +1613,7 @@ var listaPokeFB : List<PokemonFB> = listOf(
 
 */
 
-
-
-    )
+)
 
 
 

@@ -91,6 +91,7 @@ fun Interacciones(pokemon: PokemonFB, equipo:List<PokemonFB>, opc:Int){
                                 show_desc = false
                                 show_regis = false
                                 show_evos = false
+                                show_formas_unown=false
                                 Log.d("EQUIPO", equipo.toString())
                             },
                     )
