@@ -30,72 +30,111 @@ import kotlinx.coroutines.Dispatchers
 
 //private lateinit var refBBDD: DatabaseReference
 @Composable
-fun UserButton(context: Context){
+fun UserButton(context: Context, opc:Int){
     //refBBDD = FirebaseDatabase.getInstance().reference
+    val sesion= UsuarioFromKey(usuario_key, refBBDD)
+    val placeholder = R.drawable.placeholder
+    val imageUrl = sesion.avatar
 
-    val sesion= UsuarioFromKey( usuario_key, refBBDD)
+    val listener = object : ImageRequest.Listener {
+        override fun onError(request: ImageRequest, result: ErrorResult) {
+            super.onError(request, result)
+        }
 
-    IconButton(
-        onClick = {//para abrir el activity perfil de usuario
+        override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+            super.onSuccess(request, result)
+        }
+    }
+    val imageRequest = ImageRequest.Builder(context)
+        .data(imageUrl)
+        //.listener(listener)//esto evita que parpadee el avatar, pero requiere reiniciar la app para cambiar la imagen
+        .dispatcher(Dispatchers.IO)
+        .memoryCacheKey(imageUrl)
+        .diskCacheKey(imageUrl)
+        .placeholder(placeholder)
+        .error(placeholder)
+        .fallback(placeholder)
+        .diskCachePolicy(CachePolicy.DISABLED)
+        .memoryCachePolicy(CachePolicy.DISABLED)
+        .build()
 
-            val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
-            intent.putExtra("sesion", sesion.key)
-            context.startActivity(intent)
+    when(opc){
+        1 -> {
+            IconButton(
+                onClick = {//para abrir el activity perfil de usuario
 
-        },
-        modifier = Modifier
-            .size(90.dp)
-            .padding(10.dp)
-    ) {
+                    val intent = Intent(context, ComposePerfilUsuarioActivity::class.java)
+                    intent.putExtra("sesion", sesion.key)
+                    context.startActivity(intent)
 
-        Surface(modifier = Modifier.fillMaxSize()) {
+                },
+                modifier = Modifier
+                    .size(90.dp)
+                    .padding(10.dp)
+            ) {
 
-            val placeholder = R.drawable.placeholder
-            val imageUrl = sesion.avatar
+                Surface(modifier = Modifier.fillMaxSize()) {
 
-            val listener = object : ImageRequest.Listener {
-                override fun onError(request: ImageRequest, result: ErrorResult) {
-                    super.onError(request, result)
-                }
 
-                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                    super.onSuccess(request, result)
+
+                    // Load and display the image with AsyncImage
+                    AsyncImage(
+                        model = imageRequest,
+                        contentDescription = "Image Description",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(colorResource(R.color.fuego))
+                    )
+                    /*
+                            AsyncImage(
+                                model = sesion.avatar,
+                                contentDescription = "avatar de usuario",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape)
+                                    .background(colorResource(R.color.fuego))
+                            )*/
                 }
             }
-            val imageRequest = ImageRequest.Builder(context)
-                .data(imageUrl)
-                .listener(listener)
-                .dispatcher(Dispatchers.IO)
-                .memoryCacheKey(imageUrl)
-                .diskCacheKey(imageUrl)
-                .placeholder(placeholder)
-                .error(placeholder)
-                .fallback(placeholder)
-                .diskCachePolicy(CachePolicy.DISABLED)
-                .memoryCachePolicy(CachePolicy.DISABLED)
-                .build()
+        }
+        2 -> {
+            IconButton(
+                onClick = {
 
-            // Load and display the image with AsyncImage
-            AsyncImage(
-                model = imageRequest,
-                contentDescription = "Image Description",
-                contentScale = ContentScale.Crop,
+                    //se muestra la img del perfil en grande
+
+                },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-                    .background(colorResource(R.color.fuego))
-            )
+                    .size(90.dp)
+                    .padding(10.dp)
+            ) {
 
-/*
-        AsyncImage(
-            model = sesion.avatar,
-            contentDescription = "avatar de usuario",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(CircleShape)
-                .background(colorResource(R.color.fuego))
-        )*/
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    // Load and display the image with AsyncImage
+                    AsyncImage(
+                        model = imageRequest,
+                        contentDescription = "Image Description",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(colorResource(R.color.fuego))
+                    )
+                    /*
+                            AsyncImage(
+                                model = sesion.avatar,
+                                contentDescription = "avatar de usuario",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape)
+                                    .background(colorResource(R.color.fuego))
+                            )*/
+                }
+            }
         }
     }
 }

@@ -427,7 +427,7 @@ fun VerListaPokemon(context: Context) {
             .zIndex(2f),
         horizontalArrangement = Arrangement.End
     ) {
-        UserButton(context)
+        UserButton(context,1)//opc 1 para que no abra otra instancia de la actividad del perfil
     }
     LazyRow(
         state = listState,

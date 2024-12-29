@@ -11,6 +11,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.checkScrollableContainerConstraints
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -247,7 +248,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                         },
                     horizontalArrangement = Arrangement.End
                 ){
-                    UserButton(context)
+                    UserButton(context,1)//opc 1 para que abra la actividad del perfil
                 }
 
                 LazyColumn(
@@ -280,6 +281,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                     onClick = {
                         campoBusqueda = !campoBusqueda
                         tipoBuscado1=""
+                        tipoBuscado2=""
                         textobusqueda=""
                     },
                     modifier = Modifier
@@ -358,7 +360,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                         Column(
                             modifier = Modifier
                                 .fillMaxHeight()
-                                .weight(0.8f)//weight horizontal
+                                .weight(0.75f)//weight horizontal
                                 .padding(horizontal = 30.dp),
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -412,8 +414,9 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
-                                    verticalArrangement = Arrangement.spacedBy((0).dp), // Add vertical spacing
-                                    horizontalArrangement = Arrangement.spacedBy(0.dp) // Add horizontal spacing
+                                    verticalArrangement = Arrangement.Top,
+                                    horizontalArrangement = Arrangement.spacedBy(0.dp), // Add horizontal spacing
+
                                 ) {
                                     items(generations) { generation ->
                                         Row(verticalAlignment = Alignment.CenterVertically) {

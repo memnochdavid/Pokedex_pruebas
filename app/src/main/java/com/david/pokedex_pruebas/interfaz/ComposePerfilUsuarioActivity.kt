@@ -177,7 +177,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                         .background(colorResource(R.color.lista_con_foco)),
                     verticalArrangement = Arrangement.Center
                 ){
-                    UserButton(context)
+                    UserButton(context,2)//opc 2 para que no abra otra instancia de la actividad
                 }
                 Spacer(modifier = Modifier.weight(0.05f))//horizontal
 

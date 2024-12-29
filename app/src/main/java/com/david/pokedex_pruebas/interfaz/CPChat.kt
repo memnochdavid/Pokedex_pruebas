@@ -106,7 +106,7 @@ fun Chat(receptor_key: String, sesion_key: String, mostrar: String,onMostrarChan
                     .padding(horizontal = 10.dp),
                 verticalArrangement = Arrangement.Center
             ){
-                UserButton(context)
+                UserButton(context,2)//opc 2 para que no abra otra instancia de la actividad
             }
             Column(
                 modifier = Modifier
