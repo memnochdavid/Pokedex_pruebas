@@ -48,8 +48,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
+import com.david.pokedex_pruebas.api.ListaPokeApi
+import com.david.pokedex_pruebas.api.PokeInfoViewModel
+import com.david.pokedex_pruebas.api.PokemonScreen
 import com.david.pokedex_pruebas.modelo.UserFb
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -788,6 +792,28 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
+                        var viewModel = PokeInfoViewModel()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.Yellow)
+                                .constrainAs(fb) {
+                                    start.linkTo(parent.start)
+                                    top.linkTo(usuarios.bottom)
+                                    bottom.linkTo(parent.bottom)
+                                },
+                            horizontalArrangement = Arrangement.Start
+                        ){
+                            ListaPokeApi(viewModel)
+                        }
+
+
+
+
+
+
+
+
                         /*
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
@@ -872,7 +898,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
 */
-
+/*
                         //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs - megaevos y gigamax
                         Row(
                             modifier = Modifier
@@ -958,7 +984,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-
+*/
                     }
                 }
             }
