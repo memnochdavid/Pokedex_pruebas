@@ -363,6 +363,7 @@ var show_evos by mutableStateOf(false)
 var show_interacciones by mutableStateOf(false)
 var show_formas_unown by mutableStateOf(false)
 var show_gigamax by mutableStateOf(false)
+var show_megaevos by mutableStateOf(false)
 var desde_evos by mutableStateOf(false)
 
 @Composable
@@ -419,7 +420,6 @@ fun FormasUnown(formas: List<UnonwnFormas>){
         }
     }
 }
-
 @Composable
 fun UnownCard(unown: UnonwnFormas){
     var isPressed by remember { mutableStateOf(false) }
@@ -541,7 +541,7 @@ fun GigamaxEvos(evo: PokemonFB){
             horizontalArrangement = Arrangement.Center
         ){
             Text(
-                text ="Formas Gigamax",
+                text ="Forma Gigamax",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -551,7 +551,7 @@ fun GigamaxEvos(evo: PokemonFB){
                     .clickable {
                         show_gigamax=!show_gigamax
                         seleccionado=PokemonFB(0,"",0,"","", "")
-
+                        show_megaevos=false
                         show_formas_unown =false
                         show_evos=false
                         show_interacciones=false
@@ -673,7 +673,161 @@ fun GigamaxCard(gigamax: PokemonFB){
     }
 }
 
+@Composable
+fun MegaEvos(evos: List<PokemonFB>){
+    val alturaFormas by animateFloatAsState(
+        targetValue = if (show_megaevos) 110f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+    var listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = 1
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text ="Mega Evolución",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        show_megaevos=!show_megaevos
+                        seleccionado=PokemonFB(0,"",0,"","", "")
 
+                        show_gigamax=false
+                        show_formas_unown =false
+                        show_evos=false
+                        show_interacciones=false
+                        show_regis = false
+                        show_desc = false
+                    },
+            )
+        }
+        LazyRow(
+            modifier = Modifier
+                .fillMaxSize()
+                .height(alturaFormas.dp),
+            flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+        ){
+            items(evos){evo ->
+                MegaEvoCard(evo)
+            }
+        }
+    }
+}
+@Composable
+fun MegaEvoCard(megaEvo: PokemonFB){
+    var isPressed by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = animateFloatAsState(
+        targetValue = if (isPressed) 0.90f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+            stiffness = Spring.StiffnessMedium // Moderate stiffness
+        )
+    )
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val(foto,forma)=createRefs()
+        Card(
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .scale(scale.value)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null, // Remove default ripple effect
+
+                    onClick = {
+
+                    }
+                )
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = null
+                )
+                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
+                    detectTapGestures(
+                        onPress = {
+
+
+                            isPressed = true
+                            try {
+                                awaitRelease()
+                            } finally {
+                                isPressed = false // Reset isPressed in finally block
+                            }
+                            seleccionado=megaEvo
+
+                        }
+                    )
+                }
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .background(colorResource(R.color.objeto_lista))
+                    .padding(end = 30.dp)
+            ) {
+                //imagen local
+                Image(
+                    painter = painterResource(id = megaEvo.foto),
+                    contentDescription = "Pokeball",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .constrainAs(foto) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+                /*
+                                    //imagen remota
+                                    AsyncImage(
+                                        model = unown.imagenFB,
+                                        contentDescription = "Pokemon Image",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .fillMaxSize()
+                                            .constrainAs(avatar) {
+                                                start.linkTo(parent.start)
+                                                top.linkTo(parent.top)
+                                                bottom.linkTo(parent.bottom)
+                                            }
+                                    )
+                                    */
+                Text(
+                    text = megaEvo.name,
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .constrainAs(forma) {
+                            start.linkTo(foto.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        }
+                )
+            }
+        }
+    }
+}
 
 
 
@@ -718,6 +872,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                             .clickable {
                                 show_evos = !show_evos
                                 show_gigamax=false
+                                show_megaevos=false
                                 show_interacciones=false
                                 show_regis = false
                                 show_desc = false
@@ -768,6 +923,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                                 show_gigamax=false
                                 show_evos = false
                                 show_desc = false
+                                show_megaevos=false
                                 show_formas_unown=false
                             },
                     )
@@ -850,6 +1006,7 @@ fun MuestraDesc(desc: String) {
                         show_interacciones=false
                         show_regis = false
                         show_evos = false
+                        show_megaevos=false
                         show_gigamax=false
                         show_formas_unown=false
                         Log.d("ALTURA TEXTO", textHeight.toString())

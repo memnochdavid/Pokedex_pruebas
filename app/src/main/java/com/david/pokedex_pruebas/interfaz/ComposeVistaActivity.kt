@@ -75,6 +75,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
 import com.david.pokedex_pruebas.modelo.enumToDrawable2FB
 import com.david.pokedex_pruebas.modelo.evosGigamax
+import com.david.pokedex_pruebas.modelo.evosMega
 import com.david.pokedex_pruebas.modelo.formasUnown
 import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
@@ -183,7 +184,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
         //imagen local
 
         Image(
-            painter = painterResource(id = if(show_gigamax && seleccionado.num!=0) seleccionado.foto else pokemon.foto),
+            painter = painterResource(id = if((show_gigamax && seleccionado.num!=0)|| ((show_megaevos && seleccionado.num!=0))) seleccionado.foto else pokemon.foto),
             contentDescription = "Pokemon",
             modifier = Modifier
                 .size(350.dp)
@@ -224,7 +225,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxHeight(),
-            reverseLayout = true/////////////////
+            //reverseLayout = true,/////////////////
+            verticalArrangement = Arrangement.SpaceEvenly
         ){
             item{
                 ConstraintLayout{
@@ -235,7 +237,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             end.linkTo(parent.end)
                             //bottom.linkTo(nombre.top)////////????????????
                         }
-                        .padding(bottom = 25.dp)
+                        .padding(bottom = 10.dp)
                         .fillMaxHeight(),//////////
                         fontWeight = FontWeight.Bold,
                         text = "#$numero",
@@ -248,9 +250,9 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             end.linkTo(parent.end)
                             //bottom.linkTo(tipo1.top)
                         }
-                        .padding(bottom = 20.dp),
+                        .padding(bottom = 15.dp),
                         fontWeight = FontWeight.Bold,
-                        text = if(show_gigamax && seleccionado.num!=0) seleccionado.name else pokemon.name,
+                        text = if((show_gigamax && seleccionado.num!=0)|| ((show_megaevos && seleccionado.num!=0))) seleccionado.name else pokemon.name,
                         fontSize = 32.sp)
 
                     IconButton(
@@ -290,15 +292,22 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Descripción del icono" // Agrega una descripción de contenido
                         )
                     }
+                    /*
+                    //un tipo
+                    var painter= painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
+                    if (seleccionado.tipo.size == 1) {
+
+                    }*/
 
                     if (pokemon.tipo.size == 1) {
+
                         Image(
                             painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[0])),
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(70.dp)
-                                .padding(vertical = 20.dp)
+                                .width(50.dp)
+                                .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
@@ -312,8 +321,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(70.dp)
-                                .padding(vertical = 20.dp)
+                                .width(50.dp)
+                                .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
                                     end.linkTo(tipo2.start)
@@ -326,8 +335,8 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Tipo 2",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(70.dp)
-                                .padding(vertical = 20.dp)
+                                .width(50.dp)
+                                .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo2) {
                                     start.linkTo(tipo1.end)
                                     end.linkTo(parent.end)
@@ -428,13 +437,30 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 top.linkTo(formas_unown.bottom)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(megaevo.top)
                             }
                     ){
                         //var gigaEvo:PokemonFB=PokemonFB(0,"",0,"","", "")
                         evosGigamax[pokemon.num]?.let { gigamaxPokemon ->
                             GigamaxEvos(gigamaxPokemon)
                         }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            //.padding(vertical = 10.dp)????????
+                            .background(colorResource(id = R.color.planta_claro))
+                            .constrainAs(megaevo) {
+                                top.linkTo(gigamax.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ){
+                        val megaEvos = evosMega.values.filter { it.name.contains(pokemon.name) }
+                        Log.v("MEGAEVOS", megaEvos.toString())
+                        MegaEvos(megaEvos)
                     }
 
                 }
