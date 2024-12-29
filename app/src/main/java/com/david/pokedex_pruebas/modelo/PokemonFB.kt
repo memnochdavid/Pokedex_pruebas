@@ -471,7 +471,7 @@ var formasUnown:List<UnonwnFormas> = listOf(
     UnonwnFormas("Y",R.drawable.unonwny),
     UnonwnFormas("Z",R.drawable.unonwnz)
 )
-
+/*
 var evosGigamax:List<PokemonFB> = listOf(
     PokemonFB(3,"",R.drawable.gigamaxvenusaur,"Venusaur Gigamax","", listOf(), listOf()),
     PokemonFB(6,"",R.drawable.gigamaxcharizard,"Charizard Gigamax","", listOf(), listOf()),
@@ -507,9 +507,44 @@ var evosGigamax:List<PokemonFB> = listOf(
     PokemonFB(892,"",R.drawable.gigamaxurshifubrusco,"Urshifu Brusco Gigamax","", listOf(), listOf()),
     PokemonFB(892,"",R.drawable.gigamaxurshifufluido,"Urshifu Fluído Gigamax","", listOf(), listOf()),
 )
+*/
 
-
-
+val evosGigamax: Map<Int, PokemonFB> = listOf(
+    PokemonFB(3,"",R.drawable.gigamaxvenusaur,"Venusaur Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(3,"",R.drawable.gigamaxvenusaur,"Venusaur Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(6,"",R.drawable.gigamaxcharizard,"Charizard Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(9,"",R.drawable.gigamaxblastoise,"Blastoise Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(12,"",R.drawable.gigamaxbutterfree,"Butterfree Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(25,"",R.drawable.gigamaxpikachu,"Pikachu Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(52,"",R.drawable.gigamaxmeowth,"Meowth Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(67,"",R.drawable.gigamaxmachamp,"Machamp Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(94,"",R.drawable.gigamaxgengar,"Gengar Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(99,"",R.drawable.gigamaxkingler,"Kingler Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(131,"",R.drawable.gigamaxlapras,"Lapras Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(133,"",R.drawable.gigamaxeevee,"Eevee Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(143,"",R.drawable.gigamaxsnorlax,"Snorlax Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(569,"",R.drawable.gigamaxgarbodor,"Garbodor Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(809,"",R.drawable.gigamaxmelmetal,"Melmetal Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(812,"",R.drawable.gigamaxrillaboom,"Rillaboom Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(815,"",R.drawable.gigamaxcinderace,"Cinderace Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(817,"",R.drawable.gigamaxinteleon,"Inteleon Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(823,"",R.drawable.gigamaxcorviknight,"Corviknight Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(826,"",R.drawable.gigamaxorbeetle,"Orbeetle Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(834,"",R.drawable.gigamaxdrednaw,"Drednaw Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(839,"",R.drawable.gigamaxcoalossal,"Coalossal Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(841,"",R.drawable.gigamaxflapple,"Flapple Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(842,"",R.drawable.gigamaxappletun,"Appletun Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(844,"",R.drawable.gigamaxsandaconda,"Sandaconda Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(849,"",R.drawable.gigamaxtoxtricity,"Toxtricity Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(850,"",R.drawable.gigamaxcentiskorch,"Centiskorch Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(858,"",R.drawable.gigamaxhatterene,"Hatterene Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(861,"",R.drawable.gigamaxgrimmsnarl,"Grimmsnarl Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(869,"",R.drawable.gigamaxalcremie,"Alcremie Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(879,"",R.drawable.gigamaxcopperajah,"Copperajah Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(884,"",R.drawable.gigamaxduraludon,"Duraludon Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(892,"",R.drawable.gigamaxurshifubrusco,"Urshifu Brusco Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+    PokemonFB(892,"",R.drawable.gigamaxurshifufluido,"Urshifu Fluído Gigamax",R.string.desc_gigamax.toString(), listOf(), listOf()),
+).associateBy { it.num }
 
 
 

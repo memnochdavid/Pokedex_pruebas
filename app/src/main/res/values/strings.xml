@@ -5,4 +5,6 @@
     <string name="title_activity_compose_crea_user">ComposeCreaUser</string>
     <string name="title_activity_compose_login">ComposeLoginActivity</string>
     <string name="title_activity_compose_perfil_usuario">ComposePerfilUsuarioActivity</string>
+    <string name="desc_gigamax">El fenómeno Gigamax se produce en Pokémon Espada y Pokémon Escudo durante los combates,
+        y los Pokémon cambian de aspecto y adquieren movimientos característicos.</string>
 </resources>

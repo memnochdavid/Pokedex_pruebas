@@ -362,6 +362,7 @@ var show_desc by mutableStateOf(false)
 var show_evos by mutableStateOf(false)
 var show_interacciones by mutableStateOf(false)
 var show_formas_unown by mutableStateOf(false)
+var show_gigamax by mutableStateOf(false)
 var desde_evos by mutableStateOf(false)
 
 @Composable
@@ -393,6 +394,7 @@ fun FormasUnown(formas: List<UnonwnFormas>){
                     .padding(vertical = 10.dp)
                     .clickable {
                         show_formas_unown = !show_formas_unown
+                        show_gigamax=false
                         show_evos=false
                         show_interacciones=false
                         show_regis = false
@@ -522,8 +524,154 @@ fun UnownCard(unown: UnonwnFormas){
     }
 }
 
+@Composable
+fun GigamaxEvos(evo: PokemonFB){
+    val alturaFormas by animateFloatAsState(
+        targetValue = if (show_gigamax) 110f else 0f,
+        animationSpec = tween(durationMillis = 300) // duración
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(
+                text ="Formas Gigamax",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        show_gigamax=!show_gigamax
+                        seleccionado=PokemonFB(0,"",0,"","", "")
+
+                        show_formas_unown =false
+                        show_evos=false
+                        show_interacciones=false
+                        show_regis = false
+                        show_desc = false
+                    },
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(alturaFormas.dp)
+        ){
+            GigamaxCard(evo)
+        }
+    }
+}
+@Composable
+fun GigamaxCard(gigamax: PokemonFB){
+    var isPressed by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = animateFloatAsState(
+        targetValue = if (isPressed) 0.90f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+            stiffness = Spring.StiffnessMedium // Moderate stiffness
+        )
+    )
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val(foto,forma)=createRefs()
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .scale(scale.value)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null, // Remove default ripple effect
+
+                    onClick = {
+
+                    }
+                )
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = null
+                )
+                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
+                    detectTapGestures(
+                        onPress = {
 
 
+                            isPressed = true
+                            try {
+                                awaitRelease()
+                            } finally {
+                                isPressed = false // Reset isPressed in finally block
+                            }
+                            seleccionado=gigamax
+
+                        }
+                    )
+                }
+        ) {
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.objeto_lista))
+                    .padding(end = 30.dp)
+            ) {
+                //imagen local
+                Image(
+                    painter = painterResource(id = gigamax.foto),
+                    contentDescription = "Pokeball",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .constrainAs(foto) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+                /*
+                                    //imagen remota
+                                    AsyncImage(
+                                        model = unown.imagenFB,
+                                        contentDescription = "Pokemon Image",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .fillMaxSize()
+                                            .constrainAs(avatar) {
+                                                start.linkTo(parent.start)
+                                                top.linkTo(parent.top)
+                                                bottom.linkTo(parent.bottom)
+                                            }
+                                    )
+                                    */
+                Text(
+                    text = gigamax.name,
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .constrainAs(forma) {
+                            start.linkTo(foto.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.end)
+                        }
+                )
+            }
+        }
+    }
+}
 
 
 
@@ -569,6 +717,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                             .padding(vertical = 10.dp)
                             .clickable {
                                 show_evos = !show_evos
+                                show_gigamax=false
                                 show_interacciones=false
                                 show_regis = false
                                 show_desc = false
@@ -616,6 +765,7 @@ fun LineaEvo(evos: List<PokemonFB>,opc:Int){
                             .clickable {
                                 show_regis = !show_regis
                                 show_interacciones=false
+                                show_gigamax=false
                                 show_evos = false
                                 show_desc = false
                                 show_formas_unown=false
@@ -700,6 +850,7 @@ fun MuestraDesc(desc: String) {
                         show_interacciones=false
                         show_regis = false
                         show_evos = false
+                        show_gigamax=false
                         show_formas_unown=false
                         Log.d("ALTURA TEXTO", textHeight.toString())
                     },

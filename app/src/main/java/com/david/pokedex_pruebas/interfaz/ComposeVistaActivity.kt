@@ -74,6 +74,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.david.pokedex_pruebas.modelo.adaptaNombre
 import com.david.pokedex_pruebas.modelo.enumToDrawable2FB
+import com.david.pokedex_pruebas.modelo.evosGigamax
 import com.david.pokedex_pruebas.modelo.formasUnown
 import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
@@ -109,7 +110,7 @@ class ComposeVistaActivity : AppCompatActivity() {
     }
 }
 
-//var seleccionado by mutableStateOf(PokemonFB(0,"",0,"","", ""))
+var seleccionado by mutableStateOf(PokemonFB(0,"",0,"","", ""))
 
 @Composable
 fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
@@ -141,7 +142,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
             .fillMaxSize()
             .padding(top = 0.dp)
     ) {
-        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos,regis,formas_unown) = createRefs()
+        val (number,desc, nombre, foto, tipo1, tipo2,datos,interacciones,add,evos,regis,formas_unown,gigamax,megaevo) = createRefs()
         //imagen remote
 /*
         val painter = rememberAsyncImagePainter(
@@ -182,7 +183,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
         //imagen local
 
         Image(
-            painter = painterResource(id = pokemon.foto),
+            painter = painterResource(id = if(show_gigamax && seleccionado.num!=0) seleccionado.foto else pokemon.foto),
             contentDescription = "Pokemon",
             modifier = Modifier
                 .size(350.dp)
@@ -249,7 +250,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         }
                         .padding(bottom = 20.dp),
                         fontWeight = FontWeight.Bold,
-                        text = pokemon.name,
+                        text = if(show_gigamax && seleccionado.num!=0) seleccionado.name else pokemon.name,
                         fontSize = 32.sp)
 
                     IconButton(
@@ -296,7 +297,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(80.dp)
+                                .width(70.dp)
                                 .padding(vertical = 20.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
@@ -311,7 +312,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(80.dp)
+                                .width(70.dp)
                                 .padding(vertical = 20.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
@@ -325,7 +326,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Tipo 2",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(80.dp)
+                                .width(70.dp)
                                 .padding(vertical = 20.dp)
                                 .constrainAs(tipo2) {
                                     start.linkTo(tipo1.end)
@@ -410,11 +411,29 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 top.linkTo(regis.bottom)
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
+                                bottom.linkTo(gigamax.top)
                             }
                     ){
                         if(pokemon.name.contains("Unown")){
                             FormasUnown(formasUnown)
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            //.padding(vertical = 10.dp)????????
+                            .background(colorResource(id = R.color.bicho))
+                            .constrainAs(gigamax) {
+                                top.linkTo(formas_unown.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
+                    ){
+                        //var gigaEvo:PokemonFB=PokemonFB(0,"",0,"","", "")
+                        evosGigamax[pokemon.num]?.let { gigamaxPokemon ->
+                            GigamaxEvos(gigamaxPokemon)
                         }
                     }
 
