@@ -1,5 +1,6 @@
 package com.david.pokedex_pruebas.api
 
+import com.david.pokedex_pruebas.api.modelo.PokeResult
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

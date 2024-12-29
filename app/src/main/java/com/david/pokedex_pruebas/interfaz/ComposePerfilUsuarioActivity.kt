@@ -32,7 +32,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,15 +47,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.api.ListaPokeApi
-import com.david.pokedex_pruebas.api.PokeInfoViewModel
-import com.david.pokedex_pruebas.api.PokemonScreen
+import com.david.pokedex_pruebas.api.modelo.ListaPokeApi
 import com.david.pokedex_pruebas.modelo.UserFb
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 //import com.google.firebase.database.core.persistence.CachePolicy
 import io.appwrite.models.InputFile
 import kotlinx.coroutines.CoroutineScope
@@ -67,14 +62,10 @@ import kotlinx.coroutines.withContext
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
-import com.david.pokedex_pruebas.modelo.evosGigamax
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
-import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
-import com.david.pokedex_pruebas.modelo.listaPokeFB
 //import com.david.pokedex_pruebas.modelo.listaFormasRegionalesFB
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.io.File
 
 //private lateinit var sesionUser: ArrayList<UserFb>
 //private lateinit var refBBDD: DatabaseReference
@@ -792,7 +783,6 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
-                        var viewModel = PokeInfoViewModel()
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -804,7 +794,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 },
                             horizontalArrangement = Arrangement.Start
                         ){
-                            ListaPokeApi(viewModel)
+                            ListaPokeApi()
                         }
 
 
