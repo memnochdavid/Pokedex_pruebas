@@ -4,6 +4,7 @@ package com.david.pokedex_pruebas.interfaz
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -90,7 +91,7 @@ import kotlinx.coroutines.delay
 var campoBusqueda by mutableStateOf(false)
 //para appwrite
 val appwrite_project = "6738854a0011e2bc643f"
-val appwrite_bucket = "67701612000d7695cb51"
+val appwrite_bucket = "67717205003212b8e6d7"
 
 val client = Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
@@ -274,6 +275,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 //                            )
 //                        )
                         PokemonCard(pokemon, usuario_key,1)
+                        Log.d("Pokemon", "Pokemon: $pokemon")
 
                     }
                 }
@@ -410,7 +412,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                 verticalAlignment = Alignment.CenterVertically
                             ){
                                 LazyVerticalGrid(
-                                    columns = GridCells.Fixed(4), // Adjust the number of columns as needed
+                                    columns = GridCells.Fixed(3), // Adjust the number of columns as needed
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .wrapContentHeight(),
@@ -436,7 +438,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
                                                 fontSize = 20.sp,
                                                 color = colorResource(R.color.white),
                                                 fontWeight = FontWeight.Bold,
-                                                modifier = Modifier.padding(end = 4.dp)
+                                                modifier = Modifier.padding(end = 0.dp)
                                             )
                                         }
                                     }

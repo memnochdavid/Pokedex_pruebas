@@ -717,7 +717,8 @@ fun MegaEvos(evos: List<PokemonFB>){
             modifier = Modifier
                 .fillMaxSize()
                 .height(alturaFormas.dp),
-            flingBehavior = rememberSnapFlingBehavior(lazyListState = listState)
+            flingBehavior = rememberSnapFlingBehavior(lazyListState = listState),
+            horizontalArrangement = Arrangement.Center,
         ){
             items(evos){evo ->
                 MegaEvoCard(evo)

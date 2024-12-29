@@ -120,13 +120,10 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
     var numero = "${(num)}"
     if(numero.length == 1) numero = "00${(num)}"
     else if(numero.length == 2) numero = "0${(num)}"
-/*
-    LaunchedEffect (seleccionado){
-        pokemon=seleccionado
+
+    LaunchedEffect (pokemon){
+        seleccionado=PokemonFB(0,"",0,"","", "")
     }
-    LaunchedEffect (index){
-        pokemon=listaPokeFireBase[index]
-    }*/
 
     var mediaPlayer: MediaPlayer? = null
 
@@ -225,8 +222,7 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     height = Dimension.fillToConstraints
                 }
                 .fillMaxHeight(),
-            //reverseLayout = true,/////////////////
-            verticalArrangement = Arrangement.SpaceEvenly
+            reverseLayout = true,/////////////////
         ){
             item{
                 ConstraintLayout{
@@ -292,21 +288,34 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                             contentDescription = "Descripción del icono" // Agrega una descripción de contenido
                         )
                     }
-                    /*
+/*
                     //un tipo
-                    var painter= painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
-                    if (seleccionado.tipo.size == 1) {
+                    var painter1= painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
+                    var painter2= painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
+                    if(pokemon.tipo.size==1){
+                        if((show_gigamax && seleccionado.num!=0)|| ((show_megaevos && seleccionado.num!=0)))
+                            painter1=painterResource(id = enumToDrawableFB(seleccionado.tipo[0]))
+                        else painter1=painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
+                    }else{//dos tipos
+                        if((show_gigamax && seleccionado.num!=0)|| ((show_megaevos && seleccionado.num!=0))) {
+                            painter1 = painterResource(id = enumToDrawableFB(seleccionado.tipo[0]))
+                            painter2 = painterResource(id = enumToDrawableFB(seleccionado.tipo[1]))
 
+                        }
+                        else{
+                            painter1 = painterResource(id = enumToDrawableFB(pokemon.tipo[0]))
+                            painter2 = painterResource(id = enumToDrawableFB(pokemon.tipo[1]))
+                        }
                     }*/
 
                     if (pokemon.tipo.size == 1) {
 
                         Image(
-                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[0])),
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(50.dp)
+                                .width(80.dp)
                                 .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
@@ -317,11 +326,11 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                         )
                     } else {
                         Image(
-                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[0])),
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
                             contentDescription = "Tipo 1",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(50.dp)
+                                .width(80.dp)
                                 .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo1) {
                                     start.linkTo(parent.start)
@@ -331,11 +340,11 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                                 },
                         )
                         Image(
-                            painter = painterResource(id = enumToDrawable2FB(pokemon.tipo[1])),
+                            painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
                             contentDescription = "Tipo 2",
                             contentScale = ContentScale.FillWidth,
                             modifier = Modifier
-                                .width(50.dp)
+                                .width(80.dp)
                                 .padding(top = 5.dp,bottom = 10.dp)
                                 .constrainAs(tipo2) {
                                     start.linkTo(tipo1.end)
@@ -460,7 +469,9 @@ fun VerPokemon(pokemon: PokemonFB, usuario_key: String) {
                     ){
                         val megaEvos = evosMega.values.filter { it.name.contains(pokemon.name) }
                         Log.v("MEGAEVOS", megaEvos.toString())
-                        MegaEvos(megaEvos)
+                        if(megaEvos.isNotEmpty()){
+                            MegaEvos(megaEvos)
+                        }
                     }
 
                 }

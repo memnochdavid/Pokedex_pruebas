@@ -63,7 +63,9 @@ import kotlinx.coroutines.withContext
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
+import com.david.pokedex_pruebas.modelo.evosGigamax
 import com.david.pokedex_pruebas.modelo.fetchAllUsers
+import com.david.pokedex_pruebas.modelo.limpiaNombrePoke
 import com.david.pokedex_pruebas.modelo.listaPokeFB
 //import com.david.pokedex_pruebas.modelo.listaFormasRegionalesFB
 //import com.david.pokedex_pruebas.modelo.listaPokeFB
@@ -787,7 +789,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                             }
                         }
                         /*
-                        //REGIONALES
+                        //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -808,12 +810,11 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 shape = RoundedCornerShape(10.dp),
                                 onClick = {
 
-
-                                    /////////////////////////////////////////////////////////////////////////////
+                                    ///////////////////////////////////////////////////////////////////////////// NO BORRAR - sirve para actualizar FIREBASE y APPWRITE cuando se pulsa un elemento cualquiera de la lista
                                     //sube a Firebase y AppWrite
                                     //refStorage = FirebaseStorage.getInstance().reference
 
-                                    for (i in listaFormasRegionalesFB) {
+                                    for (i in listaPokeFB) {
                                         try {
 
                                             val resources = context.resources
@@ -831,7 +832,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                                         .child("pokemones")
                                                         .child(identificador)
                                                         .setValue(i)
-
+                                                    /*
                                                     val tempFile = File.createTempFile(
                                                         identificador.drop(1),
                                                         ".png",
@@ -858,7 +859,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                                             )
                                                             tempFile.delete() // Delete after upload
                                                         }
-                                                    }
+                                                    }*/
                                                 }
                                         } catch (e: Exception) {
                                             // Handle exceptions appropriately
@@ -866,57 +867,13 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                     }
                                 })
                             {
-                                Text("REGIONALES")
+                                Text("BD")
                             }
+                        }
+                        //////////////////////////////////////////////////////////////////////////////////////
+*/
 
-                        }*/
-/*
-                        //AÑADE las EVOS de los pokemon
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .constrainAs(evos) {
-                                    start.linkTo(parent.start)
-                                    top.linkTo(usuarios.bottom)
-                                    //bottom.linkTo(parent.bottom)
-                                },
-                            horizontalArrangement = Arrangement.Start
-                        ){
-                            Button(modifier = Modifier
-                                .padding(vertical = 8.dp),
-                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                    containerColor = colorResource(R.color.rojo_muy_claro),
-                                    contentColor = colorResource(R.color.white)
-                                ),
-                                shape = RoundedCornerShape(10.dp),
-                                onClick = {
-
-                                    scope.launch {
-                                        for (i in listaPokeFireBase){
-                                            evosAux+=i.evos
-                                            if(i.evos.isNotEmpty())Log.e("EVOS",i.evos.toString())
-                                        }
-                                    }
-
-
-                                    scope.launch {
-                                        var updates = hashMapOf<String, Any>()
-                                        for (i in listaPokeFireBase){
-
-                                            updates = hashMapOf<String, Any>(
-                                                "pokemones/${i.key}/evos" to evosAux
-                                            )
-                                        }
-                                        refBBDD.updateChildren(updates)
-                                    }
-                                })
-                            {
-                                Text("EVOS")
-                            }
-                        }*/
-/*
-                        //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs
+                        //////////////////////////////////////////////////////////////////////////////////////UPDATE BDs - megaevos y gigamax
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -940,27 +897,29 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                     //sube a Firebase y AppWrite
                                     //refStorage = FirebaseStorage.getInstance().reference
 
-                                    for (i in listaPokeFB) {
+                                    for (i in evosGigamax) {
                                         try {
 
                                             val resources = context.resources
                                             resources
-                                                .openRawResource(i.foto)
+                                                .openRawResource(i.value.foto)
                                                 .use { inputStream ->
                                                     val identificador = refBBDD
-                                                        .child("pokemones")
+                                                        .child("pokemones_gigamax")
                                                         .push().key!!
 
-                                                    val identificadorAppWrite = identificador.substring(1, 20)
-                                                    i.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
-                                                    i.key=identificador
+                                                    //val identificadorAppWrite = identificador.substring(1, 20)
+                                                    val identificadorAppWrite = limpiaNombrePoke(i.value.name)
+                                                    i.value.imagenFB = "https://cloud.appwrite.io/v1/storage/buckets/$appwrite_bucket/files/$identificadorAppWrite/preview?project=$appwrite_project"
+                                                    i.value.key=identificador
                                                     refBBDD
-                                                        .child("pokemones")
+                                                        .child("pokemones_gigamax")
                                                         .child(identificador)
                                                         .setValue(i)
-
+/*
                                                     val tempFile = File.createTempFile(
-                                                        identificador.drop(1),
+                                                        //identificador.drop(1),
+                                                        identificadorAppWrite,
                                                         ".png",
                                                         context.cacheDir
                                                     )
@@ -976,6 +935,7 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                                             Dispatchers.IO
                                                         ) {
 
+
                                                             storage.createFile(
                                                                 bucketId = appwrite_bucket,
                                                                 fileId = identificadorAppWrite,//elimina "_"
@@ -985,19 +945,20 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                                             )
                                                             tempFile.delete() // Delete after upload
                                                         }
-                                                    }
+                                                    }*/
                                                 }
                                         } catch (e: Exception) {
                                             // Handle exceptions appropriately
                                         }
                                     }
+
                                 })
                             {
                                 Text("BD")
                             }
                         }
                         //////////////////////////////////////////////////////////////////////////////////////
-*/
+
                     }
                 }
             }
