@@ -161,26 +161,12 @@ class ComposeListaActivity : ComponentActivity() {
         */
 
 
-        val listaGen = listOf(1,2,3,4,5,6,7,8,9)
-
         //enableEdgeToEdge()
             //VerListaPoke(listaPokeFB, false)//Local
         setContent {
-
-
-
-
             scope = rememberCoroutineScope()
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxSize(),
-                reverseLayout = true
-            ){
-                items(listaGen){gen->
-                    val lista = listaByGen(gen)
-                    VerListaPokeAPI(lista)
-                }
-            }
+            VerListaPokeAPI(listaByGen(1))
+
 
         }
     //evita el cierre al pulsar Back cuando se sólo se quiere cerrar la búsqueda
@@ -722,7 +708,10 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(R.color.lista_con_foco)),
+                .background(colorResource(R.color.lista_con_foco))
+                .padding(top = 0.dp) // Apply padding to the Box
+                .systemBarsPadding()
+                .imePadding(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
@@ -747,15 +736,15 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(colorResource(R.color.lista_con_foco))
+                .padding(top = 0.dp) // Apply padding to the Box
+                .systemBarsPadding()
+                .imePadding()
         ) {
             ConstraintLayout(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 0.dp)
-                    .systemBarsPadding()
-                    .imePadding()
             ) {
                 val (generaciones,lazyC, boton, layoutBusqueda, busquedaTipo, descBusqueda, switchBusqueda, botonUserActivity) = createRefs()
 
@@ -775,7 +764,7 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
                 LazyColumn(
                     modifier = Modifier
                         //.fillMaxWidth()
-                        .fillMaxSize()/////////
+                        .fillMaxSize()
                         .constrainAs(lazyC) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
@@ -942,6 +931,8 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
         }
     }
 }
+
+
 
 
 @Composable

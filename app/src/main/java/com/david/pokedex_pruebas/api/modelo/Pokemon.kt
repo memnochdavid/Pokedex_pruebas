@@ -65,9 +65,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.filter
+import androidx.lifecycle.asFlow
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import java.net.URLDecoder
 
@@ -213,6 +217,16 @@ data class TypeInfo(
     @Expose @SerializedName("name") val name: String,
     @Expose @SerializedName("url") val url: String
 )
+
+class PokemonDataRepository(private val viewModel: PokeInfoViewModel) {
+
+    suspend fun getPokemonListByGen(gen: Int): List<Pokemon> {
+        viewModel.getListByGeneration(gen) // Trigger API call
+        return viewModel.pokemonListByGen.asFlow()
+            .filter { it.isNotEmpty() } // Filter until list is not empty
+            .first() // Get the first non-empty list
+    }
+}
 
 object RetrofitClient {
 
