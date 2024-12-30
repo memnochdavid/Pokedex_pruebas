@@ -54,6 +54,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +66,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -84,6 +86,8 @@ import com.david.pokedex_pruebas.api.modelo.PokeInfoViewModel
 import com.david.pokedex_pruebas.api.modelo.Pokemon
 import com.david.pokedex_pruebas.api.modelo.RetrofitClient
 import com.david.pokedex_pruebas.api.modelo.Type
+import com.david.pokedex_pruebas.api.modelo.TypeToDrawableAPI
+import com.david.pokedex_pruebas.api.modelo.TypeToDrawableAPI_grandes
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
@@ -94,6 +98,7 @@ import io.appwrite.services.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -115,6 +120,7 @@ val storage = Storage(client)//habilitar para subir archivos
 lateinit var scope: CoroutineScope
 var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
 var isLoadingAPI by mutableStateOf(true)
+var muestraGen by mutableStateOf<List<Int>>(emptyList())
 //appwrite bucket
 //https://cloud.appwrite.io/console/project-6738854a0011e2bc643f/storage
 
@@ -155,21 +161,31 @@ class ComposeListaActivity : ComponentActivity() {
         */
 
 
+        val listaGen = listOf(1,2,3,4,5,6,7,8,9)
 
         //enableEdgeToEdge()
-        setContent {
             //VerListaPoke(listaPokeFB, false)//Local
+        setContent {
 
 
 
-            val lista = listaByGen(1)
-            listaTipos()
-            VerListaPokeAPI(lista)
+
             scope = rememberCoroutineScope()
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxSize(),
+                reverseLayout = true
+            ){
+                items(listaGen){gen->
+                    val lista = listaByGen(gen)
+                    VerListaPokeAPI(lista)
+                }
+            }
+
         }
+    //evita el cierre al pulsar Back cuando se sólo se quiere cerrar la búsqueda
 
     }
-    //evita el cierre al pulsar Back cuando se sólo se quiere cerrar la búsqueda
     override fun onBackPressed() {
         if (campoBusqueda) {
             campoBusqueda = false // Change campoBusqueda to false
@@ -177,7 +193,6 @@ class ComposeListaActivity : ComponentActivity() {
             super.onBackPressed() // Default back press behavior (close the app)
         }
     }
-
 }
 
 /*ORIGINAL - FUNCIONA - NO BORRAR
@@ -684,15 +699,8 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
     var tipoBuscado1 by remember { mutableStateOf("") }
     var tipoBuscado2 by remember { mutableStateOf("") }
     var listaFiltrada by remember { mutableStateOf(listaApi) }
-    val generations = listOf("1", "2", "3", "4", "5","6","7","8","9")
-    val selectedGenerations = remember { mutableStateMapOf<String, Boolean>() }
-    val selectedGenerationsList = remember { mutableStateListOf<String>() }
-    val selectedGenerationsKey by derivedStateOf { selectedGenerations.filter { it.value }.keys }
-    LaunchedEffect(Unit) {
-        generations.forEach { generation ->
-            selectedGenerations[generation] = false
-        }
-    }
+    val listaTipos = listaTipos()
+    Log.d("ListaTipos", listaTipos.toString())
     val listState1 = rememberLazyListState(
         initialFirstVisibleItemIndex = 0
     )
@@ -724,6 +732,19 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
             )
         }
     } else {
+
+        LaunchedEffect(textobusqueda, tipoBuscado1, tipoBuscado2) {
+            // Removed selectedGenerationsKey from LaunchedEffect and the filtering logic
+
+            delay(200) // You might not need this delay
+
+            listaFiltrada = listaApi.filter { pokemon ->
+                (textobusqueda.isEmpty() || pokemon.name.contains(textobusqueda, ignoreCase = true)) &&
+                        (tipoBuscado1.isEmpty() || pokemon.types.any { it.type.name.contains(tipoBuscado1, ignoreCase = true) }) &&
+                        (tipoBuscado2.isEmpty() || pokemon.types.any { it.type.name.contains(tipoBuscado2, ignoreCase = true) })
+            }
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -763,7 +784,7 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
                             else bottom.linkTo(parent.bottom)
                         }
                 ) {
-                    items(listaApi) { pokemon ->
+                    items(listaFiltrada) { pokemon ->
                         Log.d("PokemonList", "Pokemon: $pokemon")
                         PokemonCardApi(pokemon, viewModel)
                         Log.d("POKEMON DE API", pokemon.toString())
@@ -831,9 +852,9 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
                         ) {
                             //tipo 1
                             LazyColumn(state=listState1,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState1)){
-                                items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
+                                items(listaTipos.dropLast(1)) { tipo ->
                                     Image(
-                                        painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
+                                        painter = painterResource(id = TypeToDrawableAPI_grandes(tipo)),
                                         contentDescription = "Tipo",
                                         contentScale = ContentScale.Fit,
                                         modifier = Modifier
@@ -842,7 +863,7 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
                                             .wrapContentHeight()
                                             .clickable(
                                                 onClick = {
-                                                    tipoBuscado1 = tipo.tag
+                                                    tipoBuscado1 = tipo.type.name
                                                 }
                                             )
                                     )
@@ -894,59 +915,20 @@ fun VerListaPokeAPI(listaApi: List<Pokemon>) {
                                     )
                                 )
                             }
-                            //Por generación
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(0.4f),//weight vertical
-                                verticalAlignment = Alignment.CenterVertically
-                            ){
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(3), // Adjust the number of columns as needed
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight(),
-                                    verticalArrangement = Arrangement.Top,
-                                    horizontalArrangement = Arrangement.spacedBy(0.dp), // Add horizontal spacing
-
-                                ) {
-                                    items(generations) { generation ->
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Checkbox(
-                                                checked = selectedGenerations[generation] ?: false,
-                                                onCheckedChange = { isChecked ->
-                                                    selectedGenerations[generation] = isChecked
-                                                },
-                                                colors = CheckboxDefaults.colors(
-                                                    checkedColor = colorResource(R.color.planta),
-                                                    uncheckedColor = Color.White,
-                                                    checkmarkColor = Color.White
-                                                )
-                                            )
-                                            Text(
-                                                text = generation,
-                                                fontSize = 20.sp,
-                                                color = colorResource(R.color.white),
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = Modifier.padding(end = 0.dp)
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                            //tipo 2
                             LazyRow(modifier = Modifier.weight(0.22f), state=listState2,flingBehavior = rememberSnapFlingBehavior(lazyListState = listState2)){
-                                items(PokemonTipoFB.entries.dropLast(1)) { tipo ->
+                                items(listaTipos.dropLast(1)) { tipo ->
                                     Image(
-                                        painter = painterResource(id = enumToDrawableFB_busqueda(tipo)),
+                                        painter = painterResource(id = TypeToDrawableAPI_grandes(tipo)),
                                         contentDescription = "Tipo",
                                         contentScale = ContentScale.Fit,
                                         modifier = Modifier
-                                            .padding(start = 5.dp, end = 5.dp)
-                                            .width(55.dp)
+                                            .padding(all = 5.dp)
+                                            .width(60.dp)
                                             .wrapContentHeight()
                                             .clickable(
                                                 onClick = {
-                                                    tipoBuscado2 = tipo.tag
+                                                    tipoBuscado2 = tipo.type.name
                                                 }
                                             )
                                     )
@@ -979,35 +961,19 @@ fun listaByGen(gen: Int): List<Pokemon> {
     }
     return pokemonListByGen
 }
-
 @Composable
 fun listaTipos(): List<Type> {
     val viewModel: PokeInfoViewModel = viewModel()
-
-    // Trigger the API call to fetch the type list
-    LaunchedEffect(Unit) {
-        viewModel.getTypeList()
-    }
-
-    // Observe the pokemonTypeList LiveData
     val pokemonTypeList by viewModel.pokemonTypeList.observeAsState(emptyList())
 
-    // Extract the types from the Pokemon list
-    val types = pokemonTypeList.flatMap { pokemon ->
-        pokemon.types
-    }.distinctBy { it.type.name } // Ensure unique types
-
-    // Display the list of types (you can customize this part)
-    LazyColumn {
-        items(types) { type ->
-            Text(text = type.type.name)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.getTypeList() // Trigger API call to fetch the type list
     }
-    Log.d("TIPOS", "TIPOS: $types")
 
-    return types // Return the list of types
+    return pokemonTypeList.map { typeInfo ->
+        Type(slot = 0, type = typeInfo) // Assuming 'slot' is always 0
+    }
 }
-
 
 
 

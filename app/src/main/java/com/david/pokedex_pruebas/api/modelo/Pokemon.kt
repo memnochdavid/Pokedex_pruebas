@@ -68,6 +68,7 @@ import androidx.compose.runtime.getValue
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.runBlocking
 import java.net.URLDecoder
 
 data class Pokemon(
@@ -199,6 +200,10 @@ data class StatInfo(
     @Expose @SerializedName("url") val url: String
 )
 
+data class TypeListResponse(
+    @SerializedName("results") val results: List<TypeInfo>
+)
+
 data class Type(
     @Expose @SerializedName("slot") val slot: Int,
     @Expose @SerializedName("type") val type: TypeInfo
@@ -239,8 +244,8 @@ class PokeInfoViewModel() : ViewModel() {
     private val _pokemonListByGen = MutableLiveData<List<Pokemon>>(emptyList())
     val pokemonListByGen: LiveData<List<Pokemon>> = _pokemonListByGen
 
-    private val _pokemonTypeList = MutableLiveData<List<Pokemon>>(emptyList())
-    val pokemonTypeList: LiveData<List<Pokemon>> = _pokemonTypeList
+    private val _pokemonTypeList = MutableLiveData<List<TypeInfo>>(emptyList())
+    val pokemonTypeList: LiveData<List<TypeInfo>> = _pokemonTypeList
 
     fun getPokemonInfo(id: Int){
         val call = service.getPokemonInfo(id)
@@ -337,44 +342,20 @@ class PokeInfoViewModel() : ViewModel() {
     fun getTypeList() {
         viewModelScope.launch {
             try {
-                // 1. Fetch the list of types
-                val typeListResponse = service.getTypeList(id = 1).awaitResponse() // Assuming you want to fetch all types, you can use any valid type ID here.
-
+                val typeListResponse = service.getTypeList().awaitResponse()
                 if (typeListResponse.isSuccessful) {
-                    val typeList = typeListResponse.body()
-                    Log.d("PokeInfoViewModel", "Type List Response: $typeList")
-
-                    // 2. Extract the type names
-                    val typeNames = typeList?.type?.name ?: ""
-
-                    // 3. Fetch Pokemon details for each type
-                    val pokemonInfoList = listOf(typeNames).mapNotNull { typeName -> // Create a list with typeNames
-                        val pokemonId = typeName.extractPokemonId2() // Call on the typeName variable
-                        if (pokemonId != null) {
-                            service.getPokemonInfo(pokemonId).awaitResponse().body()
-                        } else {
-                            null
-                        }
-                    }
-                    // 3. Sort pokemonInfoList by ID
-                    val sortedPokemonList = pokemonInfoList.sortedBy { it.id }
-
-                    // 4. Update pokemonListByGen LiveData with sorted list
-                    _pokemonTypeList.value = sortedPokemonList
-
-                    // Update pokemonListByGen LiveData
-                    //_pokemonListByGen.value = pokemonInfoList
-                    //Log.d("PokeInfoViewModel", "Pokemon IDs: ${typeNames.mapNotNull { it.extractPokemonId2() }}")
+                    val typeList = typeListResponse.body()?.results
+                    // Update _pokemonTypeList with the list of TypeInfo objects
+                    _pokemonTypeList.value = typeList ?: emptyList()
                 } else {
-                    // Handle error
                     Log.e("PokeInfoViewModel", "Error fetching type list: ${typeListResponse.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
-                // Handle network or other errors
-                Log.e("PokeInfoViewModel", "Error fetching Pokemon list by type: ${e.message}")
+                Log.e("PokeInfoViewModel", "Error fetching type list: ${e.message}")
             }
         }
     }
+
 }
 
 
@@ -398,7 +379,30 @@ fun TypeToDrawableAPI(tipo: Type):Int{
         "normal" -> R.drawable.normal
         "flying" -> R.drawable.volador
         "ghost" -> R.drawable.fantasma
-        else -> { R.drawable.charmander}
+        else -> { R.drawable.error}
+    }
+}
+fun TypeToDrawableAPI_grandes(tipo: Type):Int{
+    return when (tipo.type.name) {
+        "grass" -> R.drawable.planta2
+        "water" -> R.drawable.agua2
+        "fire" -> R.drawable.fuego2
+        "fighting" -> R.drawable.lucha2
+        "poison" -> R.drawable.veneno2
+        "steel" -> R.drawable.acero2
+        "bug" -> R.drawable.bicho2
+        "dragon" -> R.drawable.dragon2
+        "electric" -> R.drawable.electrico2
+        "fairy" -> R.drawable.hada2
+        "ice" -> R.drawable.hielo2
+        "psychic" -> R.drawable.psiquico2
+        "rock" -> R.drawable.roca2
+        "ground" -> R.drawable.tierra2
+        "dark" -> R.drawable.siniestro2
+        "normal" -> R.drawable.normal2
+        "flying" -> R.drawable.volador2
+        "ghost" -> R.drawable.fantasma2
+        else -> { R.drawable.error}
     }
 }
 fun String.firstMayus(): String {
@@ -413,7 +417,6 @@ private fun String.extractPokemonId(): Int? {
     val matchResult = pattern.find(decodedUrl)
     return matchResult?.groupValues?.getOrNull(1)?.toIntOrNull()
 }
-
 fun String.extractPokemonId2(): Int? {
     val pattern = "/pokemon/(\\d+)/".toRegex()
     val matchResult = pattern.find(this)
