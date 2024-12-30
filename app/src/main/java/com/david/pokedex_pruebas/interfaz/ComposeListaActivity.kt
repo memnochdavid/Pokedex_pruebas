@@ -60,6 +60,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,6 +69,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.test.filter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -81,6 +83,7 @@ import com.david.pokedex_pruebas.api.PokeApiResponse
 import com.david.pokedex_pruebas.api.modelo.PokeInfoViewModel
 import com.david.pokedex_pruebas.api.modelo.Pokemon
 import com.david.pokedex_pruebas.api.modelo.RetrofitClient
+import com.david.pokedex_pruebas.api.modelo.Type
 import com.david.pokedex_pruebas.modelo.PokemonFB
 import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import com.david.pokedex_pruebas.modelo.enumToDrawableFB_busqueda
@@ -90,6 +93,7 @@ import io.appwrite.Client
 import io.appwrite.services.Storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -110,7 +114,7 @@ val storage = Storage(client)//habilitar para subir archivos
 
 lateinit var scope: CoroutineScope
 var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
-
+var isLoadingAPI by mutableStateOf(true)
 //appwrite bucket
 //https://cloud.appwrite.io/console/project-6738854a0011e2bc643f/storage
 
@@ -130,6 +134,7 @@ class ComposeListaActivity : ComponentActivity() {
 
 
         //var listaPokeFireBase by mutableStateOf<List<PokemonFB>>(emptyList())
+        /* RESTABLECER PARA FIREBASE!!!!!!!!!!!!!!
         var isLoading by mutableStateOf(true)
         refBBDD.child("pokemones").get().addOnSuccessListener { dataSnapshot ->
             val pokemonList = mutableListOf<PokemonFB>()
@@ -147,11 +152,19 @@ class ComposeListaActivity : ComponentActivity() {
             ).show()
             isLoading = false
         }
+        */
+
+
 
         //enableEdgeToEdge()
         setContent {
             //VerListaPoke(listaPokeFB, false)//Local
-            VerListaPoke(listaByGen(1), isLoading)//FireBase,AppWrite -- false
+
+
+
+            val lista = listaByGen(1)
+            listaTipos()
+            VerListaPokeAPI(lista)
             scope = rememberCoroutineScope()
         }
 
@@ -665,7 +678,7 @@ fun VerListaPoke(pokemonList: List<PokemonFB>, isLoading: Boolean) {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun VerListaPoke(listaApi: List<Pokemon>, isLoading: Boolean) {
+fun VerListaPokeAPI(listaApi: List<Pokemon>) {
     var busquedaTipos by remember { mutableStateOf(false) }
     var textobusqueda by remember { mutableStateOf("") }
     var tipoBuscado1 by remember { mutableStateOf("") }
@@ -697,7 +710,7 @@ fun VerListaPoke(listaApi: List<Pokemon>, isLoading: Boolean) {
 
 
     val viewModel: PokeInfoViewModel = viewModel()
-    if (isLoading) { //se asegura de haber cargado los datos de la nube antes de empezar a mostrar nada
+    if (isLoadingAPI) { //se asegura de haber cargado los datos de la nube antes de empezar a mostrar nada
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -950,17 +963,50 @@ fun VerListaPoke(listaApi: List<Pokemon>, isLoading: Boolean) {
 
 
 @Composable
-fun listaByGen(gen: Int):List<Pokemon>{
+fun listaByGen(gen: Int): List<Pokemon> {
     val viewModel: PokeInfoViewModel = viewModel()
     val pokemonListByGen by viewModel.pokemonListByGen.observeAsState(emptyList())
 
-    LaunchedEffect(key1 = gen) { // Trigger when 'gen' changes
-        viewModel.getListByGeneration(gen)
+    LaunchedEffect(key1 = gen) {
+        isLoadingAPI = true // Set to true before API call
+        viewModel.getListByGeneration(gen) // Trigger API call
+        // Wait for pokemonListByGen to be populated
+        snapshotFlow { pokemonListByGen }
+            .filter { it.isNotEmpty() } // Filter until list is not empty
+            .collect {
+                isLoadingAPI = false // Set to false when data is loaded
+            }
     }
-    Log.d("GEN 1 POKE", "Pokemon: $pokemonListByGen")
     return pokemonListByGen
 }
 
+@Composable
+fun listaTipos(): List<Type> {
+    val viewModel: PokeInfoViewModel = viewModel()
+
+    // Trigger the API call to fetch the type list
+    LaunchedEffect(Unit) {
+        viewModel.getTypeList()
+    }
+
+    // Observe the pokemonTypeList LiveData
+    val pokemonTypeList by viewModel.pokemonTypeList.observeAsState(emptyList())
+
+    // Extract the types from the Pokemon list
+    val types = pokemonTypeList.flatMap { pokemon ->
+        pokemon.types
+    }.distinctBy { it.type.name } // Ensure unique types
+
+    // Display the list of types (you can customize this part)
+    LazyColumn {
+        items(types) { type ->
+            Text(text = type.type.name)
+        }
+    }
+    Log.d("TIPOS", "TIPOS: $types")
+
+    return types // Return the list of types
+}
 
 
 

@@ -239,6 +239,9 @@ class PokeInfoViewModel() : ViewModel() {
     private val _pokemonListByGen = MutableLiveData<List<Pokemon>>(emptyList())
     val pokemonListByGen: LiveData<List<Pokemon>> = _pokemonListByGen
 
+    private val _pokemonTypeList = MutableLiveData<List<Pokemon>>(emptyList())
+    val pokemonTypeList: LiveData<List<Pokemon>> = _pokemonTypeList
+
     fun getPokemonInfo(id: Int){
         val call = service.getPokemonInfo(id)
 
@@ -319,7 +322,7 @@ class PokeInfoViewModel() : ViewModel() {
                     _pokemonListByGen.value = sortedPokemonList
 
                     // Update pokemonListByGen LiveData
-                    _pokemonListByGen.value = pokemonInfoList
+                    //_pokemonListByGen.value = pokemonInfoList
                     Log.d("PokeInfoViewModel", "Pokemon IDs: ${pokemonSpecies.mapNotNull { it.url.extractPokemonId() }}")
                 } else {
                     // Handle error
@@ -328,6 +331,47 @@ class PokeInfoViewModel() : ViewModel() {
             } catch (e: Exception) {
                 // Handle network or other errors
                 Log.e("PokeInfoViewModel", "Error fetching Pokemon list by generation: ${e.message}")
+            }
+        }
+    }
+    fun getTypeList() {
+        viewModelScope.launch {
+            try {
+                // 1. Fetch the list of types
+                val typeListResponse = service.getTypeList(id = 1).awaitResponse() // Assuming you want to fetch all types, you can use any valid type ID here.
+
+                if (typeListResponse.isSuccessful) {
+                    val typeList = typeListResponse.body()
+                    Log.d("PokeInfoViewModel", "Type List Response: $typeList")
+
+                    // 2. Extract the type names
+                    val typeNames = typeList?.type?.name ?: ""
+
+                    // 3. Fetch Pokemon details for each type
+                    val pokemonInfoList = listOf(typeNames).mapNotNull { typeName -> // Create a list with typeNames
+                        val pokemonId = typeName.extractPokemonId2() // Call on the typeName variable
+                        if (pokemonId != null) {
+                            service.getPokemonInfo(pokemonId).awaitResponse().body()
+                        } else {
+                            null
+                        }
+                    }
+                    // 3. Sort pokemonInfoList by ID
+                    val sortedPokemonList = pokemonInfoList.sortedBy { it.id }
+
+                    // 4. Update pokemonListByGen LiveData with sorted list
+                    _pokemonTypeList.value = sortedPokemonList
+
+                    // Update pokemonListByGen LiveData
+                    //_pokemonListByGen.value = pokemonInfoList
+                    //Log.d("PokeInfoViewModel", "Pokemon IDs: ${typeNames.mapNotNull { it.extractPokemonId2() }}")
+                } else {
+                    // Handle error
+                    Log.e("PokeInfoViewModel", "Error fetching type list: ${typeListResponse.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                // Handle network or other errors
+                Log.e("PokeInfoViewModel", "Error fetching Pokemon list by type: ${e.message}")
             }
         }
     }
@@ -370,9 +414,11 @@ private fun String.extractPokemonId(): Int? {
     return matchResult?.groupValues?.getOrNull(1)?.toIntOrNull()
 }
 
-
-
-
+fun String.extractPokemonId2(): Int? {
+    val pattern = "/pokemon/(\\d+)/".toRegex()
+    val matchResult = pattern.find(this)
+    return matchResult?.groupValues?.get(1)?.toIntOrNull()
+}
 
 
 

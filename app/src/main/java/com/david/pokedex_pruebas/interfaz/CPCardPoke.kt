@@ -1201,6 +1201,7 @@ fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
                             top.linkTo(parent.top)
                         }
                 )
+                /*
                 val context = LocalContext.current
                 val id = context.resources.getIdentifier(pokemon.name.lowercase(), "drawable", context.packageName)
                 val painter = if (id != 0) {
@@ -1221,12 +1222,12 @@ fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
                         }
-                )
-/*
+                )*/
+
                 //imagen remota de api
                 val painter = rememberAsyncImagePainter(
                     model = pokemon.sprites.frontDefault,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillBounds,
                 )
 
                 Image(
@@ -1239,8 +1240,9 @@ fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
                             start.linkTo(parent.start)
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
-                        }
-                )*/
+                        },
+
+                )
                 Text(
                     text = "#$num",
                     color = Color.Black,

@@ -782,25 +782,6 @@ fun PerfilUser(usuario: UserFb, scopeUpdate: CoroutineScope, refBBDD: DatabaseRe
                                 Text("Usuarios")
                             }
                         }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.Yellow)
-                                .constrainAs(fb) {
-                                    start.linkTo(parent.start)
-                                    top.linkTo(usuarios.bottom)
-                                    bottom.linkTo(parent.bottom)
-                                },
-                            horizontalArrangement = Arrangement.Start
-                        ){
-                            ListaPokeApi()
-                        }
-
-
-
-
-
-
 
 
                         /*

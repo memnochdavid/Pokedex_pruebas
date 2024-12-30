@@ -3,6 +3,7 @@ package com.david.pokedex_pruebas.api
 import com.david.pokedex_pruebas.api.modelo.EvolutionChain
 import com.david.pokedex_pruebas.api.modelo.Generation
 import com.david.pokedex_pruebas.api.modelo.Pokemon
+import com.david.pokedex_pruebas.api.modelo.Type
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,7 +20,6 @@ interface ApiService {
     fun getEvolutionChain(@Path("id") id: Int): Call<EvolutionChain>
     @GET("generation/{id}")
     fun getGeneration(@Path("id") id: Int): Call<Generation>
-
-
-
+    @GET("type/{id}")
+    fun getTypeList(@Path("id") id: Int): Call<Type>
 }
