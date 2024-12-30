@@ -36,6 +36,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,12 +62,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.david.pokedex_pruebas.api.ApiService
+import com.david.pokedex_pruebas.api.PokeApiResponse
+import com.david.pokedex_pruebas.api.modelo.PokeInfoViewModel
+import com.david.pokedex_pruebas.api.modelo.Pokemon
+import com.david.pokedex_pruebas.api.modelo.RetrofitClient
+import com.david.pokedex_pruebas.api.modelo.TypeToDrawableAPI
+import com.david.pokedex_pruebas.api.modelo.firstMayus
 import com.david.pokedex_pruebas.modelo.UnonwnFormas
 import com.david.pokedex_pruebas.modelo.UsuarioFromKey
 import com.david.pokedex_pruebas.modelo.debilidadesEquipo
@@ -79,6 +89,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.text.toFloat
 
 
@@ -1036,10 +1049,298 @@ fun MuestraDesc(desc: String) {
     }
 }
 
-/*
-@Preview(showBackground = true)
+
+
+//PARA POKEAPI
+
 @Composable
-fun GreetingPreview3() {
-    PokemonCard(listaPokeFB[4], "",1)
+fun PokemonScreen(pokemonId: Int, viewModel: PokeInfoViewModel) {
+    val pokemon by viewModel.pokemonInfo.observeAsState()
+    Log.d("PokemonScreen", pokemon.toString())
+    LaunchedEffect(pokemonId) {
+        viewModel.getPokemonInfo(pokemonId)
+    }
+    when (pokemon) {
+        null -> {
+            // Show loading indicator
+            CircularProgressIndicator()
+        }
+        else -> {
+            Column {
+                Text(text = "Name: ${pokemon!!.name}")
+                Text(text = "Height: ${pokemon!!.height}")
+                Text(text = "Weight: ${pokemon!!.weight}")
+                // ... other UI elements to display Pokemon information
+            }
+        }
+    }
 }
-*/
+@Composable
+fun ListaPokeApi() {
+    var viewModel= PokeInfoViewModel()
+    val pokemonList by viewModel.pokemonList.observeAsState(emptyList()) // Observe pokemonList directly
+    var pokemonIds = remember { mutableStateListOf<Int>() }
+
+    LaunchedEffect(key1 = Unit) {
+        val apiService = RetrofitClient.create(ApiService::class.java)
+        val call = apiService.getPokemonList(20, 0)
+
+        call.enqueue(object : Callback<PokeApiResponse> {
+            override fun onResponse(call: Call<PokeApiResponse>, response: Response<PokeApiResponse>) {
+                if (response.isSuccessful) {
+                    val pokeApiResponse = response.body()
+                    val results = pokeApiResponse?.results ?: emptyList()
+
+                    // Collect unique pokemon IDs
+                    val newPokemonIds = results.mapNotNull {
+                        it.url.split("/").last { it.isNotEmpty() }.toIntOrNull()
+                    }.filterNot { pokemonIds.contains(it) }
+
+                    // Update pokemonIds and fetch Pokemon info for new IDs
+                    pokemonIds.addAll(newPokemonIds)
+                    viewModel.getPokemonList(newPokemonIds) // Fetch and update pokemonList in ViewModel
+                } else {
+                    // Handle API error
+                    Log.e("PokemonList", "Error fetching Pokémon list: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<PokeApiResponse>, t: Throwable) {
+                // Handle network error
+                Log.e("PokemonList", "Error fetching Pokémon list: ${t.message}")
+            }
+        })
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .height(400.dp)
+    ) {
+        items(pokemonList) { pokemon ->
+            Log.d("PokemonList", "Pokemon: $pokemon")
+            PokemonCardApi(pokemon, viewModel)
+            Log.d("POKEMON DE API", pokemon.toString())
+        }
+    }
+}
+
+@Composable
+fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
+    Log.d("POKEMON DE API - TIPOS", "Pokemon: ${pokemon.types}")
+    var isPressed by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val scale = animateFloatAsState(
+        targetValue = if (isPressed) 0.90f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
+            stiffness = Spring.StiffnessMedium // Moderate stiffness
+        )
+    )
+    val spanishDescription by viewModel.spanishDescription
+    LaunchedEffect(pokemon.id) {
+        viewModel.getPokemonDescription(pokemon.id)
+    }
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val(pokeball,pokemonImage,numero,pokemonName,tipo1,tipo2, descRow)=createRefs()
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .scale(scale.value)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null, // Remove default ripple effect
+
+                    onClick = {
+
+                    }
+                )
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = null
+                )
+                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
+                    detectTapGestures(
+                        onPress = {
+                            isPressed = true
+                            try {
+                                awaitRelease()
+                            } finally {
+                                isPressed = false // Reset isPressed in finally block
+                            }
+                            Log.d("POKEMON CLICK - NOMBRE", "Pokemon: $pokemon")
+                            Log.d("POKEMON CLICK - DESCRIP", "Pokemon: $spanishDescription")
+                        }
+                    )
+                }
+        ) {
+
+            var num = "${(pokemon.id)}"
+            if (num.length == 1) num = "00${(pokemon.id)}"
+            else if (num.length == 2) num = "0${(pokemon.id)}"
+
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(R.color.objeto_lista))
+                    .padding(end = 30.dp)
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.pokeball_icon),
+                    contentDescription = "Pokeball",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .padding(5.dp)
+                        .constrainAs(pokeball) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                        }
+                )
+                val context = LocalContext.current
+                val id = context.resources.getIdentifier(pokemon.name.lowercase(), "drawable", context.packageName)
+                val painter = if (id != 0) {
+                    painterResource(id = id)
+                } else {
+                    // Handle case where drawable not found (e.g., use a default image)
+                    painterResource(id = R.drawable.error)
+                }
+
+                Image(
+                    painter = painter,
+                    contentDescription = "Pokeball",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .constrainAs(pokemonImage) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                        }
+                )
+/*
+                //imagen remota de api
+                val painter = rememberAsyncImagePainter(
+                    model = pokemon.sprites.frontDefault,
+                    contentScale = ContentScale.Crop,
+                )
+
+                Image(
+                    painter = painter,
+                    contentDescription = "Pokemon Image",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .fillMaxSize()
+                        .constrainAs(pokemonImage) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )*/
+                Text(
+                    text = "#$num",
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .constrainAs(numero) {
+                            start.linkTo(pokemonImage.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(tipo1.top)
+                            end.linkTo(pokemonName.start)
+                        }
+                )
+                Text(
+                    text = pokemon.name.firstMayus(),
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .constrainAs(pokemonName) {
+                            start.linkTo(numero.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(tipo1.top)
+                            end.linkTo(parent.end)
+                        }
+                )
+                /*
+                Text(
+                    text = spanishDescription,
+                    modifier = Modifier
+                        .constrainAs(descRow) {
+                            top.linkTo(pokemonName.bottom)
+                            start.linkTo(numero.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+
+                        }
+                )
+                */
+
+
+                if (pokemon.types.size == 1) {
+                    Image(
+                        painter = painterResource(id = TypeToDrawableAPI(pokemon.types[0])),
+                        contentDescription = "Tipo 1",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(25.dp)
+                            .constrainAs(tipo1) {
+                                start.linkTo(numero.start)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(pokemonName.bottom)
+                                end.linkTo(pokemonName.end)
+                            }
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = TypeToDrawableAPI(pokemon.types[0])),
+                        contentDescription = "Tipo 1",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(25.dp)
+                            .constrainAs(tipo1) {
+                                start.linkTo(numero.start)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(pokemonName.bottom)
+                                end.linkTo(tipo2.start)
+                            }
+                    )
+                    Image(
+                        painter = painterResource(id = TypeToDrawableAPI(pokemon.types[1])),
+                        contentDescription = "Tipo 2",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(25.dp)
+                            .constrainAs(tipo2) {
+                                start.linkTo(tipo1.end)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(pokemonName.bottom)
+                                end.linkTo(pokemonName.end)
+                            }
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

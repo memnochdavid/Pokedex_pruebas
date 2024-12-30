@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.david.pokedex_pruebas.R
-import com.david.pokedex_pruebas.api.modelo.ListaPokeApi
 import com.david.pokedex_pruebas.modelo.UserFb
 import com.google.firebase.database.DatabaseReference
 //import com.google.firebase.database.core.persistence.CachePolicy

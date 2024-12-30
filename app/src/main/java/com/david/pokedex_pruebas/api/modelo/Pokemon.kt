@@ -65,8 +65,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.david.pokedex_pruebas.modelo.PokemonTipoFB
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.net.URLDecoder
 
 data class Pokemon(
     @Expose @SerializedName("id") val id: Int,
@@ -226,13 +228,17 @@ class PokeInfoViewModel() : ViewModel() {
         .build()
 
     private val service: ApiService = retrofit.create(ApiService::class.java)
-
     val pokemonInfo = MutableLiveData<Pokemon>()
-    val pokemonDescription = MutableLiveData<Pokemon>()
+
     private val _pokemonList = MutableLiveData<List<Pokemon>>(emptyList())
     val pokemonList: LiveData<List<Pokemon>> = _pokemonList
+
     private val _spanishDescription = mutableStateOf("")
     val spanishDescription: State<String> = _spanishDescription
+
+    private val _pokemonListByGen = MutableLiveData<List<Pokemon>>(emptyList())
+    val pokemonListByGen: LiveData<List<Pokemon>> = _pokemonListByGen
+
     fun getPokemonInfo(id: Int){
         val call = service.getPokemonInfo(id)
 
@@ -271,7 +277,6 @@ class PokeInfoViewModel() : ViewModel() {
             }
         }
     }
-
     fun getPokemonList(pokemonIds: List<Int>) {
         var apiService = RetrofitClient.create(ApiService::class.java)
         viewModelScope.launch {
@@ -288,279 +293,82 @@ class PokeInfoViewModel() : ViewModel() {
             }
         }
     }
-}
+    fun getListByGeneration(id: Int) {
+        viewModelScope.launch {
+            try {
+                // 1. Get the generation details
+                val generationResponse = service.getGeneration(id).awaitResponse()
+                if (generationResponse.isSuccessful) {
+                    val generation = generationResponse.body()
+                    Log.d("PokeInfoViewModel", "Generation Response: ${generationResponse.body()?.pokemonSpecies}")
+                    val pokemonSpecies = generation?.pokemonSpecies ?: emptyList()
 
-@Composable
-fun PokemonScreen(pokemonId: Int, viewModel: PokeInfoViewModel) {
-    val pokemon by viewModel.pokemonInfo.observeAsState()
-    Log.d("PokemonScreen", pokemon.toString())
-    LaunchedEffect(pokemonId) {
-        viewModel.getPokemonInfo(pokemonId)
-    }
-    when (pokemon) {
-        null -> {
-            // Show loading indicator
-            CircularProgressIndicator()
-        }
-        else -> {
-            Column {
-                Text(text = "Name: ${pokemon!!.name}")
-                Text(text = "Height: ${pokemon!!.height}")
-                Text(text = "Weight: ${pokemon!!.weight}")
-                // ... other UI elements to display Pokemon information
-            }
-        }
-    }
-}
-@Composable
-fun ListaPokeApi() {
-    var viewModel= PokeInfoViewModel()
-    val pokemonList by viewModel.pokemonList.observeAsState(emptyList()) // Observe pokemonList directly
-    var pokemonIds = remember { mutableStateListOf<Int>() }
-
-    LaunchedEffect(key1 = Unit) {
-        val apiService = RetrofitClient.create(ApiService::class.java)
-        val call = apiService.getPokemonList(5, 0)
-
-        call.enqueue(object : Callback<PokeApiResponse> {
-            override fun onResponse(call: Call<PokeApiResponse>, response: Response<PokeApiResponse>) {
-                if (response.isSuccessful) {
-                    val pokeApiResponse = response.body()
-                    val results = pokeApiResponse?.results ?: emptyList()
-
-                    // Collect unique pokemon IDs
-                    val newPokemonIds = results.mapNotNull {
-                        it.url.split("/").last { it.isNotEmpty() }.toIntOrNull()
-                    }.filterNot { pokemonIds.contains(it) }
-
-                    // Update pokemonIds and fetch Pokemon info for new IDs
-                    pokemonIds.addAll(newPokemonIds)
-                    viewModel.getPokemonList(newPokemonIds) // Fetch and update pokemonList in ViewModel
-                } else {
-                    // Handle API error
-                    Log.e("PokemonList", "Error fetching Pokémon list: ${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<PokeApiResponse>, t: Throwable) {
-                // Handle network error
-                Log.e("PokemonList", "Error fetching Pokémon list: ${t.message}")
-            }
-        })
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .height(400.dp)
-    ) {
-        items(pokemonList) { pokemon ->
-            Log.d("PokemonList", "Pokemon: $pokemon")
-            PokemonCardApi(pokemon, viewModel)
-            Log.d("POKEMON DE API", pokemon.toString())
-        }
-    }
-}
-
-@Composable
-fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
-
-    var isPressed by remember { mutableStateOf(false) }
-    val interactionSource = remember { MutableInteractionSource() }
-    val scale = animateFloatAsState(
-        targetValue = if (isPressed) 0.90f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
-            stiffness = Spring.StiffnessMedium // Moderate stiffness
-        )
-    )
-
-    val spanishDescription by viewModel.spanishDescription
-    LaunchedEffect(pokemon.id) {
-        viewModel.getPokemonDescription(pokemon.id)
-    }
-
-
-
-
-
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        val(pokeball,pokemonImage,numero,pokemonName,tipo1,tipo2, descRow)=createRefs()
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .scale(scale.value)
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null, // Remove default ripple effect
-
-                    onClick = {
-
+                    // 2. Fetch Pokemon details for each species
+                    val pokemonInfoList = pokemonSpecies.mapNotNull { species ->
+                        val pokemonId = species.url.extractPokemonId() // Extract Pokemon ID from URL
+                        if (pokemonId != null) {
+                            service.getPokemonInfo(pokemonId).awaitResponse().body()
+                        } else {
+                            null
+                        }
                     }
-                )
-                .indication(
-                    interactionSource = interactionSource,
-                    indication = null
-                )
-                .pointerInput(Unit) {//lo que hace al pulsar en el Card()
-                    detectTapGestures(
-                        onPress = {
-                            isPressed = true
-                            try {
-                                awaitRelease()
-                            } finally {
-                                isPressed = false // Reset isPressed in finally block
-                            }
-                            //var indice=pokemon.id-1
-                            //seleccionado= listaPokeFireBase[index]
-                            //val intent = Intent(context, ComposeVistaActivity::class.java)
-                            //intent.putParcelableArrayListExtra("lista", arrayPoke)
-                            //intent.putExtra("sesion", usuario_key)
-                            //intent.putExtra("indice", indice)
-                            //context.startActivity(intent)
-                        }
-                    )
-                }
-        ) {
+                    // 3. Sort pokemonInfoList by ID
+                    val sortedPokemonList = pokemonInfoList.sortedBy { it.id }
 
-            var num = "${(pokemon.id)}"
-            if (num.length == 1) num = "00${(pokemon.id)}"
-            else if (num.length == 2) num = "0${(pokemon.id)}"
+                    // 4. Update pokemonListByGen LiveData with sorted list
+                    _pokemonListByGen.value = sortedPokemonList
 
-            ConstraintLayout(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(colorResource(R.color.objeto_lista))
-                    .padding(end = 30.dp)
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.pokeball_icon),
-                    contentDescription = "Pokeball",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .padding(5.dp)
-                        .constrainAs(pokeball) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                        }
-                )
-
-                //imagen remota
-
-                val painter = rememberAsyncImagePainter(
-                    model = pokemon.sprites.frontDefault,
-                    contentScale = ContentScale.Crop,
-                )
-
-                Image(
-                    painter = painter,
-                    contentDescription = "Pokemon Image",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .fillMaxSize()
-                        .constrainAs(pokemonImage) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                        }
-                )
-                Text(
-                    text = "#$num",
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(start = 15.dp)
-                        .constrainAs(numero) {
-                            start.linkTo(pokemonImage.end)
-                            top.linkTo(parent.top)
-                            bottom.linkTo(tipo1.top)
-                            end.linkTo(pokemonName.start)
-                        }
-                )
-                Text(
-                    text = pokemon.name,
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .constrainAs(pokemonName) {
-                            start.linkTo(numero.end)
-                            top.linkTo(parent.top)
-                            bottom.linkTo(tipo1.top)
-                            end.linkTo(parent.end)
-                        }
-                )
-                Text(
-                    text = spanishDescription,
-                    modifier = Modifier
-                        .constrainAs(tipo1) {
-                            top.linkTo(pokemonName.bottom)
-                            start.linkTo(numero.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-
-                        }
-                )
-                /*
-                if (pokemon.types.size == 1) {
-                    Image(
-                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                        contentDescription = "Tipo 1",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .width(60.dp)
-                            .height(25.dp)
-                            .constrainAs(tipo1) {
-                                start.linkTo(numero.start)
-                                bottom.linkTo(parent.bottom)
-                                top.linkTo(pokemonName.bottom)
-                                end.linkTo(pokemonName.end)
-                            }
-                    )
+                    // Update pokemonListByGen LiveData
+                    _pokemonListByGen.value = pokemonInfoList
+                    Log.d("PokeInfoViewModel", "Pokemon IDs: ${pokemonSpecies.mapNotNull { it.url.extractPokemonId() }}")
                 } else {
-                    Image(
-                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[0])),
-                        contentDescription = "Tipo 1",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .width(60.dp)
-                            .height(25.dp)
-                            .constrainAs(tipo1) {
-                                start.linkTo(numero.start)
-                                bottom.linkTo(parent.bottom)
-                                top.linkTo(pokemonName.bottom)
-                                end.linkTo(tipo2.start)
-                            }
-                    )
-                    Image(
-                        painter = painterResource(id = enumToDrawableFB(pokemon.tipo[1])),
-                        contentDescription = "Tipo 2",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .width(60.dp)
-                            .height(25.dp)
-                            .constrainAs(tipo2) {
-                                start.linkTo(tipo1.end)
-                                bottom.linkTo(parent.bottom)
-                                top.linkTo(pokemonName.bottom)
-                                end.linkTo(pokemonName.end)
-                            }
-                    )*/
+                    // Handle error
+                    Log.e("PokeInfoViewModel", "Error fetching generation details: ${generationResponse.errorBody()?.string()}")
                 }
+            } catch (e: Exception) {
+                // Handle network or other errors
+                Log.e("PokeInfoViewModel", "Error fetching Pokemon list by generation: ${e.message}")
             }
         }
-
     }
+}
 
 
+fun TypeToDrawableAPI(tipo: Type):Int{
+    return when (tipo.type.name) {
+        "grass" -> R.drawable.planta
+        "water" -> R.drawable.agua
+        "fire" -> R.drawable.fuego
+        "fighting" -> R.drawable.lucha
+        "poison" -> R.drawable.veneno
+        "steel" -> R.drawable.acero
+        "bug" -> R.drawable.bicho
+        "dragon" -> R.drawable.dragon
+        "electric" -> R.drawable.electrico
+        "fairy" -> R.drawable.hada
+        "ice" -> R.drawable.hielo
+        "psychic" -> R.drawable.psiquico
+        "rock" -> R.drawable.roca
+        "ground" -> R.drawable.tierra
+        "dark" -> R.drawable.siniestro
+        "normal" -> R.drawable.normal
+        "flying" -> R.drawable.volador
+        "ghost" -> R.drawable.fantasma
+        else -> { R.drawable.charmander}
+    }
+}
+fun String.firstMayus(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
+private fun String.extractPokemonId(): Int? {
+    if (this.isNullOrEmpty()) return null // Check for null or empty URLs
 
+    val decodedUrl = URLDecoder.decode(this, "UTF-8") // Decode URL if necessary
+
+    val pattern = "/pokemon-species/(\\d+)/".toRegex() // Updated regex pattern
+    val matchResult = pattern.find(decodedUrl)
+    return matchResult?.groupValues?.getOrNull(1)?.toIntOrNull()
+}
 
 
 

@@ -567,10 +567,9 @@ val evosMega: Map<String, PokemonFB> = listOf(
 
 
 var listaPokeFB : List<PokemonFB> = listOf(
-
-/*
+    /*
     PokemonFB(1,"1",R.drawable.bulbasaur,"Bulbasaur", "Puede sobrevivir largo tiempo sin probar bocado. Guarda energía en el bulbo de su espalda.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
-    PokemonFB(2,"1",R.drawable.ivisaur01, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
+    PokemonFB(2,"1",R.drawable.ivysaur, "Ivysaur", "Su bulbo crece cuando absorbe energía. Desprende un fuerte aroma cuando florece.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO),listOf(1,2, 3)),
     PokemonFB(3,"1",R.drawable.venusaur, "Venusaur", "La flor de su espalda recoge los rayos del sol. Los transforma en energía.", listOf(PokemonTipoFB.PLANTA, PokemonTipoFB.VENENO), listOf(1, 2,3)),
     PokemonFB(4,"1",R.drawable.charmander, "Charmander", "La llama en la punta de su cola chisporrotea al arder. Sólo se oye en lugares silenciosos.", listOf(PokemonTipoFB.FUEGO), listOf(4,5,6)),
     PokemonFB(5,"1",R.drawable.charmeleon, "Charmeleon", "Las duras luchas excitan a este Pokémon. Entonces, lanzará llamaradas blanco-azuladas.", listOf(PokemonTipoFB.FUEGO),listOf(4,5,6)),
@@ -1275,9 +1274,9 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(704,"6",R.drawable.goomy, "Goomy","Es el Pokémon de tipo Dragón más débil. Habita en zonas oscuras y húmedas para evitar que su viscoso cuerpo se seque.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(705,"6",R.drawable.sliggoo, "Sliggoo","Segrega una mucosidad que corroe todo lo que toca y consigue así ahuyentar al enemigo. Sus ojos han involucionado, por lo que no puede ver.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
     PokemonFB(706,"6",R.drawable.goodra, "Goodra","Ataca con sus antenas retráctiles, desplegando una fuerza comparable a los puñetazos de 100 boxeadores profesionales.",listOf(PokemonTipoFB.DRAGON), listOf(704, 705, 706)),
-*/
 
-/*
+
+
     PokemonFB(707,"6",R.drawable.klefki, "Klefki","Tiene el hábito de coleccionar llaves. Cuando un enemigo lo ataca, las hace tintinear como método de intimidación.",listOf(PokemonTipoFB.ACERO,PokemonTipoFB.HADA), listOf(707)),
     PokemonFB(708,"6",R.drawable.phantump, "Phantump","Nace cuando el alma de un niño perdido habita un tocón. Su grito se asemeja a un escalofriante chillido.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
     PokemonFB(709,"6",R.drawable.trevenant, "Trevenant","Es amable con los seres que habitan los bosques, pero se cuenta que devora a quienes los mancillan.",listOf(PokemonTipoFB.FANTASMA,PokemonTipoFB.PLANTA), listOf(708, 709)),
@@ -1598,9 +1597,9 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1024,"9",R.drawable.terapagos, "Terapagos","Se vale de su capacidad para transformar energía en duros cristales para protegerse. Este Pokémon dio origen a la teracristalización.",listOf(PokemonTipoFB.NORMAL), listOf(1024)),
     PokemonFB(1025,"9",R.drawable.pecharunt, "Pecharunt","Su caparazón con forma de melocotón alberga un potente veneno con el que prepara un mochi tóxico que ofrece a humanos y Pokémon.",listOf(PokemonTipoFB.VENENO,PokemonTipoFB.FANTASMA), listOf(1025)),
 
-*/
 
-/*
+
+
     PokemonFB(1026,"7",R.drawable.alolarattata,"Rattata de Alola", "Por la noche se aventura en las casas en busca de comida. El elevado número de ejemplares se está convirtiendo en un problema.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1026,1027)),
     PokemonFB(1027,"7",R.drawable.alolaraticate,"Raticate de Alola", "Es de naturaleza avariciosa. Obliga a los Rattata a acumular tanta comida en su madriguera que a menudo no puede comérsela toda.", listOf(PokemonTipoFB.SINIESTRO, PokemonTipoFB.NORMAL),listOf(1026,1027)),
     PokemonFB(1028,"7",R.drawable.alolaraichu,"Raichu de Alola", "Concentra sus poderes psíquicos en la cola y se desplaza deslizándose sobre ella. Se lo conoce como el Surfista de Tierra Firme.", listOf(PokemonTipoFB.ELECTRICO, PokemonTipoFB.PSIQUICO),listOf(1028)),
@@ -1657,8 +1656,8 @@ var listaPokeFB : List<PokemonFB> = listOf(
     PokemonFB(1079,"9",R.drawable.paldeataurosagua,"Tauros Acuático de Paldea", "Perfora a sus rivales lanzando chorros de agua a alta presión por la cavidad que tiene en la punta de los cuernos.", listOf(PokemonTipoFB.LUCHA, PokemonTipoFB.AGUA),listOf(1079)),
     PokemonFB(1080,"9",R.drawable.paldeawooper,"Wooper de Paldea", "Ante el riesgo que le supone desplazarse solo, forma filas de tres o cuatro individuos que cuidan unos de otros mientras recorren los pantanos.", listOf(PokemonTipoFB.VENENO, PokemonTipoFB.TIERRA),listOf(1080,980)),
 
-*/
 
+*/
 )
 
 
