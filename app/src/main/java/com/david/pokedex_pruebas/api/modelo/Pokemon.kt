@@ -78,20 +78,20 @@ import java.net.URLDecoder
 data class Pokemon(
     @Expose @SerializedName("id") val id: Int,
     @Expose @SerializedName("name") val name: String,
-    @Expose @SerializedName("base_experience") val baseExperience: Int,
-    @Expose @SerializedName("height") val height: Int,
-    @Expose @SerializedName("is_default") val isDefault: Boolean,
+    //@Expose @SerializedName("base_experience") val baseExperience: Int,
+    //@Expose @SerializedName("height") val height: Int,
+    //@Expose @SerializedName("is_default") val isDefault: Boolean,
     @Expose @SerializedName("order") val order: Int,
-    @Expose @SerializedName("weight") val weight: Int,
+    //@Expose @SerializedName("weight") val weight: Int,
     @Expose @SerializedName("sprites") val sprites: Sprites,
-    @Expose @SerializedName("abilities") val abilities: List<Ability>,
-    @Expose @SerializedName("forms") val forms: List<Form>,
-    @Expose @SerializedName("game_indices") val gameIndices: List<GameIndex>,
-    @Expose @SerializedName("held_items") val heldItems: List<HeldItem>,
-    @Expose @SerializedName("location_area_encounters") val locationAreaEncounters: String,
-    @Expose @SerializedName("moves") val moves: List<Move>,
+    //@Expose @SerializedName("abilities") val abilities: List<Ability>,
+    //@Expose @SerializedName("forms") val forms: List<Form>,
+    //@Expose @SerializedName("game_indices") val gameIndices: List<GameIndex>,
+    //@Expose @SerializedName("held_items") val heldItems: List<HeldItem>,
+    //@Expose @SerializedName("location_area_encounters") val locationAreaEncounters: String,
+    //@Expose @SerializedName("moves") val moves: List<Move>,
     @Expose @SerializedName("species") val species: Species,
-    @Expose @SerializedName("stats") val stats: List<Stat>,
+    //@Expose @SerializedName("stats") val stats: List<Stat>,
     @Expose @SerializedName("types") val types: List<Type>,
     @Expose @SerializedName("flavor_text_entries") val flavorTextEntries: List<FlavorTextEntry>,
 // added property for the Spanish flavor text entries
@@ -216,6 +216,11 @@ data class Type(
 data class TypeInfo(
     @Expose @SerializedName("name") val name: String,
     @Expose @SerializedName("url") val url: String
+)
+
+data class FromDescription(
+    @Expose @SerializedName("description") val description: String,
+    @Expose @SerializedName("language") val language: Language
 )
 
 class PokemonDataRepository(private val viewModel: PokeInfoViewModel) {

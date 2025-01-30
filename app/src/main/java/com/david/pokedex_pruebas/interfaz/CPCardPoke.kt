@@ -1068,8 +1068,6 @@ fun PokemonScreen(pokemonId: Int, viewModel: PokeInfoViewModel) {
         else -> {
             Column {
                 Text(text = "Name: ${pokemon!!.name}")
-                Text(text = "Height: ${pokemon!!.height}")
-                Text(text = "Weight: ${pokemon!!.weight}")
                 // ... other UI elements to display Pokemon information
             }
         }
@@ -1126,20 +1124,19 @@ fun ListaPokeApi() {
 
 @Composable
 fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
-    Log.d("POKEMON DE API - TIPOS", "Pokemon: ${pokemon.types}")
+    //Log.d("POKEMON DE API - TIPOS", "Pokemon: ${pokemon.types}")
     var isPressed by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val scale = animateFloatAsState(
         targetValue = if (isPressed) 0.90f else 1f,
         animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy, // Moderate bouncing
-            stiffness = Spring.StiffnessMedium // Moderate stiffness
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
         )
     )
+    viewModel.getPokemonDescription(pokemon.order)
     val spanishDescription by viewModel.spanishDescription
-    LaunchedEffect(pokemon.id) {
-        viewModel.getPokemonDescription(pokemon.id)
-    }
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -1271,7 +1268,6 @@ fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
                             end.linkTo(parent.end)
                         }
                 )
-                /*
                 Text(
                     text = spanishDescription,
                     modifier = Modifier
@@ -1283,7 +1279,7 @@ fun PokemonCardApi(pokemon: Pokemon, viewModel: PokeInfoViewModel) {
 
                         }
                 )
-                */
+
 
 
                 if (pokemon.types.size == 1) {
